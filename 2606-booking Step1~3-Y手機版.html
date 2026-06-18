@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>活動預訂系統</title>
+    <title>活動預訂系統 - 手機版</title>
     <style>
         /* ==========================================================================
            1. 全域初始化與基本設定 (Reset & Base)
@@ -24,7 +24,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 20px;
+            padding: 24px 12px;
+            /* 手機端邊距稍微收緊 */
             overflow-x: hidden;
             position: relative;
         }
@@ -47,9 +48,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 48px;
+            margin-bottom: 32px;
             width: 100%;
-            max-width: 650px;
+            max-width: 100%;
         }
 
         .step-item {
@@ -60,13 +61,14 @@
         }
 
         .step-number {
-            width: 38px;
-            height: 38px;
+            width: 32px;
+            /* 手機端略縮 */
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
         }
 
@@ -87,9 +89,9 @@
         }
 
         .step-label {
-            font-size: 13px;
+            font-size: 12px;
             color: #718096;
-            margin-top: 10px;
+            margin-top: 8px;
             font-weight: 500;
         }
 
@@ -101,9 +103,8 @@
         .step-line {
             flex-grow: 1;
             height: 2px;
-            margin: 0 16px;
-            margin-bottom: 22px;
-            max-width: 120px;
+            margin: 0 8px;
+            margin-bottom: 20px;
         }
 
         .step-line.active {
@@ -115,34 +116,29 @@
         }
 
         /* ==========================================================================
-           3. 雙欄排版架構
+           3. 單欄排版架構 (手機專用單直欄，由上至下流動)
            ========================================================================== */
         .main-layout {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
             width: 100%;
-            max-width: 920px;
-            align-items: start;
-        }
-
-        @media (min-width: 768px) {
-            .main-layout {
-                grid-template-columns: 1fr 390px;
-            }
+            max-width: 480px;
+            /* 限制手機板最大延伸寬度 */
         }
 
         .left-column-flow {
             display: flex;
             flex-direction: column;
-            gap: 32px;
+            gap: 24px;
             width: 100%;
         }
 
         .card {
             background: #ffffff;
-            border-radius: 24px;
-            padding: 32px;
+            border-radius: 20px;
+            padding: 24px;
+            /* 手機端卡片內縮適中 */
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.03);
             border: 1px solid rgba(0, 0, 0, 0.01);
             width: 100%;
@@ -152,15 +148,15 @@
             font-size: 16px;
             font-weight: bold;
             color: #1a2b49;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .activity-img-wrapper {
             width: 100%;
             aspect-ratio: 16 / 9;
-            border-radius: 18px;
+            border-radius: 14px;
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             background-color: #f1f5f9;
         }
 
@@ -177,12 +173,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             padding: 0 4px;
         }
 
         .calendar-month-title {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: bold;
             color: #1a2b49;
         }
@@ -199,19 +195,18 @@
             color: #718096;
             cursor: pointer;
             font-size: 12px;
-            transition: all 0.2s;
         }
 
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 12px;
+            gap: 8px;
             text-align: center;
         }
 
         .calendar-day-header {
             color: #4a5568;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             padding-bottom: 4px;
         }
@@ -250,20 +245,20 @@
         .slots-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            gap: 12px;
         }
 
         .slot-box {
             border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 16px;
+            border-radius: 14px;
+            padding: 14px;
             text-align: center;
             cursor: pointer;
             background-color: #ffffff;
         }
 
         .slot-box .time-text {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             color: #1a2b49;
         }
@@ -271,7 +266,7 @@
         .slot-box .meta-text {
             font-size: 12px;
             color: #718096;
-            margin-top: 6px;
+            margin-top: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -289,19 +284,19 @@
         .form-grid {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
         }
 
         .form-row-2col {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            gap: 12px;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         label {
@@ -313,9 +308,9 @@
         input,
         textarea {
             width: 100%;
-            padding: 14px 16px;
+            padding: 12px 14px;
             border: 1px solid #e2e8f0;
-            border-radius: 14px;
+            border-radius: 12px;
             font-size: 14px;
             background-color: #ffffff;
             color: #1a2b49;
@@ -336,18 +331,17 @@
         .payment-options-group {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 24px;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
         .payment-option {
             display: flex;
             align-items: center;
-            padding: 16px;
+            padding: 14px;
             border: 1px solid #e2e8f0;
-            border-radius: 16px;
+            border-radius: 14px;
             cursor: pointer;
-            transition: all 0.2s;
             background: #ffffff;
         }
 
@@ -357,23 +351,23 @@
         }
 
         .payment-icon {
-            width: 40px;
-            height: 40px;
-            margin-right: 14px;
+            width: 36px;
+            height: 36px;
+            margin-right: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 18px;
         }
 
         .icon-line {
             background: #06c755;
             color: white;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 6px;
+            font-size: 13px;
             font-weight: bold;
-            height: 32px;
-            width: 32px;
+            height: 28px;
+            width: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -381,7 +375,7 @@
 
         .icon-apple {
             color: #000000;
-            font-size: 26px;
+            font-size: 22px;
         }
 
         .payment-text-main {
@@ -393,13 +387,13 @@
         .payment-text-sub {
             font-size: 12px;
             color: #718096;
-            margin-top: 3px;
+            margin-top: 2px;
         }
 
         .detail-row {
             display: flex;
             justify-content: space-between;
-            padding: 16px 0;
+            padding: 14px 0;
             border-bottom: 1px solid #f1f5f9;
             font-size: 14px;
         }
@@ -422,19 +416,17 @@
             background-color: #e06343;
             color: white;
             border: none;
-            padding: 16px;
+            padding: 15px;
             border-radius: 30px;
             font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 6px 20px rgba(224, 99, 67, 0.15);
-            transition: all 0.2s;
         }
 
         .btn-action:disabled {
             background-color: #f7c3b6;
             color: white;
-            cursor: not-allowed;
             box-shadow: none;
         }
 
@@ -446,37 +438,32 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            max-width: 580px;
             text-align: center;
-            padding: 20px 0;
+            padding: 10px 0;
         }
 
-        /* 綠色打勾標誌外圈與彈出特效 */
         .success-checkmark-circle {
-            width: 72px;
-            height: 72px;
+            width: 68px;
+            height: 68px;
             background-color: #eaf5ec;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             transform: scale(0);
-            /* 初始隱藏以便執行 CSS 動畫 */
         }
 
-        /* 動態加入此類別觸發 Pop-in 特效 */
         .success-checkmark-circle.pop-effect {
             animation: popInBounce 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
         .success-checkmark-svg {
-            width: 34px;
-            height: 34px;
+            width: 32px;
+            height: 32px;
             color: #4b7754;
         }
 
-        /* 彈跳登場動畫軌跡 */
         @keyframes popInBounce {
             0% {
                 transform: scale(0);
@@ -494,26 +481,26 @@
         }
 
         .success-title {
-            font-size: 36px;
+            font-size: 28px;
             font-weight: bold;
             color: #1a2b49;
-            margin-bottom: 24px;
+            margin-bottom: 18px;
             letter-spacing: -0.5px;
         }
 
         .success-sub {
-            font-size: 15px;
+            font-size: 14px;
             color: #4a5568;
-            margin-bottom: 40px;
+            margin-bottom: 32px;
             line-height: 1.6;
         }
 
         .receipt-card {
             background-color: #fbf6f1;
-            border-radius: 24px;
-            padding: 32px;
+            border-radius: 20px;
+            padding: 24px;
             width: 100%;
-            margin-bottom: 40px;
+            margin-bottom: 32px;
             text-align: left;
         }
 
@@ -521,42 +508,40 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .chip-id {
             background-color: #1a2b4a;
             color: white;
-            padding: 6px 14px;
-            border-radius: 12px;
-            font-size: 13px;
+            padding: 5px 12px;
+            border-radius: 10px;
+            font-size: 12px;
             font-family: monospace;
             font-weight: bold;
         }
 
         .receipt-card .detail-row {
             border-bottom: 1px solid #ebdcd5;
-            padding: 16px 0;
+            padding: 14px 0;
         }
 
         .btn-group-row {
             display: flex;
-            gap: 16px;
+            flex-direction: column;
+            gap: 12px;
             width: 100%;
-            max-width: 440px;
-            justify-content: center;
         }
 
         .btn-outline-back {
             background: white;
             border: 2px solid #1a2b49;
             color: #1a2b49;
-            padding: 14px 28px;
+            padding: 14px;
             border-radius: 30px;
             font-weight: bold;
-            cursor: pointer;
             font-size: 15px;
-            flex: 1;
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -566,12 +551,11 @@
             background-color: #e06343;
             color: white;
             border: none;
-            padding: 14px 28px;
+            padding: 14px;
             border-radius: 30px;
             font-weight: bold;
-            cursor: pointer;
             font-size: 15px;
-            flex: 1;
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -661,7 +645,7 @@
 
             <div class="card">
                 <div class="section-title">選擇場次</div>
-                <div class="slots-grid" style="margin-bottom: 32px;">
+                <div class="slots-grid" style="margin-bottom: 24px;">
                     <div class="slot-box" id="slotAM" onclick="chooseSlot('AM')">
                         <div class="time-text">09:00</div>
                         <div class="meta-text">🌅 上午場</div>
@@ -676,20 +660,18 @@
         </div>
 
         <div class="card">
-            <div class="section-title" style="margin-bottom: 20px;">預訂摘要</div>
+            <div class="section-title" style="margin-bottom: 16px;">預訂摘要</div>
             <div class="activity-img-wrapper">
                 <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=cover&w=600&q=80"
                     alt="清水斷崖獨木舟" class="activity-img">
             </div>
-            <div style="font-size:17px; font-weight:bold; margin-bottom:18px; color:#1a2b49;">清水斷崖獨木舟探險</div>
-            <div class="detail-row"><span class="detail-label">目的地</span><span class="detail-value">花蓮</span></div>
-            <div class="detail-row"><span class="detail-label">時間長度</span><span class="detail-value">半天</span></div>
+            <div style="font-size:16px; font-weight:bold; margin-bottom:14px; color:#1a2b49;">清水斷崖獨木舟探險</div>
             <div class="detail-row"><span class="detail-label">選擇日期</span><span class="detail-value highlight"
                     id="s1Date">2026/06/25</span></div>
             <div class="detail-row"><span class="detail-label">選擇場次</span><span class="detail-value highlight"
                     id="s1Slot">下午場 14:00</span></div>
-            <div class="detail-row" style="border:none; margin-top: 8px;"><span class="detail-label">價格</span><span
-                    style="font-size:18px; font-weight:bold; color:#e06343;">NT$ 1,800 / 人</span></div>
+            <div class="detail-row" style="border:none;"><span class="detail-label">價格</span><span
+                    style="font-size:17px; font-weight:bold; color:#e06343;">NT$ 1,800 / 人</span></div>
         </div>
     </div>
 
@@ -777,20 +759,18 @@
                 <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=cover&w=600&q=80"
                     alt="清水斷崖獨木舟" class="activity-img">
             </div>
-            <div style="font-size:16px; font-weight:bold; margin-bottom:16px;">清水斷崖獨木舟探險</div>
+            <div style="font-size:15px; font-weight:bold; margin-bottom:12px;">清水斷崖獨木舟探險</div>
             <div class="detail-row"><span class="detail-label">日期</span><span class="detail-value"
                     id="s2Date">2026/06/25</span></div>
             <div class="detail-row"><span class="detail-label">場次</span><span class="detail-value" id="s2Slot">下午場
                     14:00</span></div>
-            <div class="detail-row"><span class="detail-label">人數</span><span class="detail-value">1 人</span></div>
             <div class="detail-row" style="border:none;"><span class="detail-label"
                     style="font-weight:bold;">總金額</span><span
-                    style="font-size:20px; font-weight:bold; color:#e06343;">NT$ 1,800</span></div>
+                    style="font-size:18px; font-weight:bold; color:#e06343;">NT$ 1,800</span></div>
         </div>
     </div>
 
     <div class="success-layout" id="panelStep3">
-
         <div class="success-checkmark-circle" id="successCheckIcon">
             <svg class="success-checkmark-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
                 stroke-linecap="round" stroke-linejoin="round">
@@ -799,7 +779,7 @@
         </div>
 
         <h1 class="success-title">預訂成功！出發準備好了嗎？</h1>
-        <p class="success-sub">確認信已寄送至 <span id="s3Email">-</span>，請記得在出發前查閱。</p>
+        <p class="success-sub">確認信已寄送至 <span id="s3Email">-</span></p>
 
         <div class="receipt-card">
             <div class="receipt-header">
@@ -808,7 +788,6 @@
             </div>
             <div class="detail-row"><span class="detail-label">體驗名稱</span><span class="detail-value">清水斷崖獨木舟探險</span>
             </div>
-            <div class="detail-row"><span class="detail-label">目的地</span><span class="detail-value">花蓮</span></div>
             <div class="detail-row"><span class="detail-label">體驗日期</span><span class="detail-value"
                     id="s3Date">-</span></div>
             <div class="detail-row"><span class="detail-label">場次</span><span class="detail-value" id="s3Slot">-</span>
@@ -817,13 +796,13 @@
             </div>
             <div class="detail-row" style="border:none; margin-top:8px;">
                 <span class="detail-label" style="font-weight:500;">已付總金額</span>
-                <span class="detail-value" style="font-size: 20px; color: #e06343;">NT$ 1,800</span>
+                <span class="detail-value" style="font-size: 18px; color: #e06343;">NT$ 1,800</span>
             </div>
         </div>
 
         <div class="btn-group-row">
-            <button class="btn-outline-back" onclick="location.reload()">← 返回首頁</button>
             <button class="btn-solid-orange" onclick="alert('正在載入您的電子票券...')">查看我的訂單</button>
+            <button class="btn-outline-back" onclick="location.reload()">← 返回首頁</button>
         </div>
     </div>
 
@@ -833,11 +812,8 @@
         let activePayment = "card";
 
         function selectDate(dateStr, element) {
-            document.querySelectorAll('.calendar-day').forEach(day => {
-                day.classList.remove('selected-active');
-            });
+            document.querySelectorAll('.calendar-day').forEach(day => { day.classList.remove('selected-active'); });
             document.getElementById("day18").classList.add("today-highlight");
-
             element.classList.add('selected-active');
             selectDateStr = dateStr;
             document.getElementById("s1Date").innerText = dateStr;
@@ -864,13 +840,11 @@
 
         function showStep2() {
             document.getElementById("panelStep1").style.display = "none";
-            document.getElementById("panelStep2").style.display = "grid";
-
+            document.getElementById("panelStep2").style.display = "flex";
             document.getElementById("step1Node").className = "step-item completed";
             document.getElementById("step1Num").innerText = "✓";
             document.getElementById("step2Node").className = "step-item active";
             document.getElementById("stepLine1").className = "step-line active";
-
             document.getElementById("s2Date").innerText = selectDateStr;
             document.getElementById("s2Slot").innerText = selectSlotStr;
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -881,7 +855,6 @@
             document.getElementById("payOptionCard").classList.remove("selected");
             document.getElementById("payOptionLine").classList.remove("selected");
             document.getElementById("payOptionApple").classList.remove("selected");
-
             const ccForm = document.getElementById("creditCardForm");
             if (type === 'card') {
                 document.getElementById("payOptionCard").classList.add("selected");
@@ -915,36 +888,29 @@
             const name = document.getElementById("inputName").value.trim();
             const phone = document.getElementById("inputPhone").value.trim();
             const email = document.getElementById("inputEmail").value.trim();
-
             let isPaymentValid = false;
             if (activePayment === 'card') {
                 const card = document.getElementById("cardNum").value.replace(/\s/g, '');
                 const exp = document.getElementById("cardExpiry").value;
                 const cvv = document.getElementById("cardCvv").value;
                 isPaymentValid = (card.length === 16) && (exp.length === 5) && (cvv.length === 3);
-            } else {
-                isPaymentValid = true;
-            }
+            } else { isPaymentValid = true; }
             document.getElementById("btnSubmit").disabled = !(name && phone && email && isPaymentValid);
         }
 
         function showStep3() {
             document.getElementById("panelStep2").style.display = "none";
             document.getElementById("panelStep3").style.display = "flex";
-
             document.getElementById("step2Node").className = "step-item completed";
             document.getElementById("step2Num").innerText = "✓";
             document.getElementById("step3Node").className = "step-item active";
             document.getElementById("stepLine2").className = "step-line active";
-
             document.getElementById("s3Date").innerText = selectDateStr;
             document.getElementById("s3Slot").innerText = selectSlotStr;
             document.getElementById("s3Name").innerText = document.getElementById("inputName").value;
             document.getElementById("s3Email").innerText = document.getElementById("inputEmail").value;
 
-            // 觸發打勾圖示的跳出動畫 (Pop-in)
             document.getElementById("successCheckIcon").classList.add("pop-effect");
-
             window.scrollTo({ top: 0, behavior: 'smooth' });
             startConfettiEffect();
         }
@@ -955,48 +921,35 @@
             canvas.style.display = "block";
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-
             const particles = [];
             const colors = ["#e06343", "#4b7754", "#2563eb", "#f59e0b", "#ec4899"];
-
             for (let i = 0; i < 55; i++) {
                 particles.push({
                     x: 0, y: canvas.height * 0.8,
                     angle: -Math.PI / 4 + (Math.random() * 0.4 - 0.2),
-                    speed: 15 + Math.random() * 12,
-                    radius: 4 + Math.random() * 4,
+                    speed: 15 + Math.random() * 12, radius: 4 + Math.random() * 4,
                     color: colors[Math.floor(Math.random() * colors.length)],
-                    rotation: Math.random() * Math.PI,
-                    rotSpeed: Math.random() * 0.2 - 0.1,
-                    opacity: 1
+                    rotation: Math.random() * Math.PI, rotSpeed: Math.random() * 0.2 - 0.1, opacity: 1
                 });
                 particles.push({
                     x: canvas.width, y: canvas.height * 0.8,
                     angle: -Math.PI * 0.75 + (Math.random() * 0.4 - 0.2),
-                    speed: 15 + Math.random() * 12,
-                    radius: 4 + Math.random() * 4,
+                    speed: 15 + Math.random() * 12, radius: 4 + Math.random() * 4,
                     color: colors[Math.floor(Math.random() * colors.length)],
-                    rotation: Math.random() * Math.PI,
-                    rotSpeed: Math.random() * 0.2 - 0.1,
-                    opacity: 1
+                    rotation: Math.random() * Math.PI, rotSpeed: Math.random() * 0.2 - 0.1, opacity: 1
                 });
             }
-
             function runAnimation() {
                 let active = false;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 particles.forEach(p => {
                     if (p.opacity <= 0) return;
                     active = true;
-                    p.x += Math.cos(p.angle) * p.speed;
-                    p.y += Math.sin(p.angle) * p.speed;
+                    p.x += Math.cos(p.angle) * p.speed; p.y += Math.sin(p.angle) * p.speed;
                     p.speed *= 0.96; p.y += 0.4; p.rotation += p.rotSpeed; p.opacity -= 0.008;
-
-                    ctx.save();
-                    ctx.translate(p.x, p.y); ctx.rotate(p.rotation);
+                    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rotation);
                     ctx.globalAlpha = Math.max(0, p.opacity); ctx.fillStyle = p.color;
-                    ctx.fillRect(-p.radius, -p.radius * 1.5, p.radius * 2, p.radius * 3);
-                    ctx.restore();
+                    ctx.fillRect(-p.radius, -p.radius * 1.5, p.radius * 2, p.radius * 3); ctx.restore();
                 });
                 if (active) requestAnimationFrame(runAnimation);
                 else canvas.style.display = "none";
