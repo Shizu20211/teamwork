@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Travel App — Login</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="hero" aria-hidden="false">
+      <div class="hero-overlay">
+        <h1 class="brand">烏嶼旅跡</h1>
+        <p class="tagline">每一趟旅程，都是全新的自己</p>
+        <p class="cta">加入烏嶼旅跡，開啟你的台灣深度之旅</p>
+      </div>
+    </section>
+
+    <section class="auth" aria-label="登入或註冊">
+      <div class="auth-card" role="region" aria-labelledby="auth-heading">
+        <div class="tabs" role="tablist" aria-label="Authentication Tabs">
+          <button id="tab-login" class="tab active" role="tab" aria-selected="true">登入</button>
+          <button id="tab-register" class="tab" role="tab" aria-selected="false">註冊</button>
+        </div>
+
+        <h2 id="auth-heading" class="auth-title">歡迎回來 👋</h2>
+        <p class="auth-sub">登入帳號以管理你的旅行體驗</p>
+
+        <form id="auth-form" novalidate>
+          <label class="field">
+            <span class="label-text">電子信箱</span>
+            <input id="email" name="email" type="email" placeholder="your@email.com" required />
+            <span class="error" id="email-error" aria-live="polite"></span>
+          </label>
+
+          <label class="field">
+            <span class="label-text">密碼</span>
+            <div class="password-wrap">
+              <input id="password" name="password" type="password" placeholder="輸入密碼" required minlength="6" />
+              <button type="button" id="toggle-password" class="icon-btn" aria-label="顯示密碼">顯示</button>
+            </div>
+            <span class="error" id="password-error" aria-live="polite"></span>
+          </label>
+
+          <div class="row between">
+            <a href="#" class="link small">忘記密碼？</a>
+          </div>
+
+          <button type="submit" class="btn primary" id="submit-btn">登入</button>
+
+          <div class="divider">或使用</div>
+
+          <div class="socials">
+            <button type="button" class="btn social google">使用 Google 帳號登入</button>
+            <button type="button" class="btn social facebook">使用 Facebook 帳號登入</button>
+          </div>
+
+          <p class="muted">還沒有帳號？ <a href="#" id="go-register">點此免費註冊</a></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
