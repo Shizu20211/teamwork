@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>活動預訂系統 - 手機版</title>
+    <style>
+        /* ==========================================================================
+           1. 全域初始化與基本設定 (Reset & Base)
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #1a2b49;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 12px;
+            /* 手機端邊距稍微收緊 */
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+        }
+
+        /* ==========================================================================
+           2. 頂部步驟進度指示條 (Step Progress Bar)
+           ========================================================================== */
+        .steps-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 32px;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .step-number {
+            width: 32px;
+            /* 手機端略縮 */
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .step-item.active .step-number {
+            background-color: #e06343;
+            color: white;
+            box-shadow: 0 4px 10px rgba(224, 99, 67, 0.2);
+        }
+
+        .step-item.completed .step-number {
+            background-color: #4b7754;
+            color: white;
+        }
+
+        .step-item.inactive .step-number {
+            background-color: #f1f5f9;
+            color: #94a3b8;
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        .step-item.active .step-label {
+            color: #e06343;
+            font-weight: bold;
+        }
+
+        .step-line {
+            flex-grow: 1;
+            height: 2px;
+            margin: 0 8px;
+            margin-bottom: 20px;
+        }
+
+        .step-line.active {
+            background-color: #e06343;
+        }
+
+        .step-line.inactive {
+            background-color: #e2e8f0;
+        }
+
+        /* ==========================================================================
+           3. 單欄排版架構 (手機專用單直欄，由上至下流動)
+           ========================================================================== */
+        .main-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            width: 100%;
+            max-width: 480px;
+            /* 限制手機板最大延伸寬度 */
+        }
+
+        .left-column-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            width: 100%;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 24px;
+            /* 手機端卡片內縮適中 */
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.01);
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1a2b49;
+            margin-bottom: 20px;
+        }
+
+        .activity-img-wrapper {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            background-color: #f1f5f9;
+        }
+
+        .activity-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ==========================================================================
+           4. 第一步驟元件樣式
+           ========================================================================== */
+        .calendar-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 0 4px;
+        }
+
+        .calendar-month-title {
+            font-size: 17px;
+            font-weight: bold;
+            color: #1a2b49;
+        }
+
+        .calendar-arrow-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #718096;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+
+        .calendar-day-header {
+            color: #4a5568;
+            font-size: 13px;
+            font-weight: 500;
+            padding-bottom: 4px;
+        }
+
+        .calendar-day {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 14px;
+            color: #1a2b49;
+            transition: all 0.15s;
+        }
+
+        .calendar-day.muted {
+            color: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .calendar-day.today-highlight {
+            border: 2px solid #e06343;
+            font-weight: bold;
+        }
+
+        .calendar-day.selected-active {
+            background-color: #e06343 !important;
+            color: white !important;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(224, 99, 67, 0.3);
+            border-color: transparent !important;
+        }
+
+        .slots-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .slot-box {
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #ffffff;
+        }
+
+        .slot-box .time-text {
+            font-size: 15px;
+            font-weight: bold;
+            color: #1a2b49;
+        }
+
+        .slot-box .meta-text {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .slot-box.selected {
+            border: 2px solid #e06343;
+            background-color: #fffbf9;
+        }
+
+        /* ==========================================================================
+           5. 第二步驟元件樣式
+           ========================================================================== */
+        .form-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-row-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #1a2b49;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            background-color: #ffffff;
+            color: #1a2b49;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #e06343;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #cbd5e1;
+        }
+
+        .payment-options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            cursor: pointer;
+            background: #ffffff;
+        }
+
+        .payment-option.selected {
+            border: 2px solid #e06343;
+            background-color: #fffbf9;
+        }
+
+        .payment-icon {
+            width: 36px;
+            height: 36px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .icon-line {
+            background: #06c755;
+            color: white;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            height: 28px;
+            width: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-apple {
+            color: #000000;
+            font-size: 22px;
+        }
+
+        .payment-text-main {
+            font-size: 14px;
+            font-weight: bold;
+            color: #1a2b49;
+        }
+
+        .payment-text-sub {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 2px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 14px;
+        }
+
+        .detail-label {
+            color: #718096;
+        }
+
+        .detail-value {
+            color: #1a2b49;
+            font-weight: bold;
+        }
+
+        .detail-value.highlight {
+            color: #e06343;
+        }
+
+        .btn-action {
+            width: 100%;
+            background-color: #e06343;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(224, 99, 67, 0.15);
+        }
+
+        .btn-action:disabled {
+            background-color: #f7c3b6;
+            color: white;
+            box-shadow: none;
+        }
+
+        /* ==========================================================================
+           6. 第三步驟成功完成頁面樣式與跳出動畫
+           ========================================================================== */
+        .success-layout {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .success-checkmark-circle {
+            width: 68px;
+            height: 68px;
+            background-color: #eaf5ec;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            transform: scale(0);
+        }
+
+        .success-checkmark-circle.pop-effect {
+            animation: popInBounce 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .success-checkmark-svg {
+            width: 32px;
+            height: 32px;
+            color: #4b7754;
+        }
+
+        @keyframes popInBounce {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            70% {
+                transform: scale(1.12);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a2b49;
+            margin-bottom: 18px;
+            letter-spacing: -0.5px;
+        }
+
+        .success-sub {
+            font-size: 14px;
+            color: #4a5568;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .receipt-card {
+            background-color: #fbf6f1;
+            border-radius: 20px;
+            padding: 24px;
+            width: 100%;
+            margin-bottom: 32px;
+            text-align: left;
+        }
+
+        .receipt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chip-id {
+            background-color: #1a2b4a;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        .receipt-card .detail-row {
+            border-bottom: 1px solid #ebdcd5;
+            padding: 14px 0;
+        }
+
+        .btn-group-row {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .btn-outline-back {
+            background: white;
+            border: 2px solid #1a2b49;
+            color: #1a2b49;
+            padding: 14px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 15px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-solid-orange {
+            background-color: #e06343;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 15px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 14px rgba(224, 99, 67, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="steps-container">
+        <div class="step-item active" id="step1Node">
+            <div class="step-number" id="step1Num">1</div>
+            <div class="step-label">選擇日期</div>
+        </div>
+        <div class="step-line inactive" id="stepLine1"></div>
+        <div class="step-item inactive" id="step2Node">
+            <div class="step-number" id="step2Num">2</div>
+            <div class="step-label">填寫資料</div>
+        </div>
+        <div class="step-line inactive" id="stepLine2"></div>
+        <div class="step-item inactive" id="step3Node">
+            <div class="step-number">3</div>
+            <div class="step-label">預訂完成</div>
+        </div>
+    </div>
+
+    <div class="main-layout" id="panelStep1">
+        <div class="left-column-flow">
+            <div class="card">
+                <div class="calendar-header-row">
+                    <button class="calendar-arrow-btn">&lt;</button>
+                    <div class="calendar-month-title">2026 年 六月</div>
+                    <button class="calendar-arrow-btn">&gt;</button>
+                </div>
+                <div class="calendar-grid">
+                    <div class="calendar-day-header">日</div>
+                    <div class="calendar-day-header">一</div>
+                    <div class="calendar-day-header">二</div>
+                    <div class="calendar-day-header">三</div>
+                    <div class="calendar-day-header">四</div>
+                    <div class="calendar-day-header">五</div>
+                    <div class="calendar-day-header">六</div>
+                </div>
+                <div class="calendar-grid" style="margin-top: 12px;">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div class="calendar-day muted">1</div>
+                    <div class="calendar-day muted">2</div>
+                    <div class="calendar-day muted">3</div>
+                    <div class="calendar-day muted">4</div>
+                    <div class="calendar-day muted">5</div>
+                    <div class="calendar-day muted">6</div>
+                    <div class="calendar-day muted">7</div>
+                    <div class="calendar-day muted">8</div>
+                    <div class="calendar-day muted">9</div>
+                    <div class="calendar-day muted">10</div>
+                    <div class="calendar-day muted">11</div>
+                    <div class="calendar-day muted">12</div>
+                    <div class="calendar-day muted">13</div>
+                    <div class="calendar-day muted">14</div>
+                    <div class="calendar-day muted">15</div>
+                    <div class="calendar-day muted">16</div>
+                    <div class="calendar-day muted">17</div>
+                    <div class="calendar-day today-highlight" id="day18" onclick="selectDate('2026/06/18', this)">18
+                    </div>
+                    <div class="calendar-day" onclick="selectDate('2026/06/19', this)">19</div>
+                    <div class="calendar-day" onclick="selectDate('2026/06/20', this)">20</div>
+                    <div class="calendar-day" onclick="selectDate('2026/06/21', this)">21</div>
+                    <div class="calendar-day" onclick="selectDate('2026/06/22', this)">22</div>
+                    <div class="calendar-day" onclick="selectDate('2026/06/23', this)">23</div>
+                    <div class="calendar-day" onclick="selectDate('2026/06/24', this)">24</div>
+                    <div class="calendar-day selected-active" onclick="selectDate('2026/06/25', this)">25</div>
+                    <div class="calendar-day" onclick="selectDate('2026/06/26', this)">26</div>
+                    <div class="calendar-day" onclick="selectDate('2026/06/27', this)">27</div>
+                    <div class="calendar-day" onclick="selectDate('2026/06/28', this)">28</div>
+                    <div class="calendar-day" onclick="selectDate('2026/06/29', this)">29</div>
+                    <div class="calendar-day" onclick="selectDate('2026/06/30', this)">30</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-title">選擇場次</div>
+                <div class="slots-grid" style="margin-bottom: 24px;">
+                    <div class="slot-box" id="slotAM" onclick="chooseSlot('AM')">
+                        <div class="time-text">09:00</div>
+                        <div class="meta-text">🌅 上午場</div>
+                    </div>
+                    <div class="slot-box selected" id="slotPM" onclick="chooseSlot('PM')">
+                        <div class="time-text">14:00</div>
+                        <div class="meta-text">🙃 下午場</div>
+                    </div>
+                </div>
+                <button class="btn-action" id="btnToStep2" onclick="showStep2()">下一步：填寫旅客資料 ➔</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title" style="margin-bottom: 16px;">預訂摘要</div>
+            <div class="activity-img-wrapper">
+                <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=cover&w=600&q=80"
+                    alt="清水斷崖獨木舟" class="activity-img">
+            </div>
+            <div style="font-size:16px; font-weight:bold; margin-bottom:14px; color:#1a2b49;">清水斷崖獨木舟探險</div>
+            <div class="detail-row"><span class="detail-label">選擇日期</span><span class="detail-value highlight"
+                    id="s1Date">2026/06/25</span></div>
+            <div class="detail-row"><span class="detail-label">選擇場次</span><span class="detail-value highlight"
+                    id="s1Slot">下午場 14:00</span></div>
+            <div class="detail-row" style="border:none;"><span class="detail-label">價格</span><span
+                    style="font-size:17px; font-weight:bold; color:#e06343;">NT$ 1,800 / 人</span></div>
+        </div>
+    </div>
+
+    <div class="main-layout" id="panelStep2" style="display: none;">
+        <div class="left-column-flow">
+            <div class="card">
+                <div class="section-title">👤 聯絡人資料</div>
+                <div class="form-grid">
+                    <div class="form-row-2col">
+                        <div class="form-group">
+                            <label>姓名 *</label>
+                            <input type="text" id="inputName" placeholder="請輸入真實姓名" oninput="checkForm2()">
+                        </div>
+                        <div class="form-group">
+                            <label>手機號碼 *</label>
+                            <input type="tel" id="inputPhone" placeholder="09XX-XXX-XXX" oninput="checkForm2()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>電子信箱 *</label>
+                        <input type="email" id="inputEmail" placeholder="your@email.com" oninput="checkForm2()">
+                    </div>
+                    <div class="form-group">
+                        <label>備註 (選填)</label>
+                        <textarea id="inputMemo" rows="3" placeholder="有任何特殊需求或問題，請在此告知導師..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-title">💳 付款方式</div>
+                <div class="payment-options-group">
+                    <div class="payment-option selected" id="payOptionCard" onclick="switchPayment('card')">
+                        <div class="payment-icon">💳</div>
+                        <div>
+                            <div class="payment-text-main">信用卡 / 金融卡</div>
+                            <div class="payment-text-sub">VISA、MasterCard、JCB</div>
+                        </div>
+                    </div>
+                    <div class="payment-option" id="payOptionLine" onclick="switchPayment('line')">
+                        <div class="payment-icon">
+                            <div class="icon-line">L</div>
+                        </div>
+                        <div>
+                            <div class="payment-text-main">LINE Pay</div>
+                            <div class="payment-text-sub">快速、安全的行動支付</div>
+                        </div>
+                    </div>
+                    <div class="payment-option" id="payOptionApple" onclick="switchPayment('apple')">
+                        <div class="payment-icon icon-apple"></div>
+                        <div>
+                            <div class="payment-text-main">Apple Pay</div>
+                            <div class="payment-text-sub">Face ID / Touch ID 快速付款</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid" id="creditCardForm">
+                    <div class="form-group">
+                        <label>卡號 *</label>
+                        <input type="tel" id="cardNum" maxlength="19" placeholder="XXXX XXXX XXXX XXXX"
+                            oninput="formatCard(this); checkForm2();">
+                    </div>
+                    <div class="form-row-2col">
+                        <div class="form-group">
+                            <label>有效期限</label>
+                            <input type="tel" id="cardExpiry" maxlength="5" placeholder="MM/YY"
+                                oninput="formatExpiry(this); checkForm2();">
+                        </div>
+                        <div class="form-group">
+                            <label>安全碼</label>
+                            <input type="tel" id="cardCvv" maxlength="3" placeholder="CVV"
+                                oninput="this.value=this.value.replace(/[^0-9]/g,''); checkForm2();">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-action" id="btnSubmit" disabled onclick="showStep3()">確認預訂並付款 🔒</button>
+        </div>
+
+        <div class="card">
+            <div class="section-title">訂單摘要</div>
+            <div class="activity-img-wrapper">
+                <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=cover&w=600&q=80"
+                    alt="清水斷崖獨木舟" class="activity-img">
+            </div>
+            <div style="font-size:15px; font-weight:bold; margin-bottom:12px;">清水斷崖獨木舟探險</div>
+            <div class="detail-row"><span class="detail-label">日期</span><span class="detail-value"
+                    id="s2Date">2026/06/25</span></div>
+            <div class="detail-row"><span class="detail-label">場次</span><span class="detail-value" id="s2Slot">下午場
+                    14:00</span></div>
+            <div class="detail-row" style="border:none;"><span class="detail-label"
+                    style="font-weight:bold;">總金額</span><span
+                    style="font-size:18px; font-weight:bold; color:#e06343;">NT$ 1,800</span></div>
+        </div>
+    </div>
+
+    <div class="success-layout" id="panelStep3">
+        <div class="success-checkmark-circle" id="successCheckIcon">
+            <svg class="success-checkmark-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </div>
+
+        <h1 class="success-title">預訂成功！出發準備好了嗎？</h1>
+        <p class="success-sub">確認信已寄送至 <span id="s3Email">-</span></p>
+
+        <div class="receipt-card">
+            <div class="receipt-header">
+                <span style="font-weight:bold; color:#1a2b49;">訂單詳情</span>
+                <span class="chip-id">ITMQJHPSIB</span>
+            </div>
+            <div class="detail-row"><span class="detail-label">體驗名稱</span><span class="detail-value">清水斷崖獨木舟探險</span>
+            </div>
+            <div class="detail-row"><span class="detail-label">體驗日期</span><span class="detail-value"
+                    id="s3Date">-</span></div>
+            <div class="detail-row"><span class="detail-label">場次</span><span class="detail-value" id="s3Slot">-</span>
+            </div>
+            <div class="detail-row"><span class="detail-label">聯絡人</span><span class="detail-value" id="s3Name">-</span>
+            </div>
+            <div class="detail-row" style="border:none; margin-top:8px;">
+                <span class="detail-label" style="font-weight:500;">已付總金額</span>
+                <span class="detail-value" style="font-size: 18px; color: #e06343;">NT$ 1,800</span>
+            </div>
+        </div>
+
+        <div class="btn-group-row">
+            <button class="btn-solid-orange" onclick="alert('正在載入您的電子票券...')">查看我的訂單</button>
+            <button class="btn-outline-back" onclick="location.reload()">← 返回首頁</button>
+        </div>
+    </div>
+
+    <script>
+        let selectDateStr = "2026/06/25";
+        let selectSlotStr = "下午場 14:00";
+        let activePayment = "card";
+
+        function selectDate(dateStr, element) {
+            document.querySelectorAll('.calendar-day').forEach(day => { day.classList.remove('selected-active'); });
+            document.getElementById("day18").classList.add("today-highlight");
+            element.classList.add('selected-active');
+            selectDateStr = dateStr;
+            document.getElementById("s1Date").innerText = dateStr;
+            checkStep1Ready();
+        }
+
+        function chooseSlot(type) {
+            document.getElementById("slotAM").classList.remove("selected");
+            document.getElementById("slotPM").classList.remove("selected");
+            if (type === 'AM') {
+                document.getElementById("slotAM").classList.add("selected");
+                selectSlotStr = "上午場 09:00";
+            } else {
+                document.getElementById("slotPM").classList.add("selected");
+                selectSlotStr = "下午場 14:00";
+            }
+            document.getElementById("s1Slot").innerText = selectSlotStr;
+            checkStep1Ready();
+        }
+
+        function checkStep1Ready() {
+            document.getElementById("btnToStep2").disabled = !(selectDateStr && selectSlotStr);
+        }
+
+        function showStep2() {
+            document.getElementById("panelStep1").style.display = "none";
+            document.getElementById("panelStep2").style.display = "flex";
+            document.getElementById("step1Node").className = "step-item completed";
+            document.getElementById("step1Num").innerText = "✓";
+            document.getElementById("step2Node").className = "step-item active";
+            document.getElementById("stepLine1").className = "step-line active";
+            document.getElementById("s2Date").innerText = selectDateStr;
+            document.getElementById("s2Slot").innerText = selectSlotStr;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function switchPayment(type) {
+            activePayment = type;
+            document.getElementById("payOptionCard").classList.remove("selected");
+            document.getElementById("payOptionLine").classList.remove("selected");
+            document.getElementById("payOptionApple").classList.remove("selected");
+            const ccForm = document.getElementById("creditCardForm");
+            if (type === 'card') {
+                document.getElementById("payOptionCard").classList.add("selected");
+                ccForm.style.display = "flex";
+            } else if (type === 'line') {
+                document.getElementById("payOptionLine").classList.add("selected");
+                ccForm.style.display = "none";
+            } else {
+                document.getElementById("payOptionApple").classList.add("selected");
+                ccForm.style.display = "none";
+            }
+            checkForm2();
+        }
+
+        function formatCard(el) {
+            let v = el.value.replace(/[^0-9]/g, '');
+            let matches = v.match(/\d{4,16}/g);
+            let match = (matches && matches[0]) || '';
+            let parts = [];
+            for (let i = 0; i < match.length; i += 4) { parts.push(match.substring(i, i + 4)); }
+            el.value = parts.length > 0 ? parts.join(' ') : v;
+        }
+
+        function formatExpiry(el) {
+            let v = el.value.replace(/[^0-9]/g, '');
+            if (v.length >= 2) { el.value = v.substring(0, 2) + '/' + v.substring(2, 4); }
+            else { el.value = v; }
+        }
+
+        function checkForm2() {
+            const name = document.getElementById("inputName").value.trim();
+            const phone = document.getElementById("inputPhone").value.trim();
+            const email = document.getElementById("inputEmail").value.trim();
+            let isPaymentValid = false;
+            if (activePayment === 'card') {
+                const card = document.getElementById("cardNum").value.replace(/\s/g, '');
+                const exp = document.getElementById("cardExpiry").value;
+                const cvv = document.getElementById("cardCvv").value;
+                isPaymentValid = (card.length === 16) && (exp.length === 5) && (cvv.length === 3);
+            } else { isPaymentValid = true; }
+            document.getElementById("btnSubmit").disabled = !(name && phone && email && isPaymentValid);
+        }
+
+        function showStep3() {
+            document.getElementById("panelStep2").style.display = "none";
+            document.getElementById("panelStep3").style.display = "flex";
+            document.getElementById("step2Node").className = "step-item completed";
+            document.getElementById("step2Num").innerText = "✓";
+            document.getElementById("step3Node").className = "step-item active";
+            document.getElementById("stepLine2").className = "step-line active";
+            document.getElementById("s3Date").innerText = selectDateStr;
+            document.getElementById("s3Slot").innerText = selectSlotStr;
+            document.getElementById("s3Name").innerText = document.getElementById("inputName").value;
+            document.getElementById("s3Email").innerText = document.getElementById("inputEmail").value;
+
+            document.getElementById("successCheckIcon").classList.add("pop-effect");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            startConfettiEffect();
+        }
+
+        function startConfettiEffect() {
+            const canvas = document.getElementById("confetti-canvas");
+            const ctx = canvas.getContext("2d");
+            canvas.style.display = "block";
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const particles = [];
+            const colors = ["#e06343", "#4b7754", "#2563eb", "#f59e0b", "#ec4899"];
+            for (let i = 0; i < 55; i++) {
+                particles.push({
+                    x: 0, y: canvas.height * 0.8,
+                    angle: -Math.PI / 4 + (Math.random() * 0.4 - 0.2),
+                    speed: 15 + Math.random() * 12, radius: 4 + Math.random() * 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rotation: Math.random() * Math.PI, rotSpeed: Math.random() * 0.2 - 0.1, opacity: 1
+                });
+                particles.push({
+                    x: canvas.width, y: canvas.height * 0.8,
+                    angle: -Math.PI * 0.75 + (Math.random() * 0.4 - 0.2),
+                    speed: 15 + Math.random() * 12, radius: 4 + Math.random() * 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rotation: Math.random() * Math.PI, rotSpeed: Math.random() * 0.2 - 0.1, opacity: 1
+                });
+            }
+            function runAnimation() {
+                let active = false;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    if (p.opacity <= 0) return;
+                    active = true;
+                    p.x += Math.cos(p.angle) * p.speed; p.y += Math.sin(p.angle) * p.speed;
+                    p.speed *= 0.96; p.y += 0.4; p.rotation += p.rotSpeed; p.opacity -= 0.008;
+                    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rotation);
+                    ctx.globalAlpha = Math.max(0, p.opacity); ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.radius, -p.radius * 1.5, p.radius * 2, p.radius * 3); ctx.restore();
+                });
+                if (active) requestAnimationFrame(runAnimation);
+                else canvas.style.display = "none";
+            }
+            runAnimation();
+        }
+    </script>
+</body>
+
+</html>
