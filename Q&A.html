@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* ==========================================================================
+   島嶼旅跡 - 常見問題頁面（FAQ）專用樣式表
+   ========================================================================== */
+
+        :root {
+            --it-primary-color: #e25c38;
+            --it-primary-hover: #fff3f0;
+            --it-text-dark: #1a2b3c;
+            --it-text-gray: #555555;
+            --it-bg-beige: #f7f4ee;
+            --it-border-color: #e8e8e8;
+            --it-radius-md: 16px;
+            --it-radius-sm: 28px;
+            --it-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .it-faq-wrapper {
+            max-width: 800px;
+            margin: 0 auto 60px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        /* 頁面標題區 */
+        .it-faq-header-section {
+            background-color: #f7f4ee;
+            width: 100%;
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        /* 內部限制寬度的容器，確保 RWD 縮放時文字不會貼到螢幕邊緣 */
+        .it-faq-header-inside {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .it-faq-group-header {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f2edd4;
+            /* 淡淡的暖色調裝飾線，呼應網頁氛圍 */
+        }
+
+        .it-faq-group-header h2 {
+            font-size: 1.4rem;
+            color: var(--it-text-dark);
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .it-faq-subtitle {
+            color: var(--it-primary-color);
+            font-weight: 700;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .it-faq-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--it-text-dark);
+            margin: 0 0 12px 0;
+        }
+
+        .it-faq-desc {
+            color: #777777;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        /* --------------------------------------------------------------------------
+   2. 分類標籤按鈕 (複用並優化自先前設計)
+   -------------------------------------------------------------------------- */
+        .it-faq-categories {
+            margin-bottom: 40px;
+        }
+
+        .it-category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .it-faq-cat-btn {
+            background-color: #ffffff;
+            border: 2px solid var(--it-border-color);
+            border-radius: var(--it-radius-sm);
+            padding: 14px 10px;
+            font-size: 0.95rem;
+            color: var(--it-text-dark);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+        }
+
+        /* Hover 時：橘框、淺橘底 */
+        .it-faq-cat-btn:hover {
+            border-color: var(--it-primary-color);
+            background-color: var(--it-primary-hover);
+            color: var(--it-primary-color);
+        }
+
+        /* Active 點擊選中時：滿版橘底白字 */
+        .it-faq-cat-btn.is-active {
+            background-color: var(--it-primary-color);
+            border-color: var(--it-primary-color);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(226, 92, 56, 0.2);
+        }
+
+        /* --------------------------------------------------------------------------
+   3. 問題手風琴列表區
+   -------------------------------------------------------------------------- */
+        .it-faq-group {
+            display: none;
+            /* 預設隱藏，由 JS 控制顯示對應分類 */
+        }
+
+        .it-faq-group.is-active {
+            display: block;
+        }
+
+        .it-faq-item {
+            border-bottom: 1px solid var(--it-border-color);
+            padding: 20px 0;
+        }
+
+        /* 問題列布局 */
+        .it-faq-question-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        /* 1. 問題文字 hover 時字體變成橘色 */
+        .it-faq-question-row:hover .it-question-text {
+            color: var(--it-primary-color);
+        }
+
+        .it-question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--it-text-dark);
+            transition: color 0.2s ease;
+            padding-right: 20px;
+        }
+
+        /* 右側 + 按鈕樣式 */
+        .it-faq-toggle-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--it-border-color);
+            background-color: #ffffff;
+            color: #888888;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .it-faq-toggle-btn span {
+            display: block;
+            transition: transform 0.3s ease;
+            line-height: 1;
+        }
+
+        /* 3. 展開時關鍵特效：+ 轉 45 度、轉橘底白字 */
+        .it-faq-item.is-expanded .it-faq-toggle-btn {
+            background-color: var(--it-primary-color);
+            border-color: var(--it-primary-color);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(226, 92, 56, 0.3);
+        }
+
+        .it-faq-item.is-expanded .it-faq-toggle-btn span {
+            transform: rotate(45deg);
+            /* 精準旋轉45度 */
+        }
+
+        /* 2. 回答內容包裝層 (實現平滑展開動畫) */
+        .it-faq-answer-row {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .it-answer-text {
+            padding-top: 12px;
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--it-text-gray);
+            /* 字體為灰階 */
+            line-height: 1.6;
+        }
+
+        /* --------------------------------------------------------------------------
+   4. 底部諮詢客服區
+   -------------------------------------------------------------------------- */
+        .it-faq-support-box {
+            margin-top: 60px;
+        }
+
+        .it-support-card {
+            background-color: var(--it-bg-beige);
+            border-radius: var(--it-radius-md);
+            padding: 40px 20px;
+            text-align: center;
+            width: 100%;
+            /* 改為 100% 自動滿版 */
+            box-sizing: border-box;
+            /* 確保內襯不擠爆寬度 */
+        }
+
+        .it-support-title {
+            font-size: 1.5rem;
+            color: var(--it-text-dark);
+            margin: 0 0 10px 0;
+            font-weight: 700;
+        }
+
+        .it-support-desc {
+            color: #777777;
+            font-size: 0.95rem;
+            margin: 0 0 24px 0;
+        }
+
+        .it-support-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        /* 寄信給我們按鈕 (使用 a 標籤實現連結) */
+        .it-btn-support-mail {
+            background-color: var(--it-primary-color);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: var(--it-radius-sm);
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            transition: background 0.2s;
+            box-shadow: 0 4px 12px rgba(226, 92, 56, 0.15);
+        }
+
+        .it-btn-support-mail:hover {
+            background-color: #cc4f2e;
+        }
+
+        .it-btn-support-chat {
+            background-color: #ffffff;
+            color: var(--it-text-dark);
+            border: 1px solid var(--it-text-dark);
+            padding: 12px 28px;
+            border-radius: var(--it-radius-sm);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .it-btn-support-chat:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        /* --------------------------------------------------------------------------
+   RWD 響應式佈局控制
+   -------------------------------------------------------------------------- */
+        @media (max-width: 768px) {
+            .it-category-grid {
+                grid-template-columns: repeat(2, 1fr);
+                /* 縮小時轉為兩欄 */
+                gap: 10px;
+            }
+
+            .it-faq-title {
+                font-size: 1.8rem;
+            }
+
+            .it-support-actions {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+
+            .it-btn-support-mail,
+            .it-btn-support-chat {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 1. 獨立的頁面標題區：完全移到最外層，真正達到 100% 滿版推滿底色 -->
+    <section class="it-faq-header-section">
+        <div class="it-faq-header-inside">
+            <span class="it-faq-subtitle">—FAQ</span>
+            <h1 class="it-faq-title">常見問題解答</h1>
+            <p class="it-faq-desc">找不到答案？歡迎直接聯絡我們的客服團隊。</p>
+        </div>
+    </section>
+
+    <!-- 2. 下方限制 800px 寬度的核心互動區 -->
+    <div class="it-faq-wrapper">
+
+        <!-- 分類標籤切換區 -->
+        <section class="it-faq-categories">
+            <div class="it-category-grid" id="it-faq-category-grid">
+                <button type="button" class="it-faq-cat-btn is-active" data-target="booking">預訂問題</button>
+                <button type="button" class="it-faq-cat-btn" data-target="refund">退款政策</button>
+                <button type="button" class="it-faq-cat-btn" data-target="dayof">體驗當日</button>
+                <button type="button" class="it-faq-cat-btn" data-target="account">帳號與付款</button>
+            </div>
+        </section>
+
+        <!-- 常見問題列表區 (所有分類皆安全地包裹在此容器內) -->
+        <section class="it-faq-list-container">
+
+            <!-- 預訂問題 -->
+            <div class="it-faq-group is-active" id="faq-booking">
+                <div class="it-faq-group-header">
+                    <h2>📅 預訂問題</h2>
+                </div>
+                <div class="it-faq-item">
+                    <div class="it-faq-question-row">
+                        <span class="it-question-text">如何預訂體驗？</span>
+                        <button type="button" class="it-faq-toggle-btn" aria-label="展開問題"><span>+</span></button>
+                    </div>
+                    <div class="it-faq-answer-row">
+                        <p class="it-answer-text">在體驗詳情頁選擇日期與人數，點擊「立刻預訂」後，填寫聯絡資料並完成付款即可。完成後系統會自動寄送確認 Email 到您的信箱，請注意查收。
+                        </p>
+                    </div>
+                </div>
+                <div class="it-faq-item">
+                    <div class="it-faq-question-row">
+                        <span class="it-question-text">最少需要幾人才能成團？</span>
+                        <button type="button" class="it-faq-toggle-btn" aria-label="展開問題"><span>+</span></button>
+                    </div>
+                    <div class="it-faq-answer-row">
+                        <p class="it-answer-text">不同體驗的成團人數不同，一般最少 1 人即可報名。部分特殊體驗可能需要最少 2 人，詳細資訊請查看體驗頁面的說明。若人數不足，我們會提前
+                            48 小時通知您。</p>
+                    </div>
+                </div>
+                <div class="it-faq-item">
+                    <div class="it-faq-question-row">
+                        <span class="it-question-text">可以幫朋友代訂體驗行程嗎？</span>
+                        <button type="button" class="it-faq-toggle-btn" aria-label="展開問題"><span>+</span></button>
+                    </div>
+                    <div class="it-faq-answer-row">
+                        <p class="it-answer-text">可以！在填寫旅客資料時，請填入實際參與體驗的旅客資訊（姓名、電話），並在備註欄說明是代訂。確認通知將同時寄送給訂購人。</p>
+                    </div>
+                </div>
+                <div class="it-faq-item">
+                    <div class="it-faq-question-row">
+                        <span class="it-question-text">預訂後可以修改日期嗎？</span>
+                        <button type="button" class="it-faq-toggle-btn" aria-label="展開問題"><span>+</span></button>
+                    </div>
+                    <div class="it-faq-answer-row">
+                        <p class="it-answer-text">體驗開始前 72
+                            小時內可免費修改日期（視嚮導檔期而定）。請登入個人中心，在「訂單紀錄」中找到對應訂單，點選「修改」即可申請。逾期修改可能需要額外費用。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 退款政策 -->
+            <div class="it-faq-group" id="faq-refund">
+                <div class="it-faq-group-header">
+                    <h2>💰 退款政策</h2>
+                </div>
+                <div class="it-faq-item">
+                    <div class="it-faq-question-row">
+                        <span class="it-question-text">如何申請退款？</span>
+                        <button type="button" class="it-faq-toggle-btn" aria-label="展開問題"><span>+</span></button>
+                    </div>
+                    <div class="it-faq-answer-row">
+                        <p class="it-answer-text">登入後至「個人中心 → 訂單紀錄」，點擊「取消訂單」後依照流程操作。退款金額將於 5-7 個工作日退回原付款帳戶。</p>
+                    </div>
+                </div>
+                <div class="it-faq-item">
+                    <div class="it-faq-question-row">
+                        <span class="it-question-text">退款的時間規定是什麼？</span>
+                        <button type="button" class="it-faq-toggle-btn" aria-label="展開問題"><span>+</span></button>
+                    </div>
+                    <div class="it-faq-answer-row">
+                        <p class="it-answer-text">我們採用彈性退款政策：<br>
+                            <br>
+                            • 體驗前 7 天以上取消：全額退款<br>
+                            • 體驗前 3–7 天取消：退款 70%<br>
+                            • 體驗前 24–72 小時取消：退款 50%<br>
+                            • 體驗前 24 小時內取消：不予退款<br>
+                            <br>
+                            若因嚮導原因取消，無論何時皆全額退款並另補贈優惠券。
+                        </p>
+                    </div>
+                </div>
+                <div class="it-faq-item">
+                    <div class="it-faq-question-row">
+                        <span class="it-question-text">遇到天氣不佳或不可抗力因素如何處理？</span>
+                        <button type="button" class="it-faq-toggle-btn" aria-label="展開問題"><span>+</span></button>
+                    </div>
+                    <div class="it-faq-answer-row">
+                        <p class="it-answer-text">若因惡劣天氣、天然災害等不可抗力因素，嚮導有權取消或延期體驗，旅客可獲得全額退款或免費改期。我們建議您在出發前確認嚮導是否有發出提醒通知。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 體驗當日 -->
+            <div class="it-faq-group" id="faq-dayof">
+                <div class="it-faq-group-header">
+                    <h2>🎒 體驗當日</h2>
+                </div>
+                <div class="it-faq-item">
+                    <div class="it-faq-question-row">
+                        <span class="it-question-text">當天需要攜帶什麼物品呢？</span>
+                        <button type="button" class="it-faq-toggle-btn" aria-label="展開問題"><span>+</span></button>
+                    </div>
+                    <div class="it-faq-answer-row">
+                        <p class="it-answer-text">
+                            每個體驗的建議攜帶物品都列在詳情頁「費用不包含」區塊中，請仔細確認。一般建議攜帶：舒適的服裝、換洗衣物（戶外體驗）、防曬用品、個人水壺，以及預訂確認截圖或 Email。</p>
+                    </div>
+                </div>
+                <div class="it-faq-item">
+                    <div class="it-faq-question-row">
+                        <span class="it-question-text">要如何找到當天行程的集合地點？</span>
+                        <button type="button" class="it-faq-toggle-btn" aria-label="展開問題"><span>+</span></button>
+                    </div>
+                    <div class="it-faq-answer-row">
+                        <p class="it-answer-text">預訂成功憑證中將會附上精準的 Google Map 集合點連結與現場嚮導的聯絡電話。建議提前 15 分鐘抵達指定地點集合。</p>
+                    </div>
+                </div>
+                <div class="it-faq-item">
+                    <div class="it-faq-question-row">
+                        <span class="it-question-text">體驗過程中發生意外怎麼辦？</span>
+                        <button type="button" class="it-faq-toggle-btn" aria-label="展開問題"><span>+</span></button>
+                    </div>
+                    <div class="it-faq-answer-row">
+                        <p class="it-answer-text">所有體驗均已投保旅遊責任險，每位旅客均有基本保障。嚮導皆接受過急救訓練，並備有基本急救設備。若發生緊急狀況，請立即告知嚮導，或撥打客服專線
+                            0800-123-456。</p>
+                    </div>
+                </div>
+                <div class="it-faq-item">
+                    <div class="it-faq-question-row">
+                        <span class="it-question-text">可以帶小孩或銀髮族參加嗎？</span>
+                        <button type="button" class="it-faq-toggle-btn" aria-label="展開問題"><span>+</span></button>
+                    </div>
+                    <div class="it-faq-answer-row">
+                        <p class="it-answer-text">
+                            各體驗有不同的年齡建議，請查看體驗詳情頁的「適合對象」說明。部分戶外冒險型體驗有年齡下限，而文化、手作、美食類體驗通常全年齡均可參加。如有疑問請預訂前先與嚮導確認。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 帳號與付款 -->
+            <div class="it-faq-group" id="faq-account">
+                <div class="it-faq-group-header">
+                    <h2>🔒 帳號與付款</h2>
+                </div>
+                <div class="it-faq-item">
+                    <div class="it-faq-question-row">
+                        <span class="it-question-text">目前支援哪些付款方式？</span>
+                        <button type="button" class="it-faq-toggle-btn" aria-label="展開問題"><span>+</span></button>
+                    </div>
+                    <div class="it-faq-answer-row">
+                        <p class="it-answer-text">我們目前支援各大銀行信用卡（Visa, MasterCard, JCB）、LINE Pay、Apple Pay
+                            及街口支付，提供您安全便捷的付款環境。</p>
+                    </div>
+                </div>
+                <div class="it-faq-item">
+                    <div class="it-faq-question-row">
+                        <span class="it-question-text">如何找回忘記的密碼？</span>
+                        <button type="button" class="it-faq-toggle-btn" aria-label="展開問題"><span>+</span></button>
+                    </div>
+                    <div class="it-faq-answer-row">
+                        <p class="it-answer-text">在登入頁面點選「忘記密碼」，輸入註冊時使用的 Email，系統將發送密碼重設連結到您的信箱。若未收到請確認垃圾郵件匣，或聯絡客服協助處理。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 底部諮詢客服區 -->
+        <section class="it-faq-support-box">
+            <div class="it-support-card">
+                <h2 class="it-support-title">還有其他問題？</h2>
+                <p class="it-support-desc">我們的客服團隊週一至週五 09:00 - 18:00 線上為您解答</p>
+                <div class="it-support-actions">
+                    <a href="mailto:support@islandtraces.com?subject=島嶼旅跡-旅客常見問題諮詢" class="it-btn-support-mail">✉
+                        寄信給我們</a>
+                    <button type="button" id="it-btn-live-chat" class="it-btn-support-chat">💬 即時客服</button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <script>
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initFaqCategories();
+            initFaqAccordion();
+            initSupportActions();
+        });
+
+        // 1. 分類標籤切換控制邏輯
+        function initFaqCategories() {
+            const categoryGrid = document.getElementById('it-faq-category-grid');
+
+            categoryGrid.addEventListener('click', (e) => {
+                const btn = e.target.closest('.it-faq-cat-btn');
+                if (!btn) return;
+
+                // A. 切換標籤按鈕的 active 狀態
+                categoryGrid.querySelectorAll('.it-faq-cat-btn').forEach(b => b.classList.remove('is-active'));
+                btn.classList.add('is-active');
+
+                // B. 切換顯示對應的 FAQ 問題群組
+                const targetGroupId = btn.getAttribute('data-target');
+
+                document.querySelectorAll('.it-faq-group').forEach(group => {
+                    group.classList.remove('is-active');
+                });
+
+                const targetGroup = document.getElementById(`faq-${targetGroupId}`);
+                if (targetGroup) {
+                    targetGroup.classList.add('is-active');
+
+                    // 切換分頁時，自動收合原本可能開啟的所有手風琴題項
+                    targetGroup.querySelectorAll('.it-faq-item').forEach(item => {
+                        item.classList.remove('is-expanded');
+                        item.querySelector('.it-faq-answer-row').style.maxHeight = null;
+                    });
+                }
+
+                console.log(`[FAQ分類接口] 使用者切換至分類: ${targetGroupId}`);
+            });
+        }
+
+        // 2. 手風琴展開與收合控制邏輯 (核心需求：一次只能點擊一個問與答)
+        function initFaqAccordion() {
+            // 監聽整個列表容器，提升動態載入的效能與相容性
+            const listContainer = document.querySelector('.it-faq-list-container');
+
+            listContainer.addEventListener('click', (e) => {
+                // 判斷是否點擊了問題橫列、文字、或者右側的按鈕
+                const questionRow = e.target.closest('.it-faq-question-row');
+                if (!questionRow) return;
+
+                const currentItem = questionRow.closest('.it-faq-item');
+                const currentAnswerRow = currentItem.querySelector('.it-faq-answer-row');
+                const isAlreadyOpen = currentItem.classList.contains('is-expanded');
+
+                // 【一次只能點擊一個問與答】核心機制：
+                // 先把當前分頁內「所有」其它已展開的問題全部關閉
+                const activeGroup = currentItem.closest('.it-faq-group');
+                activeGroup.querySelectorAll('.it-faq-item').forEach(item => {
+                    if (item !== currentItem) {
+                        item.classList.remove('is-expanded');
+                        item.querySelector('.it-faq-answer-row').style.maxHeight = null;
+                    }
+                });
+
+                // 處理當前點擊項目的展開/收合狀態
+                if (isAlreadyOpen) {
+                    currentItem.classList.remove('is-expanded');
+                    currentAnswerRow.style.maxHeight = null;
+                } else {
+                    currentItem.classList.add('is-expanded');
+                    // 精準動態計算內部高度，使網頁產生柔和流暢的展開動畫
+                    currentAnswerRow.style.maxHeight = currentAnswerRow.scrollHeight + "px";
+                }
+            });
+        }
+
+        // 3. 底部即時客服與諮詢管道控制
+        function initSupportActions() {
+            const chatBtn = document.getElementById('it-btn-live-chat');
+
+            chatBtn.addEventListener('click', () => {
+                console.log("[客服系統] 客戶點擊了即時客服按鈕");
+
+                // ==========================================================
+                // [未來串接註解] 給負責對接線上即時通訊軟體（如 Crisp、Line 官方帳號、或內部 Chat API）的工程師：
+                // ==========================================================
+                alert("【開發端回饋】即時客服對話視窗發動！\n未來此處可直接呼叫第三方的客服插件視窗（例如：Crisp.chat('do', 'chat:open')）。");
+            });
+        }
+    </script>
+</body>
+
+</html>

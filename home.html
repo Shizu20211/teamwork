@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+:root {
+  --it-primary-color: #e25c38;
+  --it-primary-light: #fff3f0;
+  --it-primary-hover: #cc4f2e;
+  --it-text-dark: #333333;
+  --it-text-muted: #666666;
+  --it-navy-bg: #1a2b3c;            /* 宣告區藏青色背景 */
+  --it-border-color: #e0e0e0;
+  --it-radius-lg: 24px;
+  --it-radius-md: 16px;
+  --it-radius-sm: 12px;
+  --it-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+.it-home-wrapper {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  box-sizing: border-box;
+}
+
+.it-home-wrapper * { box-sizing: border-box; }
+
+/* 通用標題樣式 */
+.it-section-subtitle {
+  color: var(--it-text-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  display: block;
+  margin-bottom: 8px;
+}
+.it-section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--it-text-dark);
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   1. Hero 滿版導入區
+   -------------------------------------------------------------------------- */
+.it-hero-section {
+  width: 100%;
+  min-height: 600px;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2)), 
+              url('https://image.asoview-media.com/image/production/note/article/b858199b-79d2-4116-b07d-a2d48e5bdfbd.jpg') no-repeat center center;
+  background-size: cover;
+  background-position: 0px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  padding: 100px 40px;
+  text-align: center;
+}
+.it-hero-content { max-width: 800px; width: 100%; }
+.it-hero-subtitle { color: var(--it-primary-color); font-weight: 700; letter-spacing: 3px; font-size: 1rem; text-align: left; display: block; margin-bottom: 16px; }
+.it-hero-title { color: #ffffff; font-size: 3.5rem; font-weight: 700; margin: 0 0 24px 0; line-height: 1.25; text-align: left; text-shadow: 0 2px 12px rgba(0,0,0,0.4); }
+.it-hero-title .it-highlight { color: var(--it-primary-color); }
+.it-hero-desc { color: rgba(255, 255, 255, 0.95); font-size: 1.2rem; text-align: left; margin: 0 0 48px 0; line-height: 1.6; text-shadow: 0 1px 6px rgba(0,0,0,0.3); }
+
+/* 搜尋欄卡片 */
+.it-search-bar-card {
+  background: #ffffff;
+  border-radius: 44px;
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+  max-width: 760px;
+  margin: 0 auto;
+  gap: 20px;
+  text-align: left;
+}
+.it-search-field { flex: 1; display: flex; flex-direction: column; }
+.it-field-label { font-size: 0.85rem; color: var(--it-text-muted); font-weight: 600; margin-bottom: 6px; }
+.it-home-select, .it-home-date-input { border: none; background: transparent; font-size: 1rem; color: var(--it-text-dark); font-weight: 500; outline: none; width: 100%; padding: 4px 0; cursor: pointer; }
+.it-search-divider { width: 1px; height: 44px; background-color: var(--it-border-color); }
+.it-btn-search { background-color: var(--it-primary-color); color: #ffffff; border: none; border-radius: var(--it-radius-lg); padding: 14px 36px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+.it-btn-search:hover { background-color: var(--it-primary-hover); }
+
+/* 廣告數據統計區 */
+.it-stats-bar { background-color: #fdf5ea; border-bottom: 1px solid #f0f0f0; padding: 36px 20px; }
+.it-stats-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; gap: 20px; }
+.it-stat-item { display: flex; flex-direction: column; gap: 4px; }
+.it-stat-num { font-size: 2rem; font-weight: 700; color: var(--it-navy-bg); }
+.highlight { color: #ff4b2b; /* 2色目の色 */}
+.it-stat-text { font-size: 0.9rem; color: var(--it-text-muted); font-weight: 500; }
+
+/* --------------------------------------------------------------------------
+   3. 尋找體驗類型區塊 (符合：電腦版圖上字下、Hover變橘/淺橘底)
+   -------------------------------------------------------------------------- */
+.it-theme-section { max-width: 1200px; margin: 80px auto; padding: 0 20px; text-align: center; }
+.it-theme-section .it-section-title { margin-bottom: 40px; }
+.it-theme-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 16px; }
+
+.it-theme-btn {
+  background-color: #f9f9f9;
+  border: 2px solid transparent;
+  border-radius: var(--it-radius-md);
+  padding: 24px 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column; /* 圖上字下核心佈局 */
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.25s ease;
+}
+.it-theme-emoji { font-size: 2rem; display: block; } /* 圖片為主 */
+.it-theme-text { font-size: 0.95rem; color: var(--it-text-dark); font-weight: 600; } /* 文字為輔 */
+
+/* Hover 變邊框橘色、底色淺橘 */
+.it-theme-btn:hover, .it-theme-btn.is-active {
+  border-color: var(--it-primary-color);
+  background-color: var(--it-primary-light);
+}
+.it-theme-btn:hover .it-theme-text, .it-theme-btn.is-active .it-theme-text {
+  color: var(--it-primary-color);
+}
+
+/* --------------------------------------------------------------------------
+   4. 本週熱門體驗區塊 (2列4欄共8張網格)
+   -------------------------------------------------------------------------- */
+.it-trending-section { max-width: 1200px; margin: 80px auto; padding: 0 20px; }
+.it-section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; }
+.it-view-all-link { color: var(--it-primary-color); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+.it-view-all-link:hover { text-decoration: underline; }
+
+.it-trending-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4欄 */
+  gap: 24px;
+}
+
+/* 複用先前的高級卡片樣式 */
+.it-product-card { background: #ffffff; border: 1px solid var(--it-border-color); border-radius: 12px; overflow: hidden; position: relative; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+.it-product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 22px rgba(0,0,0,0.08); }
+.it-card-image-wrapper { position: relative; padding-top: 66.66%; background: #eee; }
+.it-card-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+.it-heart-btn { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.9); border: none; border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.1); transition: all 0.2s; color: #888; z-index: 2; }
+.it-heart-btn.is-active { color: var(--it-primary-color); background: #fff; box-shadow: 0 2px 10px rgba(226,92,56,0.3); }
+.it-heart-btn:active { transform: scale(0.85); }
+.it-card-content { padding: 16px; display: flex; flex-direction: column; flex-grow: 1; }
+.it-card-tag { font-size: 0.75rem; color: var(--it-primary-color); font-weight: bold; margin-bottom: 6px; }
+.it-card-title { font-size: 1rem; color: var(--it-text-dark); margin: 0 0 8px 0; font-weight: 600; line-height: 1.4; }
+.it-card-meta { font-size: 0.8rem; color: var(--it-text-muted); margin-bottom: 12px; display: flex; gap: 10px; }
+.it-card-footer { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid #f5f5f5; padding-top: 12px; }
+.it-card-price { font-size: 1.1rem; color: var(--it-text-dark); font-weight: bold; }
+.it-card-price span { font-size: 0.8rem; color: var(--it-text-muted); }
+.it-card-rating { font-size: 0.85rem; color: #ffa800; }
+.it-card-reviews { color: var(--it-text-muted); font-size: 0.8rem; }
+
+/* --------------------------------------------------------------------------
+   5. 在地嚮導宣告區塊 (高約 300px 藏青色背景)
+   -------------------------------------------------------------------------- */
+.it-guide-banner {
+  width: 100%;
+  min-height: 300px; /* 改為最小高度，避免內文擠壓變形 */
+  background-color: var(--it-navy-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px; /* 增加上下 padding，RWD 時更安全 */
+}
+
+/* 核心更動：將內容容器改為 Flex，讓文案與按鈕左右排列 */
+.it-guide-banner-content {
+  max-width: 1100px; /* 放大最大寬度，給予左右排版足夠的拉伸空間 */
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* 讓文案靠左、按鈕靠右 */
+  align-items: center;            /* 關鍵：讓右側按鈕在垂直方向上置中 */
+  gap: 40px;                      /* 避免左右貼太近 */
+}
+
+/* 文案包裝層 (確保寬度足夠) */
+.it-guide-text-group {
+  flex: 1;
+  max-width: 650px; /* 限制文案最大寬度，維持良好的閱讀動線 */
+}
+
+.it-guide-title { 
+  color: #ffffff; 
+  font-size: 1.8rem; 
+  margin: 0 0 14px 0; 
+  font-weight: 700; 
+  text-align: left; 
+  line-height: 1.4; 
+}
+
+.it-guide-desc { 
+  color: rgba(255,255,255,0.8); 
+  font-size: 0.95rem; 
+  margin: 0; /* 移除原本的 bottom margin，因為現在改為左右排版 */
+  line-height: 1.6; 
+  text-align: left; 
+}
+
+/* 右側按鈕群組 */
+.it-guide-actions { 
+  display: flex; 
+  justify-content: flex-end; /* 在電腦版讓按鈕靠右齊 */
+  align-items: center;
+  gap: 16px; 
+  flex-shrink: 0; /* 防止按鈕寬度被擠壓變形 */
+}
+
+.it-btn-guide-orange { background-color: var(--it-primary-color); color: #ffffff; border: none; padding: 12px 28px; border-radius: var(--it-radius-sm); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+.it-btn-guide-orange:hover { background-color: var(--it-primary-hover); }
+
+.it-btn-guide-white { background-color: #ffffff; color: var(--it-navy-bg); border: 1px solid #ffffff; padding: 12px 28px; border-radius: var(--it-radius-sm); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.it-btn-guide-white:hover { background-color: transparent; color: #ffffff; }
+
+/* ==========================================================================
+   RWD 響應式優化 (當螢幕變小時自動回復上下堆疊，才不會變得很擠)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .it-guide-banner-content {
+    flex-direction: column; /* 手機板切換為上下排列 */
+    text-align: center;
+    gap: 24px;
+  }
+  
+  .it-guide-text-group {
+    max-width: 100%;
+  }
+  
+  .it-guide-title, .it-guide-desc {
+    text-align: center; /* 手機板文字置中較美觀 */
+  }
+  
+  .it-guide-actions {
+    flex-direction: column; /* 手機板按鈕上下疊起來 */
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .it-btn-guide-orange, .it-btn-guide-white {
+    width: 100%; /* 手機板按鈕滿版 */
+    text-align: center;
+  }
+}
+/* 旅客回饋 */
+.it-reviews-section { max-width: 1200px; margin: 80px auto; padding: 0 20px; text-align: center; }
+.it-reviews-section .it-section-title { margin-bottom: 40px; }
+.it-reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; text-align: left; }
+
+.it-review-card { background: #ffffff; border: 1px solid var(--it-border-color); border-radius: var(--it-radius-md); padding: 24px; box-shadow: var(--it-shadow); display: flex; flex-direction: column; justify-content: space-between; }
+.it-review-stars { color: #ffa800; font-size: 1.1rem; margin-bottom: 12px; }
+.it-review-comment { font-size: 0.95rem; color: var(--it-text-dark); line-height: 1.6; font-style: italic; margin: 0 0 20px 0; flex-grow: 1; }
+.it-review-user { display: flex; align-items: center; gap: 12px; border-top: 1px solid #f5f5f5; padding-top: 14px; }
+.it-user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background-color: #ddd; }
+.it-user-info { display: flex; flex-direction: column; }
+.it-user-name { font-size: 0.9rem; font-weight: 600; color: var(--it-text-dark); }
+.it-user-meta { font-size: 0.78rem; color: var(--it-text-muted); }
+
+/* RWD 響應式佈局破斷點控制 */
+@media (max-width: 1024px) {
+  .it-theme-grid { grid-template-columns: repeat(4, 1fr); } /* 縮小改4欄 */
+  .it-trending-grid { grid-template-columns: repeat(2, 1fr); } /* 縮小改2列4欄 -> 4列2欄 */
+  .it-reviews-grid { grid-template-columns: repeat(1, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .it-hero-title { font-size: 2.4rem; }
+  .it-search-bar-card { flex-direction: column; padding: 20px; gap: 16px; }
+  .it-search-divider { display: none; }
+  .it-search-field { width: 100%; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; }
+  .it-btn-search { width: 100%; border-radius: var(--it-radius-sm); }
+  .it-stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .it-theme-grid { grid-template-columns: repeat(2, 1fr); }
+  .it-theme-btn { padding: 16px 8px; } /* 行動端稍微縮減高度 */
+  .it-guide-banner { height: auto; padding: 40px 20px; }
+  .it-guide-actions { flex-direction: column; width: 100%; gap: 12px; }
+  .it-btn-guide-orange, .it-btn-guide-white { width: 100%; }
+}
+    </style>
+</head>
+<body>
+    <!-- 島嶼旅跡 - 首頁完整內容貨櫃（不含 Nav & Footer） -->
+<div class="it-home-wrapper">
+
+  <!-- 1. Hero 主視覺區塊 -->
+  <section class="it-hero-section">
+    <div class="it-hero-content">
+      <span class="it-hero-subtitle">——TAIWAN EXPERIENCES</span>
+      <h1 class="it-hero-title">與台灣這片土地，<br><span class="it-highlight">真實相遇</span></h1>
+      <p class="it-hero-desc">超過 200 個在地嚮導帶路的深度體驗，從山頂到海岸，從廚房到工坊，找到屬於你的那一場旅途。</p>
+      
+      <!-- 搜尋列卡片 -->
+      <div class="it-search-bar-card">
+        <div class="it-search-field">
+          <label for="it-home-location" class="it-field-label">🗺 選擇目的地</label>
+          <select id="it-home-location" class="it-home-select">
+            <option value="" disabled selected>請選擇縣市...</option>
+            <option value="台北">台北</option>
+            <option value="新北">新北</option>
+            <option value="桃園">桃園</option>
+            <option value="台中">台中</option>
+            <option value="台南">台南</option>
+            <option value="高雄">高雄</option>
+            <option value="宜蘭">宜蘭</option>
+            <option value="花蓮">花蓮</option>
+            <option value="嘉義">嘉義</option>
+            <option value="屏東">屏東</option>
+            <option value="彰化">彰化</option>
+          </select>
+        </div>
+        <div class="it-search-divider"></div>
+        <div class="it-search-field">
+          <label for="it-home-date" class="it-field-label">📅 選擇日期</label>
+          <input type="date" id="it-home-date" class="it-home-date-input">
+        </div>
+        <button type="button" id="it-home-search-btn" class="it-btn-search">搜尋體驗</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 橫欄廣告數據統計區 -->
+  <section class="it-stats-bar">
+    <div class="it-stats-grid">
+      <div class="it-stat-item"><span class="it-stat-num">200<span class="highlight">+</span></span><span class="it-stat-text">精選在地體驗</span></div>
+      <div class="it-stat-item"><span class="it-stat-num">98<span class="highlight">%</span></span><span class="it-stat-text">旅客好評率</span></div>
+      <div class="it-stat-item"><span class="it-stat-num">150<span class="highlight">+</span></span><span class="it-stat-text">認證在地嚮導</span></div>
+      <div class="it-stat-item"><span class="it-stat-num">22</span><span class="it-stat-text">縣市全台覆蓋</span></div>
+    </div>
+  </section>
+
+  <!-- 3. 尋找體驗類型區塊 (電腦版圖上字下) -->
+  <section class="it-theme-section">
+    <span class="it-section-subtitle">EXPLORE BY THEME</span>
+    <h2 class="it-section-title">找到你的體驗類型</h2>
+    <div class="it-theme-grid" id="it-home-theme-grid">
+      <button type="button" class="it-theme-btn" data-theme="戶外冒險"><span class="it-theme-emoji">🏔</span><span class="it-theme-text">戶外冒險</span></button>
+      <button type="button" class="it-theme-btn" data-theme="手作工藝"><span class="it-theme-emoji">🎨</span><span class="it-theme-text">手作工藝</span></button>
+      <button type="button" class="it-theme-btn" data-theme="美食料理"><span class="it-theme-emoji">🍜</span><span class="it-theme-text">美食料理</span></button>
+      <button type="button" class="it-theme-btn" data-theme="文化歷史"><span class="it-theme-emoji">🏛</span><span class="it-theme-text">文化歷史</span></button>
+      <button type="button" class="it-theme-btn" data-theme="水上活動"><span class="it-theme-emoji">🌊</span><span class="it-theme-text">水上活動</span></button>
+      <button type="button" class="it-theme-btn" data-theme="農村生活"><span class="it-theme-emoji">🌿</span><span class="it-theme-text">農村生活</span></button>
+      <button type="button" class="it-theme-btn" data-theme="傳統藝術"><span class="it-theme-emoji">🎭</span><span class="it-theme-text">傳統藝術</span></button>
+      <button type="button" class="it-theme-btn" data-theme="攝影旅拍"><span class="it-theme-emoji">📸</span><span class="it-theme-text">攝影旅拍</span></button>
+    </div>
+  </section>
+
+  <!-- 4. 本週熱門體驗區塊 (2列4欄共8張) -->
+  <section class="it-trending-section">
+    <div class="it-section-header">
+      <div>
+        <span class="it-section-subtitle">HOT THIS WEEK</span>
+        <h2 class="it-section-title">本週熱門體驗</h2>
+      </div>
+      <a href="#" class="it-view-all-link">查看全部 →</a>
+    </div>
+    <!-- 8張商品卡片動態渲染網格 -->
+    <div class="it-trending-grid" id="it-trending-products-grid"></div>
+  </section>
+
+  <!-- 在地嚮導文字宣告區塊 -->
+ <section class="it-guide-banner">
+    <div class="it-guide-banner-content">
+      
+      <div class="it-guide-text-group">
+        <h2 class="it-guide-title">成為在地嚮導，<br>分享你的台灣故事</h2>
+        <p class="it-guide-desc">你是本地達人嗎？無論是山林秘徑、漁村廚藝還是傳統技藝，都可以化為獨一無二的體驗，與來自世界各地的旅人分享。</p>
+      </div>
+      
+      <div class="it-guide-actions">
+        <button type="button" class="it-btn-guide-orange">立即申請嚮導</button>
+        <button type="button" class="it-btn-guide-white">了解更多</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 6. 旅客回饋區 -->
+  <section class="it-reviews-section">
+    <span class="it-section-subtitle">TRAVELER REVIEWS</span>
+    <h2 class="it-section-title">旅人的真實心聲</h2>
+    <div class="it-reviews-grid" id="it-home-reviews-grid"></div>
+  </section>
+
+</div>
+    <script>
+        /**
+ * 島嶼旅跡 - 首頁完整核心控制碼
+ * 包含：熱門體驗卡片依據評分進行星星排序（2列4欄共8張）、愛心即時變色、與搜尋引擎交接
+ */
+
+// 1. 完整 12 筆數據（將由程式依據 rating 排序後擷取前 8 筆渲染於本週熱門體驗區）
+const DATASET = [
+  { id: 1, title: "清水斷崖獨木舟探險", region: "花蓮", category: "戶外冒險", duration: "半天", price: 1800, rating: 4.8, reviews: 312, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500" },
+  { id: 2, title: "九份老街手捏陶藝體驗", region: "新本", category: "手作工藝", duration: "3小時", price: 980, rating: 4.6, reviews: 205, img: "https://petit-tw.jp/wp-content/uploads/2019/03/DSC02161-940x627.jpg" },
+  { id: 3, title: "台中市場私廚料理課", region: "台中", category: "美食料理", duration: "4小時", price: 1500, rating: 4.7, reviews: 189, img: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=500" },
+  { id: 4, title: "阿里山日出觀星嚮導", region: "嘉義", category: "戶外冒險", duration: "全天", price: 2200, rating: 5.0, reviews: 98, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500" },
+  { id: 5, title: "淡水老街藍染拼布工作坊", region: "新北", category: "手作工藝", duration: "3小時", price: 1200, rating: 4.4, reviews: 147, img: "https://images.unsplash.com/photo-1528164344705-47542687000d?w=500" },
+  { id: 6, title: "台南府城古蹟深度導覽", region: "台南", category: "文化歷史", duration: "半天", price: 800, rating: 4.9, reviews: 261, img: "https://images.unsplash.com/photo-1590001155093-a3c66ab0c3ff?w=500" },
+  { id: 7, title: "宜蘭稻田生態農遊體驗", region: "宜蘭", category: "農村生活", duration: "半天", price: 1100, rating: 4.3, reviews: 173, img: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=500" },
+  { id: 8, title: "高雄旗津老漁村料理日", region: "高雄", category: "美食料理", duration: "4小時", price: 1350, rating: 4.5, reviews: 142, img: "https://images.unsplash.com/photo-1534080391025-4979983353e8?w=500" },
+  { id: 9, title: "太魯閣峽谷健行之旅", region: "花蓮", category: "戶外冒險", duration: "全天", price: 2500, rating: 4.95, reviews: 287, img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=500" },
+  { id: 10, title: "彰化扇形車庫鐵道文化", region: "彰化", category: "文化歷史", duration: "2小時", price: 700, rating: 4.2, reviews: 118, img: "https://images.unsplash.com/photo-1532102230681-3006a85f4039?w=500" },
+  { id: 11, title: "墾丁珊瑚礁浮潛體驗", region: "屏東", category: "水上活動", duration: "半天", price: 1650, rating: 4.75, reviews: 234, img: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500" },
+  { id: 12, title: "台北茶道文化靜心體驗", region: "台北", category: "文化歷史", duration: "2小時", price: 1200, rating: 4.65, reviews: 196, img: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=500" }
+];
+
+// 2. 隨機生成 3 位旅客評論的資料庫
+const REVIEWS_MOCK = [
+  { name: "陳佳穎", origin: "台北", date: "2026.03", rating: 5, comment: "清水斷崖的獨木舟體驗讓我終生難忘！嚮導非常專業且幽默，安全措施完善。看著日出從太平洋升起，這絕對是我在台灣最美的一天！", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" },
+  { name: "林大偉", origin: "高雄", date: "2026.04", rating: 5, comment: "台南府城古蹟導覽非常精彩，特別是私廚料理的安排很有特色。聽著帶路達人講述那些課本沒寫的歷史故事，身心靈都獲得了極大的滿足！", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150" },
+  { name: "佐藤明香", origin: "日本", date: "2026.05", rating: 4, comment: "九份老街的手捏陶藝工作坊非常療癒。雖然英文溝通有限，但指導老師極其耐心，用手勢引導我做出了專屬的手捏杯。這是一份很棒的紀念品。", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150" }
+];
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderTrendingProducts();
+  renderReviews();
+  initHomeInteractions();
+});
+
+// 3. 排序並渲染前 8 張熱門卡片（依據評分降冪排列）
+function renderTrendingProducts() {
+  const grid = document.getElementById('it-trending-products-grid');
+  
+  // 核心邏輯：依照 rating (星星數) 從高到低排序，並取前 8 筆
+  const topEight = [...DATASET]
+    .sort((a, b) => b.rating - a.rating)
+    .slice(0, 8);
+
+  grid.innerHTML = topEight.map(p => `
+    <article class="it-product-card" data-id="${p.id}">
+      <div class="it-card-image-wrapper">
+        <img class="it-card-img" src="${p.img}" alt="${p.title}" loading="lazy">
+        <button type="button" class="it-heart-btn" aria-label="收藏">❤</button>
+      </div>
+      <div class="it-card-content">
+        <span class="it-card-tag">${p.category}</span>
+        <h4 class="it-card-title">${p.title}</h4>
+        <div class="it-card-meta">
+          <span>📍 ${p.region}</span>
+          <span>⏱ ${p.duration}</span>
+        </div>
+        <div class="it-card-footer">
+          <div class="it-card-price">NT$ ${p.price.toLocaleString()} <span>/ 人起</span></div>
+          <div class="it-card-rating">
+            ★ ${p.rating.toFixed(1)} <span class="it-card-reviews">(${p.reviews})</span>
+          </div>
+        </div>
+      </div>
+    </article>
+  `).join('');
+}
+
+// 4. 渲染 3 筆旅客回饋卡片
+function renderReviews() {
+  const grid = document.getElementById('it-home-reviews-grid');
+  grid.innerHTML = REVIEWS_MOCK.map(r => `
+    <div class="it-review-card">
+      <div>
+        <div class="it-review-stars">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</div>
+        <p class="it-review-comment">「${r.comment}」</p>
+      </div>
+      <div class="it-review-user">
+        <img class="it-user-avatar" src="${r.avatar}" alt="${r.name}">
+        <div class="it-user-info">
+          <span class="it-user-name">${r.name}</span>
+          <span class="it-user-meta">來自 ${r.origin} · ${r.date}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// 5. 事件監聽控制項
+function initHomeInteractions() {
+  // A. 頂部搜尋列控制
+  const searchBtn = document.getElementById('it-home-search-btn');
+  searchBtn.addEventListener('click', () => {
+    const loc = document.getElementById('it-home-location').value;
+    const date = document.getElementById('it-home-date').value;
+    if (!loc) { alert("請先選擇您想去的目的地縣市唷！"); return; }
+    
+    console.log(`[搜尋接口] 目的地: ${loc}, 日期: ${date}`);
+    alert(`【串接提示】即將進入搜尋過濾頁面...\n選擇地區：${loc}\n選擇日期：${date || '未指定'}`);
+    
+    // 未來串接：window.location.href = `./explore.html?region=${loc}&date=${date}`;
+  });
+
+  // B. 體驗類型點擊單選/切換樣式效果
+  const themeGrid = document.getElementById('it-home-theme-grid');
+  themeGrid.addEventListener('click', (e) => {
+    const btn = e.target.closest('.it-theme-btn');
+    if (!btn) return;
+    themeGrid.querySelectorAll('.it-theme-btn').forEach(b => b.classList.remove('is-active'));
+    btn.classList.add('is-active');
+    console.log(`[主題接口] 已選取分類: ${btn.getAttribute('data-theme')}`);
+  });
+
+  // C. [即時功能] 熱門卡片愛心點擊紅灰變色控制 (事件委託)
+  const trendingGrid = document.getElementById('it-trending-products-grid');
+  trendingGrid.addEventListener('click', (e) => {
+    const heartBtn = e.target.closest('.it-heart-btn');
+    if (!heartBtn) return;
+
+    // 即時切換類別：前端馬上變色
+    heartBtn.classList.toggle('is-active');
+    
+    const card = heartBtn.closest('.it-product-card');
+    const pid = card.getAttribute('data-id');
+    const isFav = heartBtn.classList.contains('is-active');
+
+    // ==========================================================
+    // [個人頁面對接註解] 給未來負責「我的收藏 / 個人頁面」的工程師：
+    // ==========================================================
+    console.log(`[收藏同步系統] 商品 ID: ${pid}, 目前狀態是否收藏: ${isFav}`);
+    // 範例：api.updateUserFavorite(pid, isFav);
+  });
+}
+    </script>
+</body>
+</html>
