@@ -10,21 +10,28 @@
 }
 
 *{box-sizing:border-box}
-html,body,#root{height:100%}
+
+html,body,#root{
+  height: 100%;
+  overflow: hidden;
+}
 body{
-  margin:0;
+  margin: 0;
+  overflow: hidden;
   font-family:var(--font-sans);
   background:var(--bg);
   color:#0b1220;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   min-height:100vh;
+  overflow: hidden;
 }
 
 /* Layout */
 .app{
   display:flex;
-  min-height:100vh;
+  height:100vh;
+  overflow: hidden;
   align-items:stretch;
   justify-content:center;
 }
@@ -69,12 +76,15 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:48px;
+  padding:20px;
+  height: 100%;
   background:linear-gradient(180deg,#fff, #fbfbfd);
 }
 .auth-card{
   width:100%;
   max-width:420px;
+  max-height: calc(100vh - 40px);
+
   background:var(--card);
   border-radius:var(--radius);
   padding:28px;
@@ -121,13 +131,13 @@ input:focus{box-shadow:0 0 0 4px rgba(255,122,24,0.08);border-color:var(--accent
 .icon-btn{
   background:transparent;border:0;color:var(--muted);cursor:pointer;padding:8px;border-radius:8px;font-size:13px;
 }
-.error{display:block;color:#dc2626;font-size:13px;height:18px;margin-top:6px}
+.error{display:block;color:#dc2626;font-size:13px;height:18px;}
 
 .row.between{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .link{color:var(--accent);text-decoration:none;font-size:13px}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;
-  width:100%;padding:12px 14px;border-radius:10px;border:0;font-weight:700;cursor:pointer;margin-top:6px;
+  width:100%;padding:12px 14px;border-radius:10px;border:0;font-weight:700;cursor:pointer;
 }
 .btn.primary{background:var(--accent);color:#fff}
 .divider{margin:18px 0;text-align:center;color:var(--muted);font-size:13px}
