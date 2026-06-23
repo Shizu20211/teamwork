@@ -1,18 +1,27 @@
-<!doctype html>
-<html lang="zh-Hant">
+<!DOCTYPE html>
+<html lang="zh-TW">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Travel App — Login</title>
-  <link rel="stylesheet" href="./css/login_styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登入 / 註冊 — 島嶼旅跡</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="./css/login_styles.css">
 </head>
+
 <body>
+  <header class="main-header">
+    <a href="/" class="logo-link">
+      <span class="logo-text">島嶼旅跡</span>
+    </a>
+  </header>
+
   <main class="app">
     <section class="hero" aria-hidden="false">
       <div class="hero-overlay">
         <h1 class="brand">島嶼旅跡</h1>
         <p class="tagline">每一趟旅程，都是全新的自己</p>
-        <p class="cta">加入烏嶼旅跡，開啟你的台灣深度之旅</p>
+        <p class="cta">加入島嶼旅跡，開啟你的台灣深度之旅</p>
       </div>
     </section>
 
@@ -24,9 +33,23 @@
         </div>
 
         <h2 id="auth-heading" class="auth-title">歡迎回來 👋</h2>
-        <p class="auth-sub">登入帳號以管理你的旅行體驗</p>
+        <p class="auth-sub" id="auth-sub-text">登入帳號以管理你的旅行體驗</p>
 
         <form id="auth-form" novalidate>
+          <!-- 註冊專屬欄位：姓名 -->
+          <label class="field" id="name-field" style="display: none;">
+            <span class="label-text">姓名</span>
+            <input id="username" name="username" type="text" placeholder="請輸入您的真實姓名" />
+            <span class="error" id="name-error" aria-live="polite"></span>
+          </label>
+
+          <!-- 註冊專屬欄位：電話 -->
+          <label class="field" id="phone-field" style="display: none;">
+            <span class="label-text">行動電話</span>
+            <input id="phone" name="phone" type="tel" placeholder="0912345678" maxlength="10" />
+            <span class="error" id="phone-error" aria-live="polite"></span>
+          </label>
+
           <label class="field">
             <span class="label-text">電子信箱</span>
             <input id="email" name="email" type="email" placeholder="your@email.com" required />
@@ -37,30 +60,38 @@
             <span class="label-text">密碼</span>
             <div class="password-wrap">
               <input id="password" name="password" type="password" placeholder="輸入密碼" required minlength="6" />
-              <button type="button" id="toggle-password" class="icon-btn" aria-label="顯示密碼">顯示</button>
+              <button type="button" id="toggle-password" class="icon-btn" aria-label="顯示密碼">
+                <i class="fas fa-eye" id="toggle-password-icon"></i>
+              </button>
             </div>
             <span class="error" id="password-error" aria-live="polite"></span>
           </label>
 
-          <div class="row between">
+          <div class="row between" id="forgot-password-row">
             <a href="#" class="link small">忘記密碼？</a>
           </div>
 
           <button type="submit" class="btn primary" id="submit-btn">登入</button>
 
-          <div class="divider">或使用</div>
-
-          <div class="socials">
-            <button type="button" class="btn social google">使用 Google 帳號登入</button>
-            <button type="button" class="btn social facebook">使用 Facebook 帳號登入</button>
+          <!-- 第三方登入區塊：僅登入頁顯示 -->
+          <div id="social-login-wrap">
+            <div class="divider">或使用</div>
+            <div class="socials">
+              <button type="button" class="btn social google">
+                <i class="fab fa-google" style="margin-right: 8px; color: #ea4335;"></i>使用 Google 帳號登入
+              </button>
+              <button type="button" class="btn social facebook">
+                <i class="fab fa-facebook-f" style="margin-right: 8px; color: #1877f2;"></i>使用 Facebook 帳號登入
+              </button>
+            </div>
           </div>
 
-          <p class="muted">還沒有帳號？ <a href="#" id="go-register">點此免費註冊</a></p>
+          <p class="muted" id="switch-prompt">還沒有帳號？ <a href="#" id="go-register">點此免費註冊</a></p>
         </form>
       </div>
     </section>
   </main>
-
-  <script src="script.js"></script>
+  <script src="login_script.js"></script>
 </body>
+
 </html>

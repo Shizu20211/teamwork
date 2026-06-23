@@ -1,160 +1,159 @@
-:root{
-  --bg:#0f1724;
-  --accent:#ff7a18;
-  --muted:#6b7280;
-  --card:#ffffff;
-  --radius:12px;
-  --max-width:1200px;
-  --gap:24px;
+:root {
+  --bg: #0f1724;
+  --accent: #ff7a18;
+  --muted: #6b7280;
+  --card: #ffffff;
+  --radius: 12px;
   --font-sans: "Noto Sans TC", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
 
-*{box-sizing:border-box}
+* { box-sizing: border-box; }
 
-html,body,#root{
+html, body {
   height: 100%;
-  overflow: hidden;
-}
-body{
   margin: 0;
-  overflow: hidden;
-  font-family:var(--font-sans);
-  background:var(--bg);
-  color:#0b1220;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  min-height:100vh;
-  overflow: hidden;
+  overflow: hidden; /* 核心：禁止全域捲軸 */
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: #0b1220;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Header */
+.main-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 48px;
+  z-index: 10;
+  pointer-events: none;
+}
+.logo-link { pointer-events: auto; text-decoration: none; }
+.logo-text {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 /* Layout */
-.app{
-  display:flex;
-  height:100vh;
-  overflow: hidden;
-  align-items:stretch;
-  justify-content:center;
+.app {
+  display: flex;
+  height: 100vh;
+  align-items: stretch;
+  justify-content: center;
 }
 
-/* Left hero */
-.hero{
-  flex:1 1 60%;
-  min-width:480px;
-  background-image:linear-gradient(180deg, rgba(15,23,36,0.25), rgba(15,23,36,0.45)), url('https://live.staticflickr.com/52/128198222_78557d1955_b.jpg');
-  background-size:cover;
-  background-position:center;
-  display:flex;
-  align-items:flex-end;
-  padding:48px;
-  color:#fff;
-  position:relative;
+.hero {
+  flex: 1 1 60%;
+  min-width: 480px;
+  background-image: linear-gradient(180deg, rgba(15,23,36,0.25), rgba(15,23,36,0.45)), url('https://live.staticflickr.com/52/128198222_78557d1955_b.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  padding: 48px;
+  color: #fff;
 }
-.hero-overlay{
-  max-width:560px;
-  transform:translateY(0);
-}
-.brand{
-  margin:0 0 8px 0;
-  font-size:36px;
-  letter-spacing:1px;
-  font-weight:700;
-}
-.tagline{
-  margin:0;
-  font-size:20px;
-  opacity:0.95;
-}
-.cta{
-  margin-top:12px;
-  font-size:16px;
-  opacity:0.9;
-}
+.hero-overlay { max-width: 560px; }
+.brand { margin: 0 0 8px 0; font-size: 36px; font-weight: 700; }
+.tagline { margin: 0; font-size: 20px; opacity: 0.95; }
+.cta { margin-top: 12px; font-size: 16px; opacity: 0.9; }
 
-/* Right auth */
-.auth{
-  flex:0 0 480px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
+.auth {
+  flex: 0 0 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
   height: 100%;
-  background:linear-gradient(180deg,#fff, #fbfbfd);
+  background: linear-gradient(180deg, #fff, #fbfbfd);
 }
-.auth-card{
-  width:100%;
-  max-width:420px;
-  max-height: calc(100vh - 40px);
 
-  background:var(--card);
-  border-radius:var(--radius);
-  padding:28px;
-  box-shadow:0 10px 30px rgba(2,6,23,0.12);
+.auth-card {
+  width: 100%;
+  max-width: 410px;
+  max-height: calc(100vh - 32px);
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 22px 24px; /* 微調上下 Padding 抗捲軸 */
+  box-shadow: 0 10px 30px rgba(2,6,23,0.12);
 }
 
 /* Tabs */
-.tabs{
-  display:flex;
-  gap:8px;
-  margin-bottom:12px;
+.tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+.tab {
+  background: transparent; border: 0; padding: 6px 12px;
+  font-weight: 600; cursor: pointer; color: var(--muted); border-radius: 8px;
+  outline: none;
 }
-.tab{
-  background:transparent;
-  border:0;
-  padding:8px 14px;
-  font-weight:600;
-  cursor:pointer;
-  color:var(--muted);
-  border-radius:8px;
+.tab.active { color: var(--accent); background: rgba(255,122,24,0.08); }
+
+/* Form 元素緊湊微調 */
+.auth-title { margin: 0 0 4px 0; font-size: 20px; }
+.auth-sub { margin: 0 0 12px 0; color: var(--muted); font-size: 13px; }
+.field { display: block; margin-bottom: 6px; } /* 縮減至 6px 釋放高度 */
+.label-text { display: block; margin-bottom: 4px; font-size: 12px; color: #111827; }
+
+input {
+  width: 100%; padding: 10px 14px; border-radius: 10px;
+  border: 1px solid #e6e9ef; font-size: 14px; outline: none;
 }
-.tab.active{
-  color:var(--accent);
-  background:rgba(255,122,24,0.08);
+input:focus { box-shadow: 0 0 0 4px rgba(255,122,24,0.08); border-color: var(--accent); }
+
+.password-wrap { position: relative; display: flex; align-items: center; }
+.password-wrap input { padding-right: 40px; }
+.icon-btn {
+  position: absolute; right: 4px; background: transparent; border: 0;
+  color: var(--muted); cursor: pointer; padding: 10px; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  outline: none;
 }
 
-/* Form */
-.auth-title{margin:0 0 6px 0;font-size:22px}
-.auth-sub{margin:0 0 18px 0;color:var(--muted);font-size:14px}
+.error { display: block; color: #dc2626; font-size: 12px; height: 14px; margin-top: 1px; }
+.row.between { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.link { color: var(--accent); text-decoration: none; font-size: 13px; }
 
-.field{display:block;margin-bottom:14px}
-.label-text{display:block;margin-bottom:6px;font-size:13px;color:#111827}
-input[type="email"], input[type="password"], input[type="text"]{
-  width:100%;
-  padding:12px 14px;
-  border-radius:10px;
-  border:1px solid #e6e9ef;
-  font-size:15px;
-  outline:none;
-}
-input:focus{box-shadow:0 0 0 4px rgba(255,122,24,0.08);border-color:var(--accent)}
-
-.password-wrap{display:flex;align-items:center;gap:8px}
-.icon-btn{
-  background:transparent;border:0;color:var(--muted);cursor:pointer;padding:8px;border-radius:8px;font-size:13px;
-}
-.error{display:block;color:#dc2626;font-size:13px;height:18px;}
-
-.row.between{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.link{color:var(--accent);text-decoration:none;font-size:13px}
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:100%;padding:12px 14px;border-radius:10px;border:0;font-weight:700;cursor:pointer;
-}
-.btn.primary{background:var(--accent);color:#fff}
-.divider{margin:18px 0;text-align:center;color:var(--muted);font-size:13px}
-.socials{display:flex;flex-direction:column;gap:10px}
-.btn.social{background:#f3f4f6;border:1px solid #e6e9ef;color:#111}
-.btn.social.google{background:#fff}
-.muted{color:var(--muted);font-size:13px;text-align:center;margin-top:12px}
-
-/* Responsive behavior */
-@media (max-width:1100px){
-  .hero{display:none}
-  .auth{flex:1 1 auto;padding:36px}
-  
+.btn.primary {
+  width: 100%; padding: 11px 14px; border-radius: 10px; border: 0;
+  font-weight: 700; cursor: pointer; background: var(--accent); color: #fff;
+  outline: none;
 }
 
-@media (max-width:480px){
-  .hero{flex-basis:0;min-width:0;display:flex;align-items:center;padding:24px}
-  .hero-overlay{max-width:100%}
-  
+/* 核心修正：使 Google 與 Facebook 樣式完全統一，消除預設被點擊灰底狀態 */
+.divider { margin: 10px 0; text-align: center; color: var(--muted); font-size: 12px; }
+.socials { display: flex; flex-direction: column; gap: 8px; }
+.btn.social {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 100%; padding: 10px 14px; border-radius: 10px; 
+  border: 1px solid #e6e9ef; /* 統一淺灰邊框 */
+  font-weight: 600; font-size: 13px; cursor: pointer; 
+  background: #ffffff !important; /* 強制兩者均為乾淨的純白背景 */
+  color: #111111;
+  outline: none;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+/* 統一的 Hover 效果 */
+.btn.social:hover {
+  background: #f9fafb !important;
+  border-color: #d1d5db;
+}
+/* 移除任何流傳下來的 focus 點擊痕跡 */
+.btn.social:focus, .btn.social:active {
+  background: #ffffff !important;
+  box-shadow: none;
+}
+
+.muted { color: var(--muted); font-size: 13px; text-align: center; margin-top: 10px; }
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .hero { display: none; }
+  .auth { flex: 1 1 auto; padding: 36px; }
+  .logo-text { color: var(--bg); text-shadow: none; }
+}
+@media (max-width: 480px) {
+  .auth-card { padding: 16px; }
 }
