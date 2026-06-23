@@ -1,0 +1,558 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #1a2b49;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+        }
+
+        /* 頂部步驟進度指示條 (Step Progress Bar)*/
+        .steps-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 48px;
+            width: 100%;
+            max-width: 650px;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .step-number {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .step-item.active .step-number {
+            background-color: #e06343;
+            color: white;
+            box-shadow: 0 4px 10px rgba(224, 99, 67, 0.2);
+        }
+
+        .step-item.completed .step-number {
+            background-color: #4b7754;
+            color: white;
+        }
+
+        .step-item.inactive .step-number {
+            background-color: #f1f5f9;
+            color: #94a3b8;
+        }
+
+        .step-label {
+            font-size: 13px;
+            color: #718096;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .step-item.active .step-label {
+            color: #e06343;
+            font-weight: bold;
+        }
+
+        .step-line {
+            flex-grow: 1;
+            height: 2px;
+            margin: 0 16px;
+            margin-bottom: 22px;
+            max-width: 120px;
+        }
+
+        .step-line.active {
+            background-color: #e06343;
+        }
+
+        .step-line.inactive {
+            background-color: #e2e8f0;
+        }
+
+        /* 雙欄排版架構 */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+            width: 100%;
+            max-width: 920px;
+            align-items: start;
+        }
+
+        @media (min-width: 768px) {
+            .main-layout {
+                grid-template-columns: 1fr 390px;
+            }
+        }
+
+        .left-column-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            width: 100%;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.01);
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1a2b49;
+            margin-bottom: 24px;
+        }
+
+        .activity-img-wrapper {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            background-color: #f1f5f9;
+        }
+
+        .activity-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 第一步驟元件樣式 */
+        .calendar-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding: 0 4px;
+        }
+
+        .calendar-month-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a2b49;
+        }
+
+        .calendar-arrow-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #718096;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
+            text-align: center;
+        }
+
+        .calendar-day-header {
+            color: #4a5568;
+            font-size: 14px;
+            font-weight: 500;
+            padding-bottom: 4px;
+        }
+
+        .calendar-day {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 14px;
+            color: #1a2b49;
+            transition: all 0.15s;
+        }
+
+        .calendar-day.muted {
+            color: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .calendar-day.today-highlight {
+            border: 2px solid #e06343;
+            font-weight: bold;
+        }
+
+        .calendar-day.selected-active {
+            background-color: #e06343 !important;
+            color: white !important;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(224, 99, 67, 0.3);
+            border-color: transparent !important;
+        }
+
+        .slots-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .slot-box {
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #ffffff;
+        }
+
+        .slot-box .time-text {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1a2b49;
+        }
+
+        .slot-box .meta-text {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .slot-box.selected {
+            border: 2px solid #e06343;
+            background-color: #fffbf9;
+        }
+
+        /* 第二步驟元件樣式 */
+        .form-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-row-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #1a2b49;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 14px;
+            background-color: #ffffff;
+            color: #1a2b49;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #e06343;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #cbd5e1;
+        }
+
+        .payment-options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #ffffff;
+        }
+
+        .payment-option.selected {
+            border: 2px solid #e06343;
+            background-color: #fffbf9;
+        }
+
+        .payment-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .icon-line {
+            background: #06c755;
+            color: white;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            height: 32px;
+            width: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-apple {
+            color: #000000;
+            font-size: 26px;
+        }
+
+        .payment-text-main {
+            font-size: 14px;
+            font-weight: bold;
+            color: #1a2b49;
+        }
+
+        .payment-text-sub {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 3px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 14px;
+        }
+
+        .detail-label {
+            color: #718096;
+        }
+
+        .detail-value {
+            color: #1a2b49;
+            font-weight: bold;
+        }
+
+        .detail-value.highlight {
+            color: #e06343;
+        }
+
+        .btn-action {
+            width: 100%;
+            background-color: #e06343;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(224, 99, 67, 0.15);
+            transition: all 0.2s;
+        }
+
+        .btn-action:disabled {
+            background-color: #f7c3b6;
+            color: white;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* 第三步驟成功完成頁面樣式與跳出動畫 */
+        .success-layout {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 580px;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        /* 綠色打勾標誌外圈與彈出特效 */
+        .success-checkmark-circle {
+            width: 72px;
+            height: 72px;
+            background-color: #eaf5ec;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            transform: scale(0);
+            /* 初始隱藏以便執行 CSS 動畫 */
+        }
+
+        /* 動態加入此類別觸發 Pop-in 特效 */
+        .success-checkmark-circle.pop-effect {
+            animation: popInBounce 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .success-checkmark-svg {
+            width: 34px;
+            height: 34px;
+            color: #4b7754;
+        }
+
+        /* 彈跳登場動畫軌跡 */
+        @keyframes popInBounce {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            70% {
+                transform: scale(1.12);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-title {
+            font-size: 36px;
+            font-weight: bold;
+            color: #1a2b49;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        .success-sub {
+            font-size: 15px;
+            color: #4a5568;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .receipt-card {
+            background-color: #fbf6f1;
+            border-radius: 24px;
+            padding: 32px;
+            width: 100%;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .receipt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .chip-id {
+            background-color: #1a2b4a;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        .receipt-card .detail-row {
+            border-bottom: 1px solid #ebdcd5;
+            padding: 16px 0;
+        }
+
+        .btn-group-row {
+            display: flex;
+            gap: 16px;
+            width: 100%;
+            max-width: 440px;
+            justify-content: center;
+        }
+
+        .btn-outline-back {
+            background: white;
+            border: 2px solid #1a2b49;
+            color: #1a2b49;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-solid-orange {
+            background-color: #e06343;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 14px rgba(224, 99, 67, 0.2);
+        }
