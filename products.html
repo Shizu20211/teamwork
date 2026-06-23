@@ -4,360 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        /* 使用 'it-' 防止與其他夥伴的 CSS 衝突 */
+    <title>products</title>
+    <link rel="stylesheet" href="./css/products.css">
 
-        :root {
-            --it-primary-color: #e25c38;
-            /* 橘紅主調色 */
-            --it-text-dark: #333333;
-            /* 深字體色 */
-            --it-text-muted: #666666;
-            /* 淺字體色 */
-            --it-bg-light: #f9f9f9;
-            /* 側邊欄背景 */
-            --it-border-color: #e0e0e0;
-            /* 線條與邊框 */
-            --it-radius: 20px;
-            /* 圓角弧度 */
-            --it-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        /* 主容器佈局 */
-        .it-explore-container {
-            display: flex;
-            gap: 30px;
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        /* Filter Sidebar */
-        .it-filter-sidebar {
-            width: 280px;
-            flex-shrink: 0;
-            background: #ffffff;
-            border: 1px solid var(--it-border-color);
-            border-radius: var(--it-radius);
-            padding: 24px;
-            box-shadow: var(--it-shadow);
-            height: fit-content;
-        }
-
-        .it-filter-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-            border-bottom: 1px solid #f0f0f0;
-            padding-bottom: 12px;
-        }
-
-        .it-filter-title {
-            font-size: 1.1rem;
-            color: var(--it-text-dark);
-            margin: 0;
-            font-weight: 600;
-        }
-
-        .it-btn-clear {
-            background: none;
-            border: none;
-            color: var(--it-primary-color);
-            cursor: pointer;
-            font-size: 0.9rem;
-            padding: 0;
-        }
-
-        .it-btn-clear:hover {
-            text-decoration: underline;
-        }
-
-        .it-filter-group {
-            margin-bottom: 24px;
-        }
-
-        .it-filter-group-title {
-            font-size: 0.95rem;
-            color: var(--it-text-dark);
-            margin: 0 0 12px 0;
-            font-weight: 600;
-        }
-
-        /* 標籤按鈕排列 */
-        .it-filter-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .it-tag-btn {
-            background: #ffffff;
-            border: 1px solid var(--it-border-color);
-            border-radius: var(--it-radius);
-            padding: 6px 14px;
-            font-size: 0.85rem;
-            color: var(--it-text-muted);
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .it-tag-btn:hover {
-            border-color: var(--it-primary-color);
-            color: var(--it-primary-color);
-        }
-
-        /* 標籤選中狀態 */
-        .it-tag-btn.is-active {
-            background-color: var(--it-primary-color);
-            border-color: var(--it-primary-color);
-            color: #ffffff;
-        }
-
-        /* 價格輸入框 */
-        .it-price-range-inputs {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .it-price-range-inputs input {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid var(--it-border-color);
-            border-radius: 6px;
-            outline: none;
-            font-size: 0.9rem;
-        }
-
-        .it-price-range-inputs input:focus {
-            border-color: var(--it-primary-color);
-        }
-
-        .it-price-separator {
-            color: var(--it-text-muted);
-        }
-
-        /* Main & Toolbar */
-        .it-products-main {
-            flex-grow: 1;
-        }
-
-        .it-products-toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .it-breadcrumb {
-            font-size: 0.9rem;
-            color: var(--it-text-muted);
-        }
-
-        .it-breadcrumb a {
-            color: var(--it-text-muted);
-            text-decoration: none;
-        }
-
-        .it-current-page {
-            color: #333;
-        }
-
-        .it-products-count {
-            margin-left: 10px;
-            color: #888;
-        }
-
-        /* 下拉選單 */
-        .it-select {
-            padding: 6px 12px;
-            border: 1px solid var(--it-border-color);
-            border-radius: 6px;
-            outline: none;
-            color: var(--it-text-dark);
-            cursor: pointer;
-        }
-
-        /* Products Grid & Card */
-        .it-products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 20px;
-        }
-
-        .it-product-card {
-            background: #ffffff;
-            border: 1px solid var(--it-border-color);
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .it-product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        /* 圖片包裝層 */
-        .it-card-image-wrapper {
-            position: relative;
-            padding-top: 66.66%;
-            /* 3:2 比例 */
-            background: #eee;
-        }
-
-        .it-card-img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* --------------------------------------------------------------------------
-   [更新] 收藏愛心按鈕 (Favorites Heart Button) - RWD 響應式
-   -------------------------------------------------------------------------- */
-        .it-heart-btn {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: rgba(255, 255, 255, 0.9);
-            /* 稍微帶點透明度的背景 */
-            border: none;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.1rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            /* 轉變與縮放的平滑過渡 */
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            color: #888;
-            /* 預設愛心顏色（灰色） */
-            z-index: 2;
-            /* 確保按鈕在圖片之上 */
-        }
-
-        .it-heart-btn:hover {
-            transform: scale(1.1);
-            /* 滑鼠懸停時微微放大 */
-        }
-
-        /* 關鍵樣式：當按鈕擁有 'is-active' 類別時（點擊後狀態） */
-        .it-heart-btn.is-active {
-            background-color: #ffffff;
-            color: #de4a60;
-        }
-
-        /* 點擊時的瞬間縮放動畫 */
-        .it-heart-btn:active {
-            transform: scale(0.9);
-        }
-
-        /* 卡片內容細項 */
-        .it-card-content {
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .it-card-tag {
-            font-size: 0.75rem;
-            color: var(--it-primary-color);
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-
-        .it-card-title {
-            font-size: 1rem;
-            color: var(--it-text-dark);
-            margin: 0 0 8px 0;
-            font-weight: 600;
-            line-height: 1.4;
-        }
-
-        .it-card-meta {
-            font-size: 0.8rem;
-            color: var(--it-text-muted);
-            margin-bottom: 12px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .it-card-footer {
-            margin-top: auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            border-top: 1px solid #f5f5f5;
-            padding-top: 12px;
-        }
-
-        .it-card-price {
-            font-size: 1.1rem;
-            color: var(--it-text-dark);
-            font-weight: bold;
-        }
-
-        .it-card-price span {
-            font-size: 0.8rem;
-            color: var(--it-text-muted);
-            font-weight: normal;
-        }
-
-        .it-card-rating {
-            font-size: 0.85rem;
-            color: #ffa800;
-        }
-
-        .it-card-reviews {
-            color: var(--it-text-muted);
-            font-size: 0.8rem;
-        }
-
-        /* RWD 響應式中斷點設計 (Responsive Design) */
-        @media (max-width: 992px) {
-            .it-explore-container {
-                flex-direction: column;
-                /* 縮小螢幕時改為上下直式排列 */
-            }
-
-            .it-filter-sidebar {
-                width: 100%;
-                /* 篩選器滿版 */
-                box-sizing: border-box;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .it-products-toolbar {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .it-sort-wrapper {
-                width: 100%;
-            }
-
-            .it-select {
-                width: 100%;
-                /* 行動端下拉選單滿版好點擊 */
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -449,12 +98,9 @@
         </main>
     </div>
     <script>
-        /**
- * 島嶼旅跡 - 探索體驗頁面核心邏輯碼
- * 包含：資料 mock、多重條件篩選、排序、清除功能。
- */
 
-        // 1. 模擬來自後端的 12 筆基礎資料 (可提供給團隊對接 API 使用)
+
+        // 模擬來自後端的 12 筆基礎資料 (可提供給團隊對接 API 使用)
         const SAMPLE_PRODUCTS = [
             { id: 1, title: "清水斷崖獨木舟探險", region: "花蓮", category: "戶外冒險", duration: "半天", price: 1800, rating: 4.5, reviews: 312, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500" },
             { id: 2, title: "九份老街手捏陶藝體驗", region: "新北", category: "手作工藝", duration: "3小時", price: 980, rating: 4.5, reviews: 205, img: "https://petit-tw.jp/wp-content/uploads/2019/03/DSC02161-940x627.jpg" },
@@ -470,7 +116,7 @@
             { id: 12, title: "台北茶道文化靜心體驗", region: "台北", category: "文化歷史", duration: "2小時", price: 1200, rating: 4.5, reviews: 196, img: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=500" }
         ];
 
-        // 2. 當前選取的篩選狀態物件 (State)
+        // 當前選取的篩選狀態物件 (State)
         let currentFilters = {
             regions: [],
             categories: [],
@@ -485,7 +131,7 @@
             renderProducts(SAMPLE_PRODUCTS);
         });
 
-        // 3. 綁定所有的 DOM 監聽事件
+        // 綁定所有的 DOM 監聽事件
         function initDOMEvents() {
             // 標籤類點擊事件（地區、分類、時間）
             setupTagFilter('#it-filter-region', 'regions');
@@ -540,12 +186,12 @@
                 heartBtn.classList.toggle('is-active');
 
                 // 個人頁面對接註解：
-                // 1. 獲取商品 ID (從父層卡片中)
+                // 獲取商品 ID (從父層卡片中)
                 const productCard = heartBtn.closest('.it-product-card');
                 const productId = productCard.getAttribute('data-id');
                 const productTitle = productCard.querySelector('.it-card-title').textContent;
 
-                // 2. 判斷目前狀態（已收藏或已移除）
+                // 判斷目前狀態（已收藏或已移除）
                 const isCollected = heartBtn.classList.contains('is-active');
 
                 // 這裡是加入未來正式邏輯的地方：
@@ -582,7 +228,7 @@
             });
         }
 
-        // 4. 核心邏輯：過濾與排序演算法
+        // 核心邏輯：過濾與排序演算法
         function applyFiltersAndSort() {
             let result = [...SAMPLE_PRODUCTS];
 
@@ -627,7 +273,7 @@
             renderProducts(result);
         }
 
-        // 5. 將資料轉換為 HTML 結構並渲染至頁面
+        // 將資料轉換為 HTML 結構並渲染至頁面
         function renderProducts(products) {
             const grid = document.getElementById('it-products-grid');
 
