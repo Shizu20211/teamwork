@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>探索體驗 - 產品列表</title>
+    <style>
+        :root {
+            --it-primary-color: #e25c38;
+            --it-text-dark: #333333;
+            --it-text-muted: #666666;
+            --it-bg-light: #f9f9f9;
+            --it-border-color: #e0e0e0;
+            --it-radius: 20px;
+            --it-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 主容器佈局 */
+        .it-explore-container {
+            display: flex;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* Filter Sidebar */
+        .it-filter-sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            background: #ffffff;
+            border: 1px solid var(--it-border-color);
+            border-radius: var(--it-radius);
+            padding: 24px;
+            box-shadow: var(--it-shadow);
+            height: fit-content;
+        }
+
+        .it-filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 12px;
+        }
+
+        .it-filter-title {
+            font-size: 1.1rem;
+            color: var(--it-text-dark);
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .it-btn-clear {
+            background: none;
+            border: none;
+            color: var(--it-primary-color);
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0;
+        }
+
+        .it-btn-clear:hover {
+            text-decoration: underline;
+        }
+
+        .it-filter-group {
+            margin-bottom: 24px;
+        }
+
+        .it-filter-group-title {
+            font-size: 0.95rem;
+            color: var(--it-text-dark);
+            margin: 0 0 12px 0;
+            font-weight: 600;
+        }
+
+        /* 標籤按鈕排列 */
+        .it-filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .it-tag-btn {
+            background: #ffffff;
+            border: 1px solid var(--it-border-color);
+            border-radius: var(--it-radius);
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            color: var(--it-text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .it-tag-btn:hover {
+            border-color: var(--it-primary-color);
+            color: var(--it-primary-color);
+        }
+
+        /* 標籤選中狀態 */
+        .it-tag-btn.is-active {
+            background-color: var(--it-primary-color);
+            border-color: var(--it-primary-color);
+            color: #ffffff;
+        }
+
+        /* 價格輸入框 */
+        .it-price-range-inputs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .it-price-range-inputs input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--it-border-color);
+            border-radius: 6px;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .it-price-range-inputs input:focus {
+            border-color: var(--it-primary-color);
+        }
+
+        .it-price-separator {
+            color: var(--it-text-muted);
+        }
+
+        /* Main & Toolbar */
+        .it-products-main {
+            flex-grow: 1;
+        }
+
+        .it-products-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .it-breadcrumb {
+            font-size: 0.9rem;
+            color: var(--it-text-muted);
+        }
+
+        .it-breadcrumb a {
+            color: var(--it-text-muted);
+            text-decoration: none;
+        }
+
+        .it-current-page {
+            color: #333;
+        }
+
+        .it-products-count {
+            margin-left: 10px;
+            color: #888;
+        }
+
+        /* 下拉選單 */
+        .it-select {
+            padding: 6px 12px;
+            border: 1px solid var(--it-border-color);
+            border-radius: 6px;
+            outline: none;
+            color: var(--it-text-dark);
+            cursor: pointer;
+        }
+
+        /* Products Grid & Card */
+        .it-products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        /* 卡片包裝連結樣式 */
+        .it-product-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .it-product-card {
+            background: #ffffff;
+            border: 1px solid var(--it-border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .it-product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        /* 圖片包裝層 */
+        .it-card-image-wrapper {
+            position: relative;
+            padding-top: 66.66%;
+            /* 3:2 比例 */
+            background: #eee;
+        }
+
+        .it-card-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .it-heart-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #888;
+            z-index: 2;
+        }
+
+        .it-heart-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* 當按鈕擁有 'is-active' 類別時 */
+        .it-heart-btn.is-active {
+            background-color: #ffffff;
+            color: #de4a60;
+        }
+
+        /* 點擊時的瞬間縮放動畫 */
+        .it-heart-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* 卡片內容細項 */
+        .it-card-content {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .it-card-tag {
+            font-size: 0.75rem;
+            color: var(--it-primary-color);
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .it-card-title {
+            font-size: 1rem;
+            color: var(--it-text-dark);
+            margin: 0 0 8px 0;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .it-card-meta {
+            font-size: 0.8rem;
+            color: var(--it-text-muted);
+            margin-bottom: 12px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .it-card-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid #f5f5f5;
+            padding-top: 12px;
+        }
+
+        .it-card-price {
+            font-size: 1.1rem;
+            color: var(--it-text-dark);
+            font-weight: bold;
+        }
+
+        .it-card-price span {
+            font-size: 0.8rem;
+            color: var(--it-text-muted);
+            font-weight: normal;
+        }
+
+        .it-card-rating {
+            font-size: 0.85rem;
+            color: #ffa800;
+        }
+
+        .it-card-reviews {
+            color: var(--it-text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* RWD 響應式中斷點設計 */
+        @media (max-width: 992px) {
+            .it-explore-container {
+                flex-direction: column;
+            }
+
+            .it-filter-sidebar {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .it-products-toolbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .it-sort-wrapper {
+                width: 100%;
+            }
+
+            .it-select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="it-explore-container">
+        <aside class="it-filter-sidebar">
+            <div class="it-filter-header">
+                <h2 class="it-filter-title">篩選條件</h2>
+                <button type="button" id="it-clear-all" class="it-btn-clear">清除全部</button>
+            </div>
+
+            <div class="it-filter-group">
+                <h3 class="it-filter-group-title">地區</h3>
+                <div class="it-filter-tags" id="it-filter-region">
+                    <button type="button" class="it-tag-btn" data-value="台北">台北</button>
+                    <button type="button" class="it-tag-btn" data-value="新北">新北</button>
+                    <button type="button" class="it-tag-btn" data-value="台中">台中</button>
+                    <button type="button" class="it-tag-btn" data-value="台南">台南</button>
+                    <button type="button" class="it-tag-btn" data-value="高雄">高雄</button>
+                    <button type="button" class="it-tag-btn" data-value="宜蘭">宜蘭</button>
+                    <button type="button" class="it-tag-btn" data-value="花蓮">花蓮</button>
+                    <button type="button" class="it-tag-btn" data-value="嘉義">嘉義</button>
+                    <button type="button" class="it-tag-btn" data-value="屏東">屏東</button>
+                    <button type="button" class="it-tag-btn" data-value="彰化">彰化</button>
+                </div>
+            </div>
+
+            <div class="it-filter-group">
+                <h3 class="it-filter-group-title">主題分類</h3>
+                <div class="it-filter-tags" id="it-filter-category">
+                    <button type="button" class="it-tag-btn" data-value="戶外冒險">🏔 戶外</button>
+                    <button type="button" class="it-tag-btn" data-value="手作工藝">🎨 手作</button>
+                    <button type="button" class="it-tag-btn" data-value="美食料理">🍜 美食</button>
+                    <button type="button" class="it-tag-btn" data-value="文化歷史">🏛 文化</button>
+                </div>
+            </div>
+
+            <div class="it-filter-group">
+                <h3 class="it-filter-group-title">時間</h3>
+                <div class="it-filter-tags" id="it-filter-duration">
+                    <button type="button" class="it-tag-btn" data-value="2小時">2小時</button>
+                    <button type="button" class="it-tag-btn" data-value="3小時">3小時</button>
+                    <button type="button" class="it-tag-btn" data-value="4小時">4小時</button>
+                    <button type="button" class="it-tag-btn" data-value="半天">半天</button>
+                    <button type="button" class="it-tag-btn" data-value="全天">全天</button>
+                </div>
+            </div>
+
+            <div class="it-filter-group">
+                <h3 class="it-filter-group-title">價格區間（NT$）</h3>
+                <div class="it-price-range-inputs">
+                    <input type="number" id="it-price-min" placeholder="最低" min="0">
+                    <span class="it-price-separator">—</span>
+                    <input type="number" id="it-price-max" placeholder="最高" min="0">
+                </div>
+            </div>
+        </aside>
+
+        <main class="it-products-main">
+            <div class="it-products-toolbar">
+                <div class="it-breadcrumb">
+                    <a href="#">首頁</a> › <span class="it-current-page">探索體驗</span>
+                    <span class="it-products-count" id="it-total-count">共找到 12 個體驗</span>
+                </div>
+
+                <div class="it-sort-wrapper">
+                    <select id="it-sort-select" class="it-select">
+                        <option value="default">預設排序</option>
+                        <option value="price-asc">價格由低到高</option>
+                        <option value="price-desc">價格由高到低</option>
+                        <option value="rating-desc">評分最高</option>
+                        <option value="reviews-desc">最多評論</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="it-products-grid" id="it-products-grid">
+                </div>
+        </main>
+    </div>
+
+    <script>
+        // 12 筆基礎資料
+        const SAMPLE_PRODUCTS = [
+            { id: 1, title: "清水斷崖獨木舟探險", region: "花蓮", category: "戶外冒險", duration: "半天", price: 1800, rating: 4.5, reviews: 312, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500" },
+            { id: 2, title: "九份老街手捏陶藝體驗", region: "新北", category: "手作工藝", duration: "3小時", price: 980, rating: 4.5, reviews: 205, img: "https://petit-tw.jp/wp-content/uploads/2019/03/DSC02161-940x627.jpg" },
+            { id: 3, title: "台中市場私廚料理課", region: "台中", category: "美食料理", duration: "4小時", price: 1500, rating: 4.5, reviews: 189, img: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=500" },
+            { id: 4, title: "阿里山日出觀星嚮導", region: "嘉義", category: "自然探索", duration: "全天", price: 2200, rating: 5.0, reviews: 98, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500" },
+            { id: 5, title: "淡水老街藍染拼布工作坊", region: "新北", category: "手作工藝", duration: "3小時", price: 1200, rating: 4.5, reviews: 147, img: "https://images.unsplash.com/photo-1528164344705-47542687000d?w=500" },
+            { id: 6, title: "台南府城古蹟深度導覽", region: "台南", category: "文化歷史", duration: "半天", price: 800, rating: 4.5, reviews: 261, img: "https://images.unsplash.com/photo-1590001155093-a3c66ab0c3ff?w=500" },
+            { id: 7, title: "宜蘭稻田生態農遊體驗", region: "宜蘭", category: "自然探索", duration: "半天", price: 1100, rating: 4.5, reviews: 173, img: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=500" },
+            { id: 8, title: "高雄旗津老漁村料理日", region: "高雄", category: "美食料理", duration: "4小時", price: 1350, rating: 4.5, reviews: 142, img: "https://petit-tw.jp/wp-content/uploads/2019/03/DSC06114.jpg" },
+            { id: 9, title: "太魯閣峽谷健行之旅", region: "花蓮", category: "戶外冒險", duration: "全天", price: 2500, rating: 4.5, reviews: 287, img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=500" },
+            { id: 10, title: "彰化扇形車庫鐵道文化探索", region: "彰化", category: "文化歷史", duration: "2小時", price: 700, rating: 4.5, reviews: 118, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKPHnYWa3rltHpmvwwD6yWlzAm_f54sq1BACCx6xSqNytc9_9e5qnpkCE&s=10" },
+            { id: 11, title: "墾丁珊瑚礁浮潛體驗", region: "屏東", category: "戶外冒險", duration: "半天", price: 1650, rating: 4.5, reviews: 234, img: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500" },
+            { id: 12, title: "台北茶道文化靜心體驗", region: "台北", category: "文化歷史", duration: "2小時", price: 1200, rating: 4.5, reviews: 196, img: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=500" }
+        ];
+
+        // 當前選取的篩選狀態物件
+        let currentFilters = {
+            regions: [],
+            categories: [],
+            durations: [],
+            minPrice: null,
+            maxPrice: null,
+            sortBy: 'default'
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initDOMEvents();
+            renderProducts(SAMPLE_PRODUCTS);
+        });
+
+        // 綁定所有的 DOM 監聽事件
+        function initDOMEvents() {
+            setupTagFilter('#it-filter-region', 'regions');
+            setupTagFilter('#it-filter-category', 'categories');
+            setupTagFilter('#it-filter-duration', 'durations');
+
+            const minPriceInput = document.getElementById('it-price-min');
+            const maxPriceInput = document.getElementById('it-price-max');
+
+            minPriceInput.addEventListener('input', (e) => {
+                currentFilters.minPrice = e.target.value ? Number(e.target.value) : null;
+                applyFiltersAndSort();
+            });
+            maxPriceInput.addEventListener('input', (e) => {
+                currentFilters.maxPrice = e.target.value ? Number(e.target.value) : null;
+                applyFiltersAndSort();
+            });
+
+            const sortSelect = document.getElementById('it-sort-select');
+            sortSelect.addEventListener('change', (e) => {
+                currentFilters.sortBy = e.target.value;
+                applyFiltersAndSort();
+            });
+
+            const clearAllBtn = document.getElementById('it-clear-all');
+            clearAllBtn.addEventListener('click', () => {
+                currentFilters = { regions: [], categories: [], durations: [], minPrice: null, maxPrice: null, sortBy: 'default' };
+
+                document.querySelectorAll('.it-tag-btn').forEach(btn => btn.classList.remove('is-active'));
+                minPriceInput.value = '';
+                maxPriceInput.value = '';
+                sortSelect.value = 'default';
+
+                applyFiltersAndSort();
+            });
+
+            // 愛心收藏功能事件委派（加上 stopPropagation 阻斷外層 <a> 跳轉）
+            const productsGrid = document.getElementById('it-products-grid');
+            productsGrid.addEventListener('click', (e) => {
+                const heartBtn = e.target.closest('.it-heart-btn');
+                if (!heartBtn) return;
+
+                // 核心關鍵：防止觸發外層 <a> 標籤的頁面跳轉行為
+                e.preventDefault();
+                e.stopPropagation();
+
+                heartBtn.classList.toggle('is-active');
+
+                const productCard = heartBtn.closest('.it-product-card');
+                const productId = productCard.getAttribute('data-id');
+                const productTitle = productCard.querySelector('.it-card-title').textContent;
+                const isCollected = heartBtn.classList.contains('is-active');
+
+                if (isCollected) {
+                    console.log(`[開發端回饋] 已將商品 "${productTitle}" (ID: ${productId}) 加入收藏清單`);
+                } else {
+                    console.log(`[開發端回饋] 已將商品 "${productTitle}" (ID: ${productId}) 從收藏清單移除`);
+                }
+            });
+        }
+
+        function setupTagFilter(containerSelector, filterKey) {
+            const container = document.querySelector(containerSelector);
+            container.addEventListener('click', (e) => {
+                const btn = e.target.closest('.it-tag-btn');
+                if (!btn) return;
+
+                const value = btn.getAttribute('data-value');
+                btn.classList.toggle('is-active');
+
+                if (btn.classList.contains('is-active')) {
+                    currentFilters[filterKey].push(value);
+                } else {
+                    currentFilters[filterKey] = currentFilters[filterKey].filter(item => item !== value);
+                }
+                applyFiltersAndSort();
+            });
+        }
+
+        function applyFiltersAndSort() {
+            let result = [...SAMPLE_PRODUCTS];
+
+            if (currentFilters.regions.length > 0) {
+                result = result.filter(p => currentFilters.regions.includes(p.region));
+            }
+            if (currentFilters.categories.length > 0) {
+                result = result.filter(p => currentFilters.categories.includes(p.category));
+            }
+            if (currentFilters.durations.length > 0) {
+                result = result.filter(p => currentFilters.durations.includes(p.duration));
+            }
+            if (currentFilters.minPrice !== null) {
+                result = result.filter(p => p.price >= currentFilters.minPrice);
+            }
+            if (currentFilters.maxPrice !== null) {
+                result = result.filter(p => p.price <= currentFilters.maxPrice);
+            }
+
+            if (currentFilters.sortBy === 'price-asc') {
+                result.sort((a, b) => a.price - b.price);
+            } else if (currentFilters.sortBy === 'price-desc') {
+                result.sort((a, b) => b.price - a.price);
+            } else if (currentFilters.sortBy === 'rating-desc') {
+                result.sort((a, b) => b.rating - a.rating);
+            } else if (currentFilters.sortBy === 'reviews-desc') {
+                result.sort((a, b) => b.reviews - a.reviews);
+            }
+
+            document.getElementById('it-total-count').textContent = `共找到 ${result.length} 個體驗`;
+            renderProducts(result);
+        }
+
+        // 將資料轉換為 HTML 結構（恢復 <a> 標籤包裝帶參數功能）
+        function renderProducts(products) {
+            const grid = document.getElementById('it-products-grid');
+
+            if (products.length === 0) {
+                grid.innerHTML = `<div style=\"grid-column: 1/-1; text-align: center; color: #888; padding: 40px 0;\">沒有符合條件的體驗，請重新篩選</div>`;
+                return;
+            }
+
+            grid.innerHTML = products.map(product => `
+                <a href="./product-detail.html?id=${product.id}" class="it-product-card-link">
+                    <article class="it-product-card" data-id="${product.id}">
+                      <div class="it-card-image-wrapper">
+                        <img class="it-card-img" src="${product.img}" alt="${product.title}" loading="lazy">
+                        <button type="button" class="it-heart-btn" aria-label="收藏">❤</button>
+                      </div>
+                      <div class="it-card-content">
+                        <span class="it-card-tag">${product.category}</span>
+                        <h4 class="it-card-title">${product.title}</h4>
+                        <div class="it-card-meta">
+                          <span>📍 ${product.region}</span>
+                          <span>⏱ ${product.duration}</span>
+                        </div>
+                        <div class="it-card-footer">
+                          <div class="it-card-price">NT$ ${product.price.toLocaleString()} <span>/ 人起</span></div>
+                          <div class="it-card-rating">
+                            ★ ${product.rating.toFixed(1)} <span class="it-card-reviews">(${product.reviews})</span>
+                          </div>
+                        </div>
+                      </div>
+                    </article>
+                </a>
+              `).join('');
+        }
+    </script>
+</body>
+
+</html>

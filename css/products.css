@@ -1,0 +1,340 @@
+        :root {
+            --it-primary-color: #e25c38;
+            --it-text-dark: #333333;
+            --it-text-muted: #666666;
+            --it-bg-light: #f9f9f9;
+            --it-border-color: #e0e0e0;
+            --it-radius: 20px;
+            --it-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 主容器佈局 */
+        .it-explore-container {
+            display: flex;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* Filter Sidebar */
+        .it-filter-sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            background: #ffffff;
+            border: 1px solid var(--it-border-color);
+            border-radius: var(--it-radius);
+            padding: 24px;
+            box-shadow: var(--it-shadow);
+            height: fit-content;
+        }
+
+        .it-filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 12px;
+        }
+
+        .it-filter-title {
+            font-size: 1.1rem;
+            color: var(--it-text-dark);
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .it-btn-clear {
+            background: none;
+            border: none;
+            color: var(--it-primary-color);
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0;
+        }
+
+        .it-btn-clear:hover {
+            text-decoration: underline;
+        }
+
+        .it-filter-group {
+            margin-bottom: 24px;
+        }
+
+        .it-filter-group-title {
+            font-size: 0.95rem;
+            color: var(--it-text-dark);
+            margin: 0 0 12px 0;
+            font-weight: 600;
+        }
+
+        /* 標籤按鈕排列 */
+        .it-filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .it-tag-btn {
+            background: #ffffff;
+            border: 1px solid var(--it-border-color);
+            border-radius: var(--it-radius);
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            color: var(--it-text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .it-tag-btn:hover {
+            border-color: var(--it-primary-color);
+            color: var(--it-primary-color);
+        }
+
+        /* 標籤選中狀態 */
+        .it-tag-btn.is-active {
+            background-color: var(--it-primary-color);
+            border-color: var(--it-primary-color);
+            color: #ffffff;
+        }
+
+        /* 價格輸入框 */
+        .it-price-range-inputs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .it-price-range-inputs input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--it-border-color);
+            border-radius: 6px;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .it-price-range-inputs input:focus {
+            border-color: var(--it-primary-color);
+        }
+
+        .it-price-separator {
+            color: var(--it-text-muted);
+        }
+
+        /* Main & Toolbar */
+        .it-products-main {
+            flex-grow: 1;
+        }
+
+        .it-products-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .it-breadcrumb {
+            font-size: 0.9rem;
+            color: var(--it-text-muted);
+        }
+
+        .it-breadcrumb a {
+            color: var(--it-text-muted);
+            text-decoration: none;
+        }
+
+        .it-current-page {
+            color: #333;
+        }
+
+        .it-products-count {
+            margin-left: 10px;
+            color: #888;
+        }
+
+        /* 下拉選單 */
+        .it-select {
+            padding: 6px 12px;
+            border: 1px solid var(--it-border-color);
+            border-radius: 6px;
+            outline: none;
+            color: var(--it-text-dark);
+            cursor: pointer;
+        }
+
+        /* Products Grid & Card */
+        .it-products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .it-product-card {
+            background: #ffffff;
+            border: 1px solid var(--it-border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .it-product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        /* 圖片包裝層 */
+        .it-card-image-wrapper {
+            position: relative;
+            padding-top: 66.66%;
+            /* 3:2 比例 */
+            background: #eee;
+        }
+
+        .it-card-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .it-heart-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            /* 稍微帶點透明度的背景 */
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            /* 轉變與縮放的平滑過渡 */
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #888;
+            /* 預設愛心顏色（灰色） */
+            z-index: 2;
+            /* 確保按鈕在圖片之上 */
+        }
+
+        .it-heart-btn:hover {
+            transform: scale(1.1);
+            /* 滑鼠懸停時微微放大 */
+        }
+
+        /* 關鍵樣式：當按鈕擁有 'is-active' 類別時（點擊後狀態） */
+        .it-heart-btn.is-active {
+            background-color: #ffffff;
+            color: #de4a60;
+        }
+
+        /* 點擊時的瞬間縮放動畫 */
+        .it-heart-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* 卡片內容細項 */
+        .it-card-content {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .it-card-tag {
+            font-size: 0.75rem;
+            color: var(--it-primary-color);
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .it-card-title {
+            font-size: 1rem;
+            color: var(--it-text-dark);
+            margin: 0 0 8px 0;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .it-card-meta {
+            font-size: 0.8rem;
+            color: var(--it-text-muted);
+            margin-bottom: 12px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .it-card-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid #f5f5f5;
+            padding-top: 12px;
+        }
+
+        .it-card-price {
+            font-size: 1.1rem;
+            color: var(--it-text-dark);
+            font-weight: bold;
+        }
+
+        .it-card-price span {
+            font-size: 0.8rem;
+            color: var(--it-text-muted);
+            font-weight: normal;
+        }
+
+        .it-card-rating {
+            font-size: 0.85rem;
+            color: #ffa800;
+        }
+
+        .it-card-reviews {
+            color: var(--it-text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* RWD 響應式中斷點設計 (Responsive Design) */
+        @media (max-width: 992px) {
+            .it-explore-container {
+                flex-direction: column;
+                /* 縮小螢幕時改為上下直式排列 */
+            }
+
+            .it-filter-sidebar {
+                width: 100%;
+                /* 篩選器滿版 */
+                box-sizing: border-box;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .it-products-toolbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .it-sort-wrapper {
+                width: 100%;
+            }
+
+            .it-select {
+                width: 100%;
+                /* 行動端下拉選單滿版好點擊 */
+            }
+        }

@@ -1,0 +1,1116 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>體驗詳細 - 島嶼旅跡</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                orange: "#FF5B22",
+                darkblue: "#132A55",
+                beigeBg: "#FAF6F0",
+                textGray: "#556575",
+                darkText: "#1E293B",
+              },
+            },
+            fontFamily: {
+              display: ["Playfair Display", "Noto Sans TC", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      :root {
+        --nav-bg: #1a2649;
+        --brand-orange: #e66f43;
+        --text-white: #ffffff;
+        --font-main:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC",
+          sans-serif;
+        --transition-smooth: all 0.25s ease;
+        --footer-bg: #1a2649;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      /* ✅ 單一 body 樣式 */
+      body {
+        font-family: var(--font-main);
+        background-color: #f8f9fa;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        color: #333333;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      /* ✅ main-content 撐滿剩餘空間，把 footer 推到底 */
+      .main-content {
+        flex: 1 0 auto;
+      }
+
+      /* Header & Nav */
+      .main-header {
+        background-color: var(--nav-bg);
+        width: 100%;
+        box-shadow: 0 4px 12px #0000001a;
+        flex-shrink: 0;
+      }
+
+      .nav-container {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 16px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .logo-text {
+        color: var(--text-white);
+        font-size: 1.6rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+
+      .nav-menu {
+        display: flex;
+        align-items: center;
+        list-style: none;
+        gap: 32px;
+      }
+
+      .nav-link {
+        color: var(--text-white);
+        font-size: 1rem;
+        font-weight: 500;
+        opacity: 0.9;
+        transition: var(--transition-smooth);
+      }
+      .nav-link:hover {
+        opacity: 1;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      }
+
+      .btn-cta {
+        background-color: var(--brand-orange);
+        color: var(--text-white);
+        padding: 10px 24px;
+        border-radius: 50px;
+        font-weight: 500;
+        font-size: 1rem;
+        transition: var(--transition-smooth);
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(230, 111, 67, 0.2);
+      }
+      .btn-cta:hover {
+        background-color: #df5d2f;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 14px rgba(230, 111, 67, 0.3);
+      }
+      .btn-cta:active {
+        transform: translateY(0);
+      }
+
+      /* Footer */
+      .main-footer {
+        background-color: var(--footer-bg);
+        color: var(--text-white);
+        padding: 60px 0 30px;
+        width: 100%;
+        flex-shrink: 0;
+      }
+      .main-footer .container-normal {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      .main-footer .footer-main {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 40px;
+        padding-bottom: 40px;
+      }
+      .main-footer .footer-brand {
+        flex: 2;
+      }
+      .main-footer .footer-menu {
+        flex: 3;
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+      }
+      .main-footer .footer-logo {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+      .main-footer .footer-logo .dot {
+        color: var(--brand-orange);
+      }
+      .main-footer .brand-desc {
+        font-size: 14px;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.8);
+      }
+      .main-footer .menu-group {
+        list-style: none;
+        min-width: 100px;
+        flex-wrap: wrap;
+      }
+      .main-footer .menu-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+      .main-footer .menu-group li {
+        margin-bottom: 15px;
+      }
+      .main-footer .menu-item {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+        transition: color 0.2s ease;
+      }
+      .main-footer .menu-item:hover {
+        color: var(--text-white);
+      }
+      .main-footer .footer-divider {
+        border: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 20px;
+      }
+      .main-footer .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .main-footer .slogan {
+        letter-spacing: 1px;
+      }
+
+      /* RWD */
+      @media (max-width: 992px) {
+        .nav-container {
+          padding: 16px 24px;
+        }
+        .nav-menu {
+          gap: 20px;
+        }
+        .main-footer .footer-main {
+          gap: 30px;
+        }
+      }
+      @media (max-width: 768px) {
+        .nav-menu {
+          display: none;
+        }
+        .btn-cta {
+          padding: 8px 16px;
+          font-size: 0.9rem;
+        }
+        .main-footer .footer-main {
+          flex-direction: column;
+          gap: 40px;
+        }
+        .main-footer .footer-brand,
+        .main-footer .footer-menu {
+          flex: none;
+          width: 100%;
+        }
+        .main-footer .footer-menu {
+          flex-wrap: wrap;
+          gap: 30px;
+          justify-content: flex-start;
+        }
+        .main-footer .menu-group {
+          flex: 1 1 120px;
+        }
+        .main-footer .footer-bottom {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+      }
+
+      /* 縮圖樣式 */
+      .thumb-img {
+        cursor: pointer;
+        opacity: 0.5;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        object-fit: cover;
+        transition: all 0.3s ease;
+      }
+      .thumb-img:hover {
+        opacity: 1;
+        transform: scale(1.03);
+        border-color: #ff5b22;
+        box-shadow: 0 0 0 2px #ff5b22;
+      }
+      .thumb-img.active {
+        opacity: 1;
+        border: 1.5px solid #ff5b22;
+        box-shadow: 0 0 0 1px #ff5b22;
+      }
+
+      .divider-2px {
+        border-top-width: 2px;
+        border-color: #f5efe6;
+      }
+
+      .font-display {
+        font-family: "Playfair Display", "Noto Sans TC", sans-serif;
+      }
+
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Nav -->
+    <header class="main-header">
+      <nav class="nav-container">
+        <a href="#" class="logo-wrapper">
+          <span class="logo-text">島嶼旅跡</span>
+        </a>
+        <ul class="nav-menu">
+          <li><a href="#" class="nav-link">探索體驗</a></li>
+          <li><a href="#" class="nav-link">關於我們</a></li>
+          <li><a href="#" class="nav-link">常見問題</a></li>
+          <li><a href="#" class="nav-link">我的訂單</a></li>
+          <li><button class="btn-cta">登入 / 註冊</button></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- ✅ 修正：main-content 包住你的內容，footer 在外面 -->
+    <main class="main-content">
+      <div class="flex justify-center w-full">
+        <div
+          id="product-detail-container"
+          class="w-full max-w-6xl px-6 sm:px-12 lg:px-16 py-4 mt-10"
+        >
+          <div id="loading" class="text-center py-20 text-brand-textGray">
+            載入中...
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+      <div class="footer-body container-normal">
+        <div class="footer-main">
+          <div class="footer-brand">
+            <h3 class="footer-logo">島嶼旅跡</h3>
+            <p class="brand-desc">
+              深入台灣每一條小徑，<br />
+              遇見最在地的感動體驗。<br />
+              我們相信，旅行不只是到達目的地，<br />
+              而是與這片土地真實相遇。
+            </p>
+          </div>
+          <div class="footer-menu">
+            <ul class="menu-group">
+              <li class="menu-title">探索</li>
+              <li><a href="#" class="menu-item">所有體驗</a></li>
+              <li><a href="#" class="menu-item">戶外冒險</a></li>
+              <li><a href="#" class="menu-item">手作工藝</a></li>
+              <li><a href="#" class="menu-item">美食料理</a></li>
+              <li><a href="#" class="menu-item">文化歷史</a></li>
+            </ul>
+            <ul class="menu-group">
+              <li class="menu-title">公司</li>
+              <li><a href="#" class="menu-item">關於我們</a></li>
+              <li><a href="#" class="menu-item">常見問題</a></li>
+              <li><a href="#" class="menu-item">旅遊嚮導招募</a></li>
+              <li><a href="#" class="menu-item">媒體合作</a></li>
+            </ul>
+            <ul class="menu-group">
+              <li class="menu-title">支援</li>
+              <li><a href="#" class="menu-item">退款政策</a></li>
+              <li><a href="#" class="menu-item">隱私政策</a></li>
+              <li><a href="#" class="menu-item">服務條款</a></li>
+              <li><a href="#" class="menu-item">查看訂單</a></li>
+            </ul>
+          </div>
+        </div>
+        <hr class="footer-divider" />
+        <div class="footer-bottom">
+          <div class="copyright">
+            © 2025 島嶼旅跡 IslandTrace. All rights reserved.
+          </div>
+          <div class="slogan">用心丈量台灣每一寸土地</div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const productsData = [
+        {
+          id: 1,
+          name: "清水斷崖獨木舟探險",
+          region: "花蓮",
+          duration: "半日",
+          rating: 4.9,
+          reviewCount: 312,
+          price: 1800,
+          images: [
+            "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1200&h=600&q=80",
+            "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=600&h=400&q=80",
+          ],
+          category: "戶外冒險",
+          intro:
+            "這是一場深入花蓮在地生活的難忘體驗。由當地資深導遊帶領，您將突破一般觀光行程的框架，真正感受這片土地的獨特魅力。無論您是第一次探索台灣，或是熟悉這座島嶼的旅人，這場體驗都將給您留下最難忘的回憶。",
+          highlights: [
+            "深入探索花蓮最具代表性的自然人文景觀",
+            "由在地導遊帶領，分享第一手在地故事",
+            "小班制體驗（最多 8 人），確保每位遊客都能獲得充分關注",
+            "適合各年齡層，無需特殊技能或體力即可參與",
+            "體驗結束後提供精美紀念冊供遊客珍藏",
+          ],
+          includes: [
+            "專業嚮導帶領全程",
+            "相關活動器材與裝備",
+            "旅遊責任保險",
+            "體驗結束後的紀念照片",
+          ],
+          excludes: [
+            "交通費用（往返集合點）",
+            "個人餐飲費用",
+            "個人旅遊保險",
+            "額外自費項目",
+          ],
+          reviews: [
+            {
+              name: "林小美",
+              date: "2025.04",
+              rating: 5,
+              content:
+                "非常棒的體驗！嚮導超級專業又親切，讓我們玩得非常開心。強烈推薦給所有想要深度認識台灣的朋友！",
+            },
+            {
+              name: "王大明",
+              date: "2025.03",
+              rating: 5,
+              content:
+                "這是我今年最難忘的體驗之一，感謝嚮導分享了很多在地故事，讓整個旅程充滿意義。下次一定還要再來！",
+            },
+            {
+              name: "Kenji Y.",
+              date: "2025.02",
+              rating: 4,
+              content:
+                "來自日本的我，透過這次體驗更加認識了台灣的美。嚮導的英文解說也很流暢，真的很棒的安排。",
+            },
+          ],
+        },
+        {
+          id: 2,
+          name: "九份老街手捏陶藝體驗",
+          region: "新北",
+          duration: "半日",
+          rating: 4.8,
+          reviewCount: 205,
+          price: 980,
+          images: [
+            "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=1200&h=600&q=80",
+            "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=600&h=400&q=80",
+          ],
+          category: "手作工藝",
+          intro:
+            "在九份老街的懷舊氛圍中，親手捏製屬於自己的陶藝作品。由在地陶藝師指導，感受泥土的溫度與創作的樂趣。",
+          highlights: [
+            "九份老街懷舊氛圍中創作",
+            "在地陶藝師親自指導",
+            "作品可燒製完成後寄送",
+            "適合各年齡層，無需經驗",
+          ],
+          includes: ["陶藝材料與工具", "專業陶藝師指導", "作品燒製與寄送服務"],
+          excludes: ["個人額外購買作品", "交通費用"],
+          reviews: [
+            {
+              name: "陳小華",
+              date: "2025.03",
+              rating: 5,
+              content:
+                "很療癒的體驗！老師非常有耐心，讓我這個新手也能做出滿意的作品。",
+            },
+          ],
+        },
+        {
+          id: 3,
+          name: "台中市場私廚料理課",
+          region: "台中",
+          duration: "半日",
+          rating: 4.7,
+          reviewCount: 189,
+          price: 1500,
+          images: [
+            "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1200&h=600&q=80",
+            "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=600&h=400&q=80",
+          ],
+          category: "美食料理",
+          intro:
+            "跟著私廚走進台中傳統市場，挑選最新鮮的在地食材，學習道地的台灣料理手法。",
+          highlights: [
+            "走訪台中傳統市場",
+            "私廚親自傳授料理秘訣",
+            "享用自己親手製作的美食",
+            "小班教學，互動性高",
+          ],
+          includes: [
+            "市場導覽與食材採買",
+            "料理課程與工具",
+            "午餐（自己製作的料理）",
+          ],
+          excludes: ["個人額外購物", "交通費用"],
+          reviews: [
+            {
+              name: "張小雯",
+              date: "2025.02",
+              rating: 4,
+              content:
+                "非常有趣的體驗！從市場採買到完成料理，每個環節都很用心。",
+            },
+          ],
+        },
+        {
+          id: 4,
+          name: "阿里山日出觀星嚮導",
+          region: "嘉義",
+          duration: "全天",
+          rating: 4.9,
+          reviewCount: 98,
+          price: 2200,
+          images: [
+            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&h=600&q=80",
+            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=600&h=400&q=80",
+          ],
+          category: "自然探索",
+          intro:
+            "在阿里山體驗日出與星空的雙重感動。專業嚮導帶您探索高山生態，感受大自然的壯麗。",
+          highlights: [
+            "阿里山日出觀賞",
+            "高山星空導覽",
+            "專業生態嚮導解說",
+            "小團制，品質保證",
+          ],
+          includes: ["專業嚮導全程陪同", "觀星設備使用", "簡易早餐與熱飲"],
+          excludes: ["住宿費用", "交通費用", "個人保險"],
+          reviews: [
+            {
+              name: "李大山",
+              date: "2025.01",
+              rating: 5,
+              content: "日出和星空都美得令人屏息！嚮導非常專業，學到很多。",
+            },
+          ],
+        },
+        {
+          id: 5,
+          name: "淡水老街藍染拼布工作坊",
+          region: "新北",
+          duration: "半日",
+          rating: 4.6,
+          reviewCount: 147,
+          price: 1200,
+          images: [
+            "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1200&h=600&q=80",
+            "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&h=400&q=80",
+          ],
+          category: "手作工藝",
+          intro:
+            "在淡水老街的百年老宅中，體驗傳統藍染工藝，創作屬於自己的拼布作品。",
+          highlights: [
+            "傳統藍染技法教學",
+            "使用天然染材",
+            "完成獨一無二的拼布作品",
+            "老宅氛圍，充滿歷史感",
+          ],
+          includes: ["藍染材料與工具", "專業工藝師指導", "作品帶回"],
+          excludes: ["交通費用", "個人額外購物"],
+          reviews: [
+            {
+              name: "黃小柔",
+              date: "2025.03",
+              rating: 4,
+              content: "很特別的體驗！藍染的過程非常療癒，成品也很滿意。",
+            },
+          ],
+        },
+        {
+          id: 6,
+          name: "台南府城古蹟深度導覽",
+          region: "台南",
+          duration: "半日",
+          rating: 4.8,
+          reviewCount: 261,
+          price: 800,
+          images: [
+            "https://images.unsplash.com/photo-1526397751294-331021109fbd?auto=format&fit=crop&w=1200&h=600&q=80",
+            "https://images.unsplash.com/photo-1526397751294-331021109fbd?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1526397751294-331021109fbd?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1526397751294-331021109fbd?auto=format&fit=crop&w=600&h=400&q=80",
+          ],
+          category: "文化歷史",
+          intro:
+            "由在地文史工作者帶領，走訪台南府城的經典古蹟，聆聽被遺忘的歷史故事。",
+          highlights: [
+            "府城經典古蹟巡禮",
+            "文史工作者專業解說",
+            "探索隱藏版歷史景點",
+            "小團制，深入互動",
+          ],
+          includes: ["專業導覽服務", "古蹟門票", "在地小吃品嚐"],
+          excludes: ["交通費用", "個人額外消費"],
+          reviews: [
+            {
+              name: "吳小文",
+              date: "2025.02",
+              rating: 5,
+              content: "非常專業的導覽！對台南的歷史有了更深的認識，收穫滿滿。",
+            },
+          ],
+        },
+        {
+          id: 7,
+          name: "宜蘭稻田生態農遊體驗",
+          region: "宜蘭",
+          duration: "半日",
+          rating: 4.7,
+          reviewCount: 173,
+          price: 1100,
+          images: [
+            "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&h=600&q=80",
+            "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&h=400&q=80",
+          ],
+          category: "自然探索",
+          intro: "走進宜蘭的稻田生態，體驗農耕生活，認識友善農業與土地的故事。",
+          highlights: [
+            "稻田生態導覽",
+            "友善農耕體驗",
+            "在地農家午餐",
+            "親近土地，感受自然",
+          ],
+          includes: ["農事體驗活動", "在地農家午餐", "生態導覽解說"],
+          excludes: ["交通費用", "個人額外購物"],
+          reviews: [
+            {
+              name: "林小農",
+              date: "2025.01",
+              rating: 4,
+              content: "很棒的農遊體驗！讓孩子們親近土地，學到了很多。",
+            },
+          ],
+        },
+        {
+          id: 8,
+          name: "高雄旗津老漁村料理日",
+          region: "高雄",
+          duration: "半日",
+          rating: 4.5,
+          reviewCount: 142,
+          price: 1350,
+          images: [
+            "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?auto=format&fit=crop&w=1200&h=600&q=80",
+            "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?auto=format&fit=crop&w=600&h=400&q=80",
+          ],
+          category: "美食料理",
+          intro:
+            "在高雄旗津的老漁村，跟著在地阿嬤學習傳統漁村料理，品嚐最道地的海味。",
+          highlights: [
+            "漁村文化導覽",
+            "傳統漁村料理教學",
+            "品嚐自己做的海味大餐",
+            "感受漁村日常",
+          ],
+          includes: ["料理課程與食材", "漁村導覽", "午餐"],
+          excludes: ["交通費用", "個人保險"],
+          reviews: [
+            {
+              name: "陳小海",
+              date: "2025.03",
+              rating: 4,
+              content: "阿嬤的料理教學太有趣了！學到了很多傳統的漁村料理技巧。",
+            },
+          ],
+        },
+        {
+          id: 9,
+          name: "太魯閣峽谷健行之旅",
+          region: "花蓮",
+          duration: "全天",
+          rating: 4.9,
+          reviewCount: 287,
+          price: 2500,
+          images: [
+            "https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?auto=format&fit=crop&w=1200&h=600&q=80",
+            "https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?auto=format&fit=crop&w=600&h=400&q=80",
+          ],
+          category: "戶外冒險",
+          intro:
+            "深入太魯閣峽谷，體驗世界級的自然奇觀。專業嚮導帶您走訪經典步道，感受大自然的鬼斧神工。",
+          highlights: [
+            "太魯閣經典步道健行",
+            "專業嚮導解說地質生態",
+            "峽谷美景盡收眼底",
+            "適合有基礎體力者",
+          ],
+          includes: ["專業嚮導全程陪同", "安全裝備", "午餐餐盒"],
+          excludes: ["交通費用", "個人保險", "住宿"],
+          reviews: [
+            {
+              name: "王山友",
+              date: "2025.02",
+              rating: 5,
+              content: "太魯閣的美景令人震撼！嚮導非常專業，解說很詳細。",
+            },
+          ],
+        },
+        {
+          id: 10,
+          name: "彰化扇形車庫鐵道文化探索",
+          region: "彰化",
+          duration: "半日",
+          rating: 4.6,
+          reviewCount: 118,
+          price: 700,
+          images: [
+            "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&h=600&q=80",
+            "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=600&h=400&q=80",
+          ],
+          category: "文化歷史",
+          intro:
+            "走訪全台唯一的扇形車庫，探索台灣鐵道文化的百年故事，感受火車的歷史魅力。",
+          highlights: [
+            "扇形車庫導覽",
+            "鐵道文化故事分享",
+            "近距離觀賞蒸汽火車",
+            "適合鐵道迷與親子",
+          ],
+          includes: ["專業導覽服務", "鐵道文化體驗", "紀念小禮物"],
+          excludes: ["交通費用", "個人額外消費"],
+          reviews: [
+            {
+              name: "劉小火",
+              date: "2025.01",
+              rating: 5,
+              content: "鐵道迷必訪！導覽非常精彩，聽到了很多有趣的故事。",
+            },
+          ],
+        },
+        {
+          id: 11,
+          name: "墾丁珊瑚礁浮潛體驗",
+          region: "屏東",
+          duration: "半日",
+          rating: 4.8,
+          reviewCount: 234,
+          price: 1650,
+          images: [
+            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&h=600&q=80",
+            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&h=400&q=80",
+          ],
+          category: "戶外冒險",
+          intro:
+            "在墾丁的清澈海域中，探索繽紛的珊瑚礁生態。專業教練帶領，安全又充滿樂趣。",
+          highlights: [
+            "珊瑚礁浮潛體驗",
+            "專業教練全程陪同",
+            "豐富的海洋生態",
+            "適合初學者與親子",
+          ],
+          includes: ["浮潛裝備", "專業教練指導", "水中攝影服務"],
+          excludes: ["交通費用", "個人保險", "額外水上活動"],
+          reviews: [
+            {
+              name: "林小魚",
+              date: "2025.03",
+              rating: 5,
+              content: "海底世界太美了！教練非常細心，讓我們玩得很安心。",
+            },
+          ],
+        },
+        {
+          id: 12,
+          name: "台北茶道文化靜心體驗",
+          region: "台北",
+          duration: "半日",
+          rating: 4.7,
+          reviewCount: 196,
+          price: 1200,
+          images: [
+            "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=1200&h=600&q=80",
+            "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&h=400&q=80",
+            "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&h=400&q=80",
+          ],
+          category: "文化歷史",
+          intro:
+            "在台北的靜謐空間中，體驗傳統茶道文化，學習品茗與靜心，感受生活的從容。",
+          highlights: [
+            "傳統茶道體驗",
+            "專業茶藝師指導",
+            "品嚐多款台灣好茶",
+            "靜心放鬆，沉澱心靈",
+          ],
+          includes: ["茶道課程", "茶葉與茶點", "茶藝師解說"],
+          excludes: ["交通費用", "個人購買茶葉"],
+          reviews: [
+            {
+              name: "陳小靜",
+              date: "2025.02",
+              rating: 5,
+              content: "很棒的靜心體驗！在忙碌的生活中，找到了一方寧靜的空間。",
+            },
+          ],
+        },
+      ];
+
+      const detailImageSets = {
+        1: [
+          "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1200&h=600&q=80",
+          "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=600&h=400&q=80",
+        ],
+        2: [
+          "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=1200&h=600&q=80",
+          "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1452860606245-08befc0ff44b?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1493106819501-66d381c466f1?auto=format&fit=crop&w=600&h=400&q=80",
+        ],
+        3: [
+          "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1200&h=600&q=80",
+          "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&w=600&h=400&q=80",
+        ],
+        4: [
+          "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&h=600&q=80",
+          "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&h=400&q=80",
+        ],
+        5: [
+          "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1200&h=600&q=80",
+          "https://images.unsplash.com/photo-1452860606245-08befc0ff44b?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1493106819501-66d381c466f1?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&w=600&h=400&q=80",
+        ],
+        6: [
+          "https://images.unsplash.com/photo-1526397751294-331021109fbd?auto=format&fit=crop&w=1200&h=600&q=80",
+          "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1590001155093-a3c66ab0c3ff?auto=format&fit=crop&w=600&h=400&q=80",
+        ],
+        7: [
+          "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&h=600&q=80",
+          "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1471193945509-9ad0617afabf?auto=format&fit=crop&w=600&h=400&q=80",
+        ],
+        8: [
+          "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?auto=format&fit=crop&w=1200&h=600&q=80",
+          "https://images.unsplash.com/photo-1534080391025-4979983353e8?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&h=400&q=80",
+        ],
+        9: [
+          "https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?auto=format&fit=crop&w=1200&h=600&q=80",
+          "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&h=400&q=80",
+        ],
+        10: [
+          "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&h=600&q=80",
+          "https://images.unsplash.com/photo-1532102230681-3006a85f4039?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=600&h=400&q=80",
+        ],
+        11: [
+          "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&h=600&q=80",
+          "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=600&h=400&q=80",
+        ],
+        12: [
+          "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=1200&h=600&q=80",
+          "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&h=400&q=80",
+          "https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=600&h=400&q=80",
+        ],
+      };
+
+      productsData.forEach((product) => {
+        if (detailImageSets[product.id]) product.images = detailImageSets[product.id];
+      });
+
+      function renderStars(rating) {
+        const full = Math.floor(rating);
+        const half = rating - full >= 0.5 ? 1 : 0;
+        const empty = 5 - full - half;
+        return "★".repeat(full) + (half ? "★" : "") + "☆".repeat(empty);
+      }
+
+      function getProductId() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return parseInt(urlParams.get("id")) || 1;
+      }
+
+      let currentImageIndex = 0;
+      let currentImages = [];
+
+      function switchImage(index) {
+        if (!currentImages.length) return;
+        currentImageIndex = index;
+        const mainImg = document.getElementById("main-product-image");
+        if (mainImg) mainImg.src = currentImages[index];
+        document.querySelectorAll(".thumb-img").forEach((el, i) => {
+          el.classList.toggle("active", i === index);
+        });
+      }
+
+      function updateQuantity(delta) {
+        const input = document.getElementById("quantity-input");
+        if (!input) return;
+        let newVal = parseInt(input.value) + delta;
+        if (newVal < 1) newVal = 1;
+        if (newVal > 20) newVal = 20;
+        input.value = newVal;
+        const price = window._currentPrice || 0;
+        const totalEl = document.getElementById("total-price");
+        if (totalEl)
+          totalEl.textContent = `NT$ ${(price * newVal).toLocaleString()}`;
+      }
+
+      function renderProductDetail(product) {
+        if (!product) {
+          document.getElementById("product-detail-container").innerHTML =
+            `<div class="text-center py-20"><p class="text-xl text-brand-textGray">找不到該體驗項目</p></div>`;
+          return;
+        }
+
+        currentImages = product.images || [product.image];
+        if (!currentImages.length) currentImages = [product.image || ""];
+
+        const thumbsHtml = currentImages
+          .map(
+            (img, idx) => `
+          <img src="${img}" alt="縮圖 ${idx + 1}"
+               class="thumb-img w-[70px] h-[50px] sm:w-[90px] sm:h-[60px] object-cover ${idx === 0 ? "active" : ""}"
+               onclick="switchImage(${idx})" />`,
+          )
+          .join("");
+
+        const reviewsHtml = product.reviews
+          .map(
+            (r, idx) => `
+          <div class="pb-4 ${idx < product.reviews.length - 1 ? "border-b border-[#F5EFE6]" : ""}">
+            <div class="flex items-center gap-3 mb-1">
+              <div class="w-9 h-9 rounded-full bg-brand-orange/10 flex items-center justify-center text-brand-orange font-bold text-sm">${r.name.charAt(0)}</div>
+              <span class="font-bold text-brand-darkblue text-sm">${r.name}</span>
+              <span class="text-brand-textGray text-xs">${r.date}</span>
+            </div>
+            <div class="text-yellow-400 text-xs">${renderStars(r.rating || 5)}</div>
+            <p class="text-brand-textGray text-sm leading-relaxed mt-1">${r.content}</p>
+          </div>`,
+          )
+          .join("");
+
+        const highlightsHtml = product.highlights
+          .map(
+            (h) => `
+          <li class="flex items-start gap-2 text-sm">
+            <span class="text-brand-orange text-[10px]">✦</span>
+            <span class="text-brand-textGray">${h}</span>
+          </li>`,
+          )
+          .join("");
+
+        const includesHtml = product.includes
+          .map(
+            (i) =>
+              `<li class="text-sm text-brand-textGray list-disc ml-5">${i}</li>`,
+          )
+          .join("");
+        const excludesHtml = product.excludes
+          .map(
+            (e) =>
+              `<li class="text-sm text-brand-textGray list-disc ml-5">${e}</li>`,
+          )
+          .join("");
+
+        document.getElementById("product-detail-container").innerHTML = `
+        <!-- 麵包屑 -->
+        <nav class="flex items-center gap-1.5 text-sm text-brand-textGray mb-2 flex-wrap">
+          <a href="">首頁</a>
+          <span class="text-gray-400">›</span>
+          <a href="">探索體驗</a>
+          <span class="text-gray-400">›</span>
+          <span class="text-gray-400">${product.name}</span>
+        </nav>
+
+          <div class="mb-3">
+            <div class="w-full rounded-xl overflow-hidden shadow-lg">
+              <img id="main-product-image" src="${currentImages[0]}" alt="${product.name}" class="w-full h-[240px] sm:h-[340px] object-cover" />
+            </div>
+            <div class="flex gap-2 mt-2 overflow-x-auto pb-1">${thumbsHtml}</div>
+          </div>
+
+          <div class="mb-4">
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-darkblue font-display">${product.name}</h1>
+            <div class="flex flex-wrap items-center gap-3 mt-1.5 text-sm text-brand-darkblue">
+              <span>📍 ${product.region}</span>
+              <span>⏱ ${product.duration}</span>
+              <span>🏷 ${product.category}</span>
+              <span class="text-yellow-400">${renderStars(product.rating)}</span>
+              <span class="text-xs text-brand-textGray">(${product.reviewCount}則評論)</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-6">
+              <section>
+                <h2 class="text-xl font-bold text-brand-darkblue mb-3">體驗介紹</h2>
+                <hr class="divider-2px mb-3" />
+                <p class="text-brand-textGray text-sm leading-relaxed">${product.intro}</p>
+              </section>
+              <section>
+                <h2 class="text-xl font-bold text-brand-darkblue mb-3 flex items-center gap-1.5"><span>✦</span> 行程亮點</h2>
+                <hr class="divider-2px mb-3" />
+                <ul class="space-y-1.5">${highlightsHtml}</ul>
+              </section>
+              <section>
+                <h2 class="text-xl font-bold text-brand-darkblue mb-3">費用說明</h2>
+                <hr class="divider-2px mb-3" />
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div class="bg-[#F5EFE6] rounded-xl p-4">
+                    <h3 class="font-bold text-brand-darkblue mb-1.5 text-sm flex items-center gap-1.5"><span class="text-green-600">✅</span> 費用包含</h3>
+                    <ul class="space-y-1">${includesHtml}</ul>
+                  </div>
+                  <div class="bg-[#F5EFE6] rounded-xl p-4">
+                    <h3 class="font-bold text-brand-darkblue mb-1.5 text-sm flex items-center gap-1.5"><span class="text-red-500">❌</span> 費用不包含</h3>
+                    <ul class="space-y-1">${excludesHtml}</ul>
+                  </div>
+                </div>
+              </section>
+              <section>
+                <h2 class="text-xl font-bold text-brand-darkblue mb-3">旅客評論</h2>
+                <hr class="divider-2px mb-3" />
+                <div class="space-y-3">${reviewsHtml}</div>
+              </section>
+            </div>
+
+            <div class="lg:col-span-1">
+              <div class="sticky top-6 bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+                <div class="text-3xl font-bold text-brand-orange">NT$ ${product.price.toLocaleString()}</div>
+                <div class="text-brand-textGray text-sm mb-5">/ 人起</div>
+                <div class="flex items-center gap-2 text-sm text-brand-textGray mb-5">
+                  <span class="text-yellow-400 text-base">${renderStars(product.rating)}</span>
+                  <span class="font-medium">${product.rating}</span>
+                  <span>(${product.reviewCount})</span>
+                </div>
+                <div class="flex items-center justify-between mb-5">
+                  <label class="text-sm font-medium text-brand-darkblue">參加人數</label>
+                  <div class="flex items-center gap-3">
+                    <button onclick="updateQuantity(-1)" class="w-8 h-8 rounded-full border border-gray-300 hover:border-brand-orange hover:text-brand-orange flex items-center justify-center text-lg font-bold transition">−</button>
+                    <input type="number" id="quantity-input" value="1" min="1" max="20" class="w-12 text-center border-0 focus:ring-0 text-lg font-bold text-brand-darkblue" />
+                    <button onclick="updateQuantity(1)" class="w-8 h-8 rounded-full border border-gray-300 hover:border-brand-orange hover:text-brand-orange flex items-center justify-center text-lg font-bold transition">+</button>
+                  </div>
+                </div>
+                <div class="flex justify-between items-center border-t-2 border-[#F5EFE6] pt-4 mb-5">
+                  <span class="text-brand-textGray text-sm font-medium">總金額</span>
+                  <span id="total-price" class="text-2xl font-extrabold text-brand-orange">NT$ ${product.price.toLocaleString()}</span>
+                </div>
+                <button class="w-full bg-orange-600 hover:bg-orange-500 text-white font-semibold text-sm px-6 py-3 rounded-full transition-all duration-300 shadow-[0_6px_18px_-4px_rgba(234,88,12,0.45)] hover:shadow-[0_10px_28px_-4px_rgba(234,88,12,0.65)] hover:-translate-y-1 active:scale-95 cursor-pointer">
+                  立即預訂
+                </button>
+                <div class="flex items-center justify-center gap-1.5 text-center text-xs text-brand-textGray mt-3">
+                  <span>🔒</span><span>安全付款 · 免費取消（7天前）</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.title = `${product.name} - 島嶼旅跡`;
+        window._currentPrice = product.price;
+        currentImageIndex = 0;
+      }
+
+      const productId = getProductId();
+      const product = productsData.find((p) => p.id === productId);
+      renderProductDetail(product);
+    </script>
+  </body>
+</html>
