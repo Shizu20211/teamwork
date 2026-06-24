@@ -72,19 +72,39 @@ a {
     gap: 32px;
 }
 
+/* --- 替換導覽列連結樣式，加入相對定位與底線動畫 --- */
 .nav-link {
     color: var(--text-white);
     font-size: 1rem;
     font-weight: 500;
     opacity: 0.9;
     transition: var(--transition-smooth);
+    position: relative; /* 核心：讓底線可以相對於文字定位 */
 }
 
 .nav-link:hover {
     opacity: 1;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
+/* 核心追加：滑過底線動畫效果（顏色已調整為 var(--brand-orange)） */
+.nav-link::after {
+    background-color: var(--brand-orange); /* 下線顏色改為橘色 */
+    bottom: -4px; /* 要素の下端からの距離 */
+    content: ""; /* 要素に内容を追加 */
+    height: 2px; /* 下線の高さ */
+    left: 0; /* 要素の左端からの距離 */
+    position: absolute; /* 絶対位置指定 */
+    transform: scale(0, 1); /* 下線を横方向に0倍、縦方向に1倍に変形（非表示） */
+    transform-origin: right top; /* 変形の原点を右上に指定 */
+    transition: transform .3s; /* 変形をアニメーション化 */
+    width: 100%; /* 要素の幅 */
+}
+
+/* リンクにホバーした際の下線の表示 */
+.nav-link:hover::after {
+    transform: scale(1, 1); /* 下線を横方向に1倍、縦方向に1倍に変形（表示） */
+    transform-origin: left top; /* 修正提示：改為左上展開，動畫視覺會順著讀取方向更自然 */
+}
 .btn-cta {
     background-color: var(--brand-orange);
     color: var(--text-white);
