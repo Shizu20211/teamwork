@@ -5,299 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>關於我們 - 島跡 IslandTrace</title>
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,600;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght=300;400;500;700;900&family=Playfair+Display:ital,wght=0,600;1,400&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="./css/nav.css">
 
-    <style>
-      /* ================= 初始化與變數定義 ================= */
-      :root {
-        --nav-bg: #1a2649;
-        --brand-orange: #e66f43;
-        --text-white: #ffffff;
-        --font-main:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC",
-          sans-serif;
-        --transition-smooth: all 0.25s ease;
-        --footer-bg: #1a2649;
-      }
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                orange: "#e66f43", /* 修正 2：統一 Tailwind 橘色與 CSS 變數 */
+                darkblue: "#1a2649",
+                beigeBg: "#FAF6F0",
+                textGray: "#556575",
+                darkText: "#1E293B",
+              },
+            },
+            fontFamily: {
+              display: ["Playfair Display", "Noto Sans TC", "sans-serif"],
+            },
+            animation: {
+              "fade-in": "fadeIn 0.8s ease-out forwards",
+              "slide-up": "slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+            },
+            keyframes: {
+              fadeIn: {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
+              slideUp: {
+                "0%": { opacity: "0", transform: "translateY(24px)" },
+                "100%": { opacity: "1", transform: "translateY(0)" },
+              },
+            },
+          },
+        },
+      };
+    </script>
 
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      /* ================= Body 樣式（已合併，不再重複） ================= */
-      html,
-      body {
-        height: 100%;
-      }
-
-      body {
-        font-family: var(--font-main);
-        background-color: #fcfcfc;
-        color: #333333;
-        display: flex;
-        flex-direction: column;
-        line-height: 1.5;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
-
-      a {
-        text-decoration: none;
-        color: inherit;
-      }
-
-      /* ================= 主內容區塊（撐開剩餘空間，讓 footer 置底） ================= */
-      .main-content {
-        flex: 1 0 auto;
-      }
-
-      /* ================= Header & Navigation ================= */
-      .main-header {
-        background-color: var(--nav-bg);
-        width: 100%;
-        box-shadow: 0 4px 12px #0000001a;
-        flex-shrink: 0;
-        /* 頂部裝飾線改放在這裡，不再壓在 nav 上方 */
-        border-top: 6px solid #132a55;
-      }
-
-      .nav-container {
-        max-width: 1440px;
-        margin: 0 auto;
-        padding: 16px 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .logo-wrapper {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-      }
-
-      .logo-text {
-        color: var(--text-white);
-        font-size: 1.6rem;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-      }
-
-      .nav-menu {
-        display: flex;
-        align-items: center;
-        list-style: none;
-        gap: 32px;
-      }
-
-      .nav-link {
-        color: var(--text-white);
-        font-size: 1rem;
-        font-weight: 500;
-        opacity: 0.9;
-        transition: var(--transition-smooth);
-      }
-
-      .nav-link:hover {
-        opacity: 1;
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-      }
-
-      .btn-cta {
-        background-color: var(--brand-orange);
-        color: var(--text-white);
-        padding: 10px 24px;
-        border-radius: 50px;
-        font-weight: 500;
-        font-size: 1rem;
-        transition: var(--transition-smooth);
-        border: none;
-        cursor: pointer;
-        box-shadow: 0 4px 10px rgba(230, 111, 67, 0.2);
-      }
-
-      .btn-cta:hover {
-        background-color: #df5d2f;
-        transform: translateY(-1px);
-        box-shadow: 0 6px 14px rgba(230, 111, 67, 0.3);
-      }
-
-      .btn-cta:active {
-        transform: translateY(0);
-      }
-
-      /* ================= Footer ================= */
-      .main-footer {
-        background-color: var(--footer-bg);
-        color: var(--text-white);
-        padding: 60px 0 30px;
-        width: 100%;
-        flex-shrink: 0;
-      }
-
-      .main-footer .container-normal {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-      }
-
-      .main-footer .footer-main {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 40px;
-        padding-bottom: 40px;
-      }
-
-      .main-footer .footer-brand {
-        flex: 2;
-      }
-
-      .main-footer .footer-menu {
-        flex: 3;
-        display: flex;
-        justify-content: space-between;
-        gap: 20px;
-      }
-
-      .main-footer .footer-logo {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 20px;
-      }
-
-      .main-footer .brand-desc {
-        font-size: 14px;
-        line-height: 1.8;
-        color: rgba(255, 255, 255, 0.8);
-      }
-
-      .main-footer .menu-group {
-        list-style: none;
-        min-width: 100px;
-        flex-wrap: wrap;
-      }
-
-      .main-footer .menu-title {
-        font-size: 16px;
-        font-weight: bold;
-        margin-bottom: 20px;
-      }
-
-      .main-footer .menu-group li {
-        margin-bottom: 15px;
-      }
-
-      .main-footer .menu-item {
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 14px;
-        transition: color 0.2s ease;
-      }
-
-      .main-footer .menu-item:hover {
-        color: var(--text-white);
-      }
-
-      .main-footer .footer-divider {
-        border: 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        margin-bottom: 20px;
-      }
-
-      .main-footer .footer-bottom {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 15px;
-        font-size: 13px;
-        color: rgba(255, 255, 255, 0.6);
-      }
-
-      .main-footer .slogan {
-        letter-spacing: 1px;
-      }
-
-      /* ================= RWD 響應式 ================= */
-      @media (max-width: 992px) {
-        .nav-container {
-          padding: 16px 24px;
-        }
-        .nav-menu {
-          gap: 20px;
-        }
-        .main-footer .footer-main {
-          gap: 30px;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .nav-menu {
-          display: none;
-        }
-        .btn-cta {
-          padding: 8px 16px;
-          font-size: 0.9rem;
-        }
-        .main-footer .footer-main {
-          flex-direction: column;
-          gap: 40px;
-        }
-        .main-footer .footer-brand,
-        .main-footer .footer-menu {
-          flex: none;
-          width: 100%;
-        }
-        .main-footer .footer-menu {
-          flex-wrap: wrap;
-          gap: 30px;
-          justify-content: flex-start;
-        }
-        .main-footer .menu-group {
-          flex: 1 1 120px;
-        }
-        .main-footer .footer-bottom {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 10px;
-        }
-      }
-
-      /* ================= 捲動軸客製化 ================= */
-      ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #f1f5f9;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
-      }
-
-      /* ================= 輔助工具類別 ================= */
-      .font-display {
-        font-family: "Playfair Display", "Noto Sans TC", sans-serif;
-      }
-      .bg-brand-beigeBg {
-        background-color: #faf6f0;
-      }
-    </style>
   </head>
 
   <body>
-    <!-- ================= 導覽列 ================= -->
     <header class="main-header">
       <nav class="nav-container">
         <a href="#" class="logo-wrapper">
@@ -313,20 +67,15 @@
       </nav>
     </header>
 
-    <!-- ================= 主要內容（放在 main 裡面） ================= -->
     <main class="main-content">
-      <!-- ================= 第一區塊：OUR STORY ================= -->
       <section
-        class="w-full bg-[#1B2A4A] text-white py-26 sm:py-28 overflow-hidden relative"
+        class="w-full bg-brand-darkblue text-white py-26 sm:py-28 overflow-hidden relative"
         id="our-story-banner"
       >
-        <!-- 改用不對稱佈局：左側文字直接對齊頁面左邊 -->
         <div class="w-full relative z-10">
-          <!-- 左側：標題與導言文字 - 使用 max-w-2xl 限制文字寬度，並加上左側內距 -->
           <div
             class="flex flex-col items-start space-y-5 animate-slide-up relative z-20 max-w-2xl mt-4 sm:mt-6 pl-4 sm:pl-8 lg:pl-12"
           >
-            <!-- 分類標籤 -->
             <div class="flex items-center gap-3">
               <span class="w-7 h-[2px] bg-brand-orange"></span>
               <span
@@ -336,7 +85,6 @@
               </span>
             </div>
 
-            <!-- 核心宣示大標題 -->
             <h1
               class="text-3xl sm:text-4xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.4] font-display"
             >
@@ -346,7 +94,6 @@
               >
             </h1>
 
-            <!-- 精緻段落導言 -->
             <p
               class="text-[#C6CAD2] text-xs sm:text-xl leading-[1.8] sm:leading-[2] tracking-wide font-normal max-w-xl"
             >
@@ -355,7 +102,6 @@
           </div>
         </div>
 
-        <!-- ★ 圓形） -->
         <div
           class="absolute right-4 sm:right-8 lg:right-16 top-[50%] -translate-y-[50%] flex items-center justify-center pointer-events-none"
         >
@@ -365,7 +111,6 @@
         </div>
       </section>
 
-      <!-- ===== 第二區塊：BRAND STORY ===== -->
       <section
         class="w-full max-w-6xl mx-auto px-8 sm:px-16 py-16 sm:py-24"
         id="brand-story-section"
@@ -373,7 +118,6 @@
         <div
           class="flex flex-col md:flex-row items-stretch justify-center gap-6 md:gap-8"
         >
-          <!-- 左側：圖片 -->
           <div
             class="relative w-full md:w-1/2 h-[360px] rounded-[24px] overflow-hidden shadow-2xl shadow-slate-200/60 flex-shrink-0"
           >
@@ -388,7 +132,6 @@
             ></div>
           </div>
 
-          <!-- 右側：文字（移除 pl-*，讓左右自然對稱） -->
           <div
             class="w-full md:w-1/2 min-h-[360px] flex flex-col items-start py-1 mt-8 md:mt-0"
           >
@@ -406,16 +149,13 @@
               class="space-y-3 text-brand-textGray text-sm sm:text-[15px] text-[#93989C] leading-[2] font-normal mt-4"
             >
               <p>
-                2019
-                年，創辦人阿峰在花蓮租了一艘獨木舟，卻意外劃進一條沒有標示的峽灣。當地的漁民老伯帶著他，用台語講述這片海的故事。那一刻，他明白了：最珍貴的旅行體驗，不在景點冊上。
+                2019 年，創辦人阿峰在花蓮租了一艘獨木舟，卻意外劃進一條沒有標示的峽灣。當地的漁民老伯帶著他，用台語講述這片海的故事。那一刻，他明白了：最珍貴的旅行體驗，不在景點冊上。
               </p>
               <p>
-                島嶼旅跡於 2020
-                年成立，致力於連結在地嚮導與每一位渴望深度旅遊的旅人。我們的嚮導不只是帶路人，他們是故事的守護者。
+                島嶼旅跡於 2020 年成立，致力於連結在地嚮導與每一位渴望深度旅遊的旅人。我們的嚮導不只是帶路人，他們是故事的守護者。
               </p>
               <p>
-                今天，我們在台灣 22 個縣市有超過 150
-                位認證嚮導，服務超過三萬名來自世界各地的旅客，讓每一段旅程都成為值得述說的故事。
+                今天，我們在台灣 22 個縣市有超過 150 位認證嚮導，服務超過三萬名來自世界各地的旅客，讓每一段旅程都成為值得述說的故事。
               </p>
             </div>
             <div class="mt-auto pt-5 w-full">
@@ -431,8 +171,6 @@
         </div>
       </section>
 
-      <!-- ===== 第三區塊：CORE VALUES ===== -->
-      <!-- 第三區塊：CORE VALUES -->
       <section
         class="w-full bg-brand-beigeBg py-16 sm:py-24 border-y border-stone-100"
       >
@@ -450,9 +188,7 @@
             </h2>
           </div>
 
-          <!-- 卡片區：改為百分比寬度，與第二區塊文字對齊 -->
           <div class="flex flex-wrap justify-start items-stretch gap-6">
-            <!-- 卡片 1 -->
             <div
               class="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] bg-white rounded-2xl p-7 sm:p-8 border-t-4 border-brand-orange shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
@@ -471,7 +207,6 @@
               </div>
             </div>
 
-            <!-- 卡片 2 -->
             <div
               class="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] bg-white rounded-2xl p-7 sm:p-8 border-t-4 border-brand-orange shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
@@ -490,7 +225,6 @@
               </div>
             </div>
 
-            <!-- 卡片 3 -->
             <div
               class="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] bg-white rounded-2xl p-7 sm:p-8 border-t-4 border-brand-orange shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
@@ -504,8 +238,7 @@
                 <p
                   class="text-brand-textGray text-xs sm:text-[13.5px] leading-relaxed font-light"
                 >
-                  每筆訂單的 5%
-                  將捐入台灣環境保育基金。我們的體驗設計以低衝擊為原則，與自然和共存，留下下一代與人依然看世界最美麗的微笑。
+                  每筆訂單的 5% 將捐入台灣環境保育基金。我們的體驗設計以低衝擊為原則，與自然和共存，留下下一代與人依然看世界最美麗的微笑。
                 </p>
               </div>
             </div>
@@ -513,7 +246,6 @@
         </div>
       </section>
 
-      <!-- ===== 第四區塊：MEET THE TEAM ===== -->
       <section
         class="w-full max-w-6xl mx-auto px-8 sm:px-16 py-16 sm:py-24 flex flex-col items-center md:items-start"
         id="team-section"
@@ -531,11 +263,9 @@
           </h2>
         </div>
 
-        <!-- 團隊成員：百分比寬度，與第二區塊文字區塊對齊 -->
         <div
           class="flex flex-wrap justify-center md:justify-start items-center gap-6 w-full"
         >
-          <!-- 成員 1 -->
           <div
             class="group relative w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[calc(25%-18px)] aspect-[225/272] rounded-[18px] overflow-hidden shadow-md cursor-pointer transition-all duration-500 hover:shadow-xl bg-slate-900"
             onclick="
@@ -554,27 +284,16 @@
                 referrerpolicy="no-referrer"
               />
             </div>
-            <div
-              class="absolute inset-0 bg-black/10 transition-all duration-500 group-hover:bg-black/0 z-10"
-            ></div>
-            <div
-              class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent p-4 pt-10 flex flex-col justify-end transition-all duration-500 z-20"
-            >
-              <p
-                class="text-brand-orange text-[10.5px] font-bold tracking-wide mb-0.5"
-              >
-                共同創辦人 · 執行長
-              </p>
+            <div class="absolute inset-0 bg-black/10 transition-all duration-500 group-hover:bg-black/0 z-10"></div>
+            <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent p-4 pt-10 flex flex-col justify-end transition-all duration-500 z-20">
+              <p class="text-brand-orange text-[10.5px] font-bold tracking-wide mb-0.5">共同創辦人 · 執行長</p>
               <h3 class="text-white font-extrabold text-base mb-1">陳建峰</h3>
-              <p
-                class="text-slate-300 text-[11px] leading-[1.6] font-light opacity-0 group-hover:opacity-100 max-h-0 group-hover:max-h-[85px] transition-all duration-500 overflow-hidden transform translate-y-2 group-hover:translate-y-0"
-              >
+              <p class="text-slate-300 text-[11px] leading-[1.6] font-light opacity-0 group-hover:opacity-100 max-h-0 group-hover:max-h-[85px] transition-all duration-500 overflow-hidden transform translate-y-2 group-hover:translate-y-0">
                 在台灣踢壞了三雙登山鞋，走過300條秘境步道。相信每一條小路都藏著一個故事。
               </p>
             </div>
           </div>
 
-          <!-- 成員 2 -->
           <div
             class="group relative w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[calc(25%-18px)] aspect-[225/272] rounded-[18px] overflow-hidden shadow-md cursor-pointer transition-all duration-500 hover:shadow-xl bg-slate-900"
             onclick="
@@ -593,27 +312,16 @@
                 referrerpolicy="no-referrer"
               />
             </div>
-            <div
-              class="absolute inset-0 bg-black/10 transition-all duration-500 group-hover:bg-black/0 z-10"
-            ></div>
-            <div
-              class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent p-4 pt-10 flex flex-col justify-end transition-all duration-500 z-20"
-            >
-              <p
-                class="text-brand-orange text-[10.5px] font-bold tracking-wide mb-0.5"
-              >
-                共同創辦人 · 體驗總監
-              </p>
+            <div class="absolute inset-0 bg-black/10 transition-all duration-500 group-hover:bg-black/0 z-10"></div>
+            <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent p-4 pt-10 flex flex-col justify-end transition-all duration-500 z-20">
+              <p class="text-brand-orange text-[10.5px] font-bold tracking-wide mb-0.5">共同創辦人 · 體驗總監</p>
               <h3 class="text-white font-extrabold text-base mb-1">林芷瑄</h3>
-              <p
-                class="text-slate-300 text-[11px] leading-[1.6] font-light opacity-0 group-hover:opacity-100 max-h-0 group-hover:max-h-[85px] transition-all duration-500 overflow-hidden transform translate-y-2 group-hover:translate-y-0"
-              >
+              <p class="text-slate-300 text-[11px] leading-[1.6] font-light opacity-0 group-hover:opacity-100 max-h-0 group-hover:max-h-[85px] transition-all duration-500 overflow-hidden transform translate-y-2 group-hover:translate-y-0">
                 前旅遊雜誌主編，走訪超過40個國家後，回到台灣發現家鄉才是最神奇的地方。
               </p>
             </div>
           </div>
 
-          <!-- 成員 3 -->
           <div
             class="group relative w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[calc(25%-18px)] aspect-[225/272] rounded-[18px] overflow-hidden shadow-md cursor-pointer transition-all duration-500 hover:shadow-xl bg-slate-900"
             onclick="
@@ -632,27 +340,16 @@
                 referrerpolicy="no-referrer"
               />
             </div>
-            <div
-              class="absolute inset-0 bg-black/10 transition-all duration-500 group-hover:bg-black/0 z-10"
-            ></div>
-            <div
-              class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent p-4 pt-10 flex flex-col justify-end transition-all duration-500 z-20"
-            >
-              <p
-                class="text-brand-orange text-[10.5px] font-bold tracking-wide mb-0.5"
-              >
-                技術長
-              </p>
+            <div class="absolute inset-0 bg-black/10 transition-all duration-500 group-hover:bg-black/0 z-10"></div>
+            <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent p-4 pt-10 flex flex-col justify-end transition-all duration-500 z-20">
+              <p class="text-brand-orange text-[10.5px] font-bold tracking-wide mb-0.5">技術長</p>
               <h3 class="text-white font-extrabold text-base mb-1">黃俊宏</h3>
-              <p
-                class="text-slate-300 text-[11px] leading-[1.6] font-light opacity-0 group-hover:opacity-100 max-h-0 group-hover:max-h-[85px] transition-all duration-500 overflow-hidden transform translate-y-2 group-hover:translate-y-0"
-              >
+              <p class="text-slate-300 text-[11px] leading-[1.6] font-light opacity-0 group-hover:opacity-100 max-h-0 group-hover:max-h-[85px] transition-all duration-500 overflow-hidden transform translate-y-2 group-hover:translate-y-0">
                 熱愛跑步與程式碼，用技術讓每個旅人與嚮導之間的連結更流暢、更溫暖。
               </p>
             </div>
           </div>
 
-          <!-- 成員 4 -->
           <div
             class="group relative w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[calc(25%-18px)] aspect-[225/272] rounded-[18px] overflow-hidden shadow-md cursor-pointer transition-all duration-500 hover:shadow-xl bg-slate-900"
             onclick="
@@ -671,21 +368,11 @@
                 referrerpolicy="no-referrer"
               />
             </div>
-            <div
-              class="absolute inset-0 bg-black/10 transition-all duration-500 group-hover:bg-black/0 z-10"
-            ></div>
-            <div
-              class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent p-4 pt-10 flex flex-col justify-end transition-all duration-500 z-20"
-            >
-              <p
-                class="text-brand-orange text-[10.5px] font-bold tracking-wide mb-0.5"
-              >
-                嚮導關係經理
-              </p>
+            <div class="absolute inset-0 bg-black/10 transition-all duration-500 group-hover:bg-black/0 z-10"></div>
+            <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent p-4 pt-10 flex flex-col justify-end transition-all duration-500 z-20">
+              <p class="text-brand-orange text-[10.5px] font-bold tracking-wide mb-0.5">嚮導關係經理</p>
               <h3 class="text-white font-extrabold text-base mb-1">許雅婷</h3>
-              <p
-                class="text-slate-300 text-[11px] leading-[1.6] font-light opacity-0 group-hover:opacity-100 max-h-0 group-hover:max-h-[85px] transition-all duration-500 overflow-hidden transform translate-y-2 group-hover:translate-y-0"
-              >
+              <p class="text-slate-300 text-[11px] leading-[1.6] font-light opacity-0 group-hover:opacity-100 max-h-0 group-hover:max-h-[85px] transition-all duration-500 overflow-hidden transform translate-y-2 group-hover:translate-y-0">
                 負責發掘與培訓台灣各地的在地嚮導，讓每個在地達人的故事都能被旅人聽見。
               </p>
             </div>
@@ -694,7 +381,6 @@
       </section>
     </main>
 
-    <!-- ================= 頁尾 ================= -->
     <footer class="main-footer">
       <div class="container-normal">
         <div class="footer-main">
@@ -745,7 +431,6 @@
       </div>
     </footer>
 
-    <!-- ================= Modal（彈出視窗） ================= -->
     <div
       id="bio-modal"
       class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-6"
@@ -761,54 +446,12 @@
         >
           ✕
         </button>
-        <h3 id="modal-name" class="text-2xl font-extrabold text-[#132A55]">
-          姓名
-        </h3>
-        <p id="modal-role" class="text-brand-orange font-bold text-sm mt-0.5">
-          職位
-        </p>
-        <p id="modal-story" class="text-[#556575] text-sm leading-relaxed mt-4">
-          故事內容
-        </p>
+        <h3 id="modal-name" class="text-2xl font-extrabold text-[#132A55]">姓名</h3>
+        <p id="modal-role" class="text-brand-orange font-bold text-sm mt-0.5">職位</p>
+        <p id="modal-story" class="text-[#556575] text-sm leading-relaxed mt-4">故事內容</p>
       </div>
     </div>
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              brand: {
-                orange: "#FF5B22",
-                darkblue: "#1a2649",
-                beigeBg: "#FAF6F0",
-                textGray: "#556575",
-                darkText: "#1E293B",
-              },
-            },
-            fontFamily: {
-              display: ["Playfair Display", "Noto Sans TC", "sans-serif"],
-            },
-            animation: {
-              "fade-in": "fadeIn 0.8s ease-out forwards",
-              "slide-up": "slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards",
-            },
-            keyframes: {
-              fadeIn: {
-                "0%": { opacity: "0" },
-                "100%": { opacity: "1" },
-              },
-              slideUp: {
-                "0%": { opacity: "0", transform: "translateY(24px)" },
-                "100%": { opacity: "1", transform: "translateY(0)" },
-              },
-            },
-          },
-        },
-      };
-    </script>
     <script src="nav.js"></script>
   </body>
 </html>
