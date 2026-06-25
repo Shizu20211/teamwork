@@ -386,13 +386,13 @@
     <!-- Nav（隊友的） -->
     <header class="main-header">
       <nav class="nav-container">
-        <a href="#" class="logo-wrapper">
+        <a href="index.html" class="logo-wrapper">
           <span class="logo-text">島嶼旅跡</span>
         </a>
         <ul class="nav-menu">
-          <li><a href="#" class="nav-link">探索體驗</a></li>
-          <li><a href="#" class="nav-link">關於我們</a></li>
-          <li><a href="#" class="nav-link">常見問題</a></li>
+          <li><a href="products.html" class="nav-link">探索體驗</a></li>
+          <li><a href="about.html" class="nav-link">關於我們</a></li>
+          <li><a href="Q&A.html" class="nav-link">常見問題</a></li>
           <li><a href="#" class="nav-link">我的訂單</a></li>
           <li><button class="btn-cta">登入 / 註冊</button></li>
         </ul>
@@ -423,13 +423,63 @@
               { id: 'ord_2', title: '淡水老街藍染拼布工作坊', location: '新北', date: '2025/5/20', timeSlot: '下午場 14:00', amount: 1200, status: '已完成', image: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=150&h=100&q=80' }
             ],
             favorites: [],
+            init() {
+              const localUser = localStorage.getItem('currentUser');
+              if (localUser) {
+                this.profile = JSON.parse(localUser);
+              }
+              
+              const localOrders = JSON.parse(localStorage.getItem('user_orders') || '[]');
+              const localOrderIds = localOrders.map(o => o.id);
+              this.orders = [...localOrders, ...this.orders.filter(o => !localOrderIds.includes(o.id))];
+
+              const localFavs = JSON.parse(localStorage.getItem('user_favorites') || '[]');
+              const productsData = [
+                { id: 1, title: '清水斷崖獨木舟探險', region: '花蓮', category: '戶外冒險', duration: '半天', price: 1800, img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500' },
+                { id: 2, title: '九份老街手捏陶藝體驗', region: '新北', category: '手作工藝', duration: '3小時', price: 980, img: 'https://petit-tw.jp/wp-content/uploads/2019/03/DSC02161-940x627.jpg' },
+                { id: 3, title: '台中市場私廚料理課', region: '台中', category: '美食料理', duration: '4小時', price: 1500, img: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=500' },
+                { id: 4, title: '阿里山日出觀星嚮導', region: '嘉義', category: '自然探索', duration: '全天', price: 2200, img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500' },
+                { id: 5, title: '淡水老街藍染拼布工作坊', region: '新北', category: '手作工藝', duration: '3小時', price: 1200, img: 'https://images.unsplash.com/photo-1528164344705-47542687000d?w=500' },
+                { id: 6, title: '台南府城古蹟深度導覽', region: '台南', category: '文化歷史', duration: '半天', price: 800, img: 'https://images.unsplash.com/photo-1590001155093-a3c66ab0c3ff?w=500' },
+                { id: 7, title: '宜蘭稻田生態農遊體驗', region: '宜蘭', category: '自然探索', duration: '半天', price: 1100, img: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=500' },
+                { id: 8, title: '高雄旗津老漁村料理日', region: '高雄', category: '美食料理', duration: '4小時', price: 1350, img: 'https://petit-tw.jp/wp-content/uploads/2019/03/DSC06114.jpg' },
+                { id: 9, title: '太魯閣峽谷健行之旅', region: '花蓮', category: '戶外冒險', duration: '全天', price: 2500, img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=500' },
+                { id: 10, title: '彰化扇形車庫鐵道文化探索', region: '彰化', category: '文化歷史', duration: '2小時', price: 700, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKPHnYWa3rltHpmvwwD6yWlzAm_f54sq1BACCx6xSqNytc9_9e5qnpkCE&s=10' },
+                { id: 11, title: '墾丁珊瑚礁浮潛體驗', region: '屏東', category: '戶外冒險', duration: '半天', price: 1650, img: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500' },
+                { id: 12, title: '台北茶道文化靜心體驗', region: '台北', category: '文化歷史', duration: '2小時', price: 1200, img: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=500' }
+              ];
+              this.favorites = localFavs.map(id => {
+                return productsData.find(p => p.id === parseInt(id)) || null;
+              }).filter(Boolean);
+
+              const urlParams = new URLSearchParams(window.location.search);
+              const tab = urlParams.get('tab');
+              if (tab && ['orders', 'favorites', 'profile'].includes(tab)) {
+                this.activeTab = tab;
+              }
+            },
             showToast(msg, type = 'success') {
               this.toastMessage = msg;
               this.toastType = type;
               setTimeout(() => { this.toastMessage = '' }, 3000);
             },
             saveProfile() {
+              localStorage.setItem('currentUser', JSON.stringify(this.profile));
               this.showToast('個人資料已成功儲存！', 'success');
+            },
+            removeFavorite(id) {
+              let localFavs = JSON.parse(localStorage.getItem('user_favorites') || '[]');
+              localFavs = localFavs.filter(fid => fid !== id.toString());
+              localStorage.setItem('user_favorites', JSON.stringify(localFavs));
+              this.favorites = this.favorites.filter(p => p.id !== id);
+              this.showToast('已取消收藏該體驗行程！', 'success');
+            },
+            logout() {
+              localStorage.removeItem('currentUser');
+              this.showToast('登出成功，正在導向首頁...', 'success');
+              setTimeout(() => {
+                window.location.href = 'index.html';
+              }, 1000);
             },
             cmdCancelOrder(id, title) {
               this.selectedOrderId = id;
@@ -438,6 +488,12 @@
             },
             confirmCancel() {
               this.orders = this.orders.map(o => o.id === this.selectedOrderId ? {...o, status: '已取消'} : o);
+              
+              // 同步更新 LocalStorage 內的訂單狀態
+              const localOrders = JSON.parse(localStorage.getItem('user_orders') || '[]');
+              const updatedLocalOrders = localOrders.map(o => o.id === this.selectedOrderId ? {...o, status: '已取消'} : o);
+              localStorage.setItem('user_orders', JSON.stringify(updatedLocalOrders));
+
               this.showCancelModal = false;
               this.showToast('已成功取消「' + this.selectedOrderTitle + '」的預訂', 'success');
             },
@@ -510,7 +566,7 @@
                 ><span class="font-medium">個人資料</span>
               </button>
               <button
-                @click="showToast('模擬安全登出成功！', 'success')"
+                @click="logout()"
                 class="w-full text-left flex items-center gap-3 px-3 py-2.5 text-rose-600 hover:bg-[#f5efe6] rounded-[14px] transition-all text-sm"
               >
                 <span class="text-base">🚪</span
@@ -617,30 +673,47 @@
             <!-- 我的收藏 -->
             <template x-if="activeTab === 'favorites'">
               <div class="bg-transparent shadow-none">
-                <h2
-                  class="text-[#132A55] font-bold text-xl mb-2 tracking-tight"
-                >
-                  我的收藏
-                </h2>
-                <div
-                  class="py-8 flex flex-col items-center justify-center text-center"
-                >
-                  <div class="text-5xl mb-3 select-none">💔</div>
-                  <h3 class="text-slate-800 font-bold text-lg mb-1">
-                    收藏清單是空的
-                  </h3>
-                  <p
-                    class="text-slate-500 text-sm max-w-sm mb-4 leading-relaxed"
-                  >
-                    在體驗列表頁點選愛心圖示，即可加入收藏
-                  </p>
-                  <button
-                    @click="showToast('正在導向專屬探索體驗活動頁...', 'success')"
-                    class="bg-orange-600 hover:bg-orange-500 text-white font-semibold text-xs sm:text-sm px-6 py-2.5 rounded-full transition-all duration-300 shadow-[0_6px_18px_-4px_rgba(234,88,12,0.45)] hover:shadow-[0_10px_28px_-4px_rgba(234,88,12,0.65)] hover:-translate-y-1 active:scale-95 cursor-pointer"
-                  >
-                    去探索體驗
-                  </button>
-                </div>
+                <h2 class="text-[#132A55] font-bold text-xl mb-2 tracking-tight">我的收藏</h2>
+
+                <!-- 有收藏時：動態卡片格 -->
+                <template x-if="favorites.length > 0">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                    <template x-for="fav in favorites" :key="fav.id">
+                      <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 flex flex-col hover:shadow-md transition-shadow duration-300">
+                        <a :href="'product-detail.html?id=' + fav.id" class="block overflow-hidden">
+                          <img :src="fav.img" :alt="fav.title" class="w-full h-36 object-cover hover:scale-105 transition-transform duration-300" />
+                        </a>
+                        <div class="p-3 flex flex-col gap-1 flex-1">
+                          <a :href="'product-detail.html?id=' + fav.id" class="text-slate-800 font-semibold text-sm leading-tight hover:text-[#FF5B22] transition-colors" x-text="fav.title"></a>
+                          <div class="flex items-center gap-1 text-slate-400 text-xs">
+                            <span>📍</span><span x-text="fav.region"></span>
+                            <span class="mx-1">·</span>
+                            <span x-text="fav.category"></span>
+                          </div>
+                          <div class="flex items-center justify-between mt-auto pt-2">
+                            <span class="text-[#FF5B22] font-bold text-sm font-mono" x-text="'NT$ ' + fav.price.toLocaleString()"></span>
+                            <button
+                              @click="removeFavorite(fav.id)"
+                              class="text-xs text-rose-400 hover:text-rose-600 border border-rose-200 hover:border-rose-400 px-2 py-1 rounded-full transition-all"
+                            >移除收藏</button>
+                          </div>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+                </template>
+
+                <!-- 空收藏狀態 -->
+                <template x-if="favorites.length === 0">
+                  <div class="py-8 flex flex-col items-center justify-center text-center">
+                    <div class="text-5xl mb-3 select-none">💔</div>
+                    <h3 class="text-slate-800 font-bold text-lg mb-1">收藏清單是空的</h3>
+                    <p class="text-slate-500 text-sm max-w-sm mb-4 leading-relaxed">在體驗列表頁點選愛心圖示，即可加入收藏</p>
+                    <a href="products.html" class="bg-orange-600 hover:bg-orange-500 text-white font-semibold text-xs sm:text-sm px-6 py-2.5 rounded-full transition-all duration-300 shadow-[0_6px_18px_-4px_rgba(234,88,12,0.45)] hover:shadow-[0_10px_28px_-4px_rgba(234,88,12,0.65)] hover:-translate-y-1 active:scale-95 inline-block">
+                      去探索體驗
+                    </a>
+                  </div>
+                </template>
               </div>
             </template>
 
@@ -745,16 +818,16 @@
           <div class="footer-menu">
             <ul class="menu-group">
               <li class="menu-title">探索</li>
-              <li><a href="#" class="menu-item">所有體驗</a></li>
-              <li><a href="#" class="menu-item">戶外冒險</a></li>
-              <li><a href="#" class="menu-item">手作工藝</a></li>
-              <li><a href="#" class="menu-item">美食料理</a></li>
-              <li><a href="#" class="menu-item">文化歷史</a></li>
+              <li><a href="products.html" class="menu-item">所有體驗</a></li>
+              <li><a href="products.html?category=戶外冒險" class="menu-item">戶外冒險</a></li>
+              <li><a href="products.html?category=手作工藝" class="menu-item">手作工藝</a></li>
+              <li><a href="products.html?category=美食料理" class="menu-item">美食料理</a></li>
+              <li><a href="products.html?category=文化歷史" class="menu-item">文化歷史</a></li>
             </ul>
             <ul class="menu-group">
               <li class="menu-title">公司</li>
-              <li><a href="#" class="menu-item">關於我們</a></li>
-              <li><a href="#" class="menu-item">常見問題</a></li>
+              <li><a href="about.html" class="menu-item">關於我們</a></li>
+              <li><a href="Q&A.html" class="menu-item">常見問題</a></li>
               <li><a href="#" class="menu-item">旅遊嚮導招募</a></li>
               <li><a href="#" class="menu-item">媒體合作</a></li>
             </ul>
@@ -824,5 +897,7 @@
       <span class="text-emerald-600">✓</span>
       <span class="text-sm font-semibold" x-text="toastMessage"></span>
     </div>
+    <!-- nav.js 負責動態登入狀態與部分連結 -->
+    <script src="nav.js"></script>
   </body>
 </html>

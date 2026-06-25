@@ -4,13 +4,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>home</title>
+  <title>home - 島嶼旅跡</title>
+  <link rel="stylesheet" href="./css/nav.css">
   <link rel="stylesheet" href="./css/home.css">
 </head>
 
 <body>
-  <!-- 島嶼旅跡 - 首頁完整內容 -->
-  <div class="it-home-wrapper">
+    <header class="main-header">
+        <nav class="nav-container">
+            <a href="#" class="logo-wrapper">
+                <span class="logo-text">島嶼旅跡</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="./" class="nav-link">探索體驗</a></li>
+                <li><a href="#" class="nav-link">關於我們</a></li>
+                <li><a href="#" class="nav-link">常見問題</a></li>
+                <li><a href="#" class="nav-link">我的訂單</a></li>
+                <li><button class="btn-cta">登入 / 註冊</button></li>
+            </ul>
+        </nav>
+    </header>
+  
+  <main class="main-content">
+    <!-- 島嶼旅跡 - 首頁完整內容 -->
+    <div class="it-home-wrapper">
     <!-- Hero 主視覺區塊 -->
     <section class="it-hero-section">
       <div class="it-hero-content">
@@ -94,9 +111,7 @@
         <a href="./products.html" class="it-view-all-link">查看全部 →</a>
       </div>
       <!-- 8張商品卡片動態渲染網格 -->
-      <a href="./product-detail.html">
-        <div class="it-trending-grid" id="it-trending-products-grid"></div>
-      </a>
+      <div class="it-trending-grid" id="it-trending-products-grid"></div>
     </section>
 
     <!-- 在地嚮導文字宣告區塊 -->
@@ -124,6 +139,60 @@
     </section>
 
   </div>
+  </main>
+
+  <footer class="main-footer">
+    <div class="footer-body container-normal">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <h3 class="footer-logo">島嶼旅跡</h3>
+          <p class="brand-desc">
+            深入台灣每一條小徑，<br>
+            遇見最在地的感動體驗。<br>
+            我們相信，旅行不只是到達目的地，<br>
+            而是與這片土地真實相遇。
+          </p>
+        </div>
+
+        <div class="footer-menu">
+          <ul class="menu-group">
+            <li class="menu-title">探索</li>
+            <li><a href="#" class="menu-item">所有體驗</a></li>
+            <li><a href="#" class="menu-item">戶外冒險</a></li>
+            <li><a href="#" class="menu-item">手作工藝</a></li>
+            <li><a href="#" class="menu-item">美食料理</a></li>
+            <li><a href="#" class="menu-item">文化歷史</a></li>
+          </ul>
+          <ul class="menu-group">
+            <li class="menu-title">公司</li>
+            <li><a href="#" class="menu-item">關於我們</a></li>
+            <li><a href="#" class="menu-item">常見問題</a></li>
+            <li><a href="#" class="menu-item">旅遊嚮導招募</a></li>
+            <li><a href="#" class="menu-item">媒體合作</a></li>
+          </ul>
+          <ul class="menu-group">
+            <li class="menu-title">支援</li>
+            <li><a href="#" class="menu-item">退款政策</a></li>
+            <li><a href="#" class="menu-item">隱私政策</a></li>
+            <li><a href="#" class="menu-item">服務條款</a></li>
+            <li><a href="#" class="menu-item">查看訂單</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="footer-divider">
+
+      <div class="footer-bottom">
+        <div class="copyright">
+          © 2025 島嶼旅跡 IslandTrace. All rights reserved.
+        </div>
+        <div class="slogan">
+          用心丈量台灣每一寸土地
+        </div>
+      </div>
+    </div>
+  </footer>
+
   <script>
     // 完整 12 筆數據（將由程式依據 rating 排序後擷取前 8 筆渲染於本週熱門體驗區）
     const DATASET = [
@@ -157,17 +226,20 @@
     // 排序並渲染前 8 張熱門卡片（依據評分降冪排列）
     function renderTrendingProducts() {
       const grid = document.getElementById('it-trending-products-grid');
+      const favs = JSON.parse(localStorage.getItem('user_favorites') || '[]');
 
       // 核心邏輯：依照 rating (星星數) 從高到低排序，並取前 8 筆
       const topEight = [...DATASET]
         .sort((a, b) => b.rating - a.rating)
         .slice(0, 8);
 
-      grid.innerHTML = topEight.map(p => `
-    <article class="it-product-card" data-id="${p.id}">
+      grid.innerHTML = topEight.map(p => {
+        const isFav = favs.includes(p.id.toString());
+        return `
+    <article class="it-product-card" data-id="${p.id}" style="cursor: pointer;">
       <div class="it-card-image-wrapper">
         <img class="it-card-img" src="${p.img}" alt="${p.title}" loading="lazy">
-        <button type="button" class="it-heart-btn" aria-label="收藏">❤</button>
+        <button type="button" class="it-heart-btn ${isFav ? 'is-active' : ''}" aria-label="收藏">❤</button>
       </div>
       <div class="it-card-content">
         <span class="it-card-tag">${p.category}</span>
@@ -184,7 +256,7 @@
         </div>
       </div>
     </article>
-  `).join('');
+  `}).join('');
     }
 
     // 渲染 3 筆旅客回饋卡片
@@ -217,9 +289,7 @@
         if (!loc) { alert("請先選擇您想去的目的地縣市唷！"); return; }
 
         console.log(`[搜尋接口] 目的地: ${loc}, 日期: ${date}`);
-        alert(`【串接提示】即將進入搜尋過濾頁面...\n選擇地區：${loc}\n選擇日期：${date || '未指定'}`);
-
-        // 未來串接：window.location.href = `./explore.html?region=${loc}&date=${date}`;
+        window.location.href = `products.html?region=${encodeURIComponent(loc)}&date=${encodeURIComponent(date)}`;
       });
 
       // 體驗類型點擊單選/切換樣式效果
@@ -229,30 +299,46 @@
         if (!btn) return;
         themeGrid.querySelectorAll('.it-theme-btn').forEach(b => b.classList.remove('is-active'));
         btn.classList.add('is-active');
-        console.log(`[主題接口] 已選取分類: ${btn.getAttribute('data-theme')}`);
+        const theme = btn.getAttribute('data-theme');
+        console.log(`[主題接口] 已選取分類: ${theme}`);
+        setTimeout(() => {
+          window.location.href = `products.html?category=${encodeURIComponent(theme)}`;
+        }, 150);
       });
 
-      // [即時功能] 熱門卡片愛心點擊紅灰變色控制 (事件委託)
+      // [即時功能] 熱門卡片愛心點擊紅灰變色控制 & 卡片跳轉 (事件委託)
       const trendingGrid = document.getElementById('it-trending-products-grid');
       trendingGrid.addEventListener('click', (e) => {
         const heartBtn = e.target.closest('.it-heart-btn');
-        if (!heartBtn) return;
+        if (heartBtn) {
+          // 即時切換類別：前端馬上變色
+          heartBtn.classList.toggle('is-active');
 
-        // 即時切換類別：前端馬上變色
-        heartBtn.classList.toggle('is-active');
+          const card = heartBtn.closest('.it-product-card');
+          const pid = card.getAttribute('data-id');
+          const isFav = heartBtn.classList.contains('is-active');
 
-        const card = heartBtn.closest('.it-product-card');
-        const pid = card.getAttribute('data-id');
-        const isFav = heartBtn.classList.contains('is-active');
+          console.log(`[收藏同步系統] 商品 ID: ${pid}, 目前狀態是否收藏: ${isFav}`);
+          
+          let favs = JSON.parse(localStorage.getItem('user_favorites') || '[]');
+          if (isFav) {
+            if (!favs.includes(pid)) favs.push(pid);
+          } else {
+            favs = favs.filter(id => id !== pid);
+          }
+          localStorage.setItem('user_favorites', JSON.stringify(favs));
+          return;
+        }
 
-        // ==========================================================
-        // [個人頁面對接註解] 給未來負責「我的收藏 / 個人頁面」的工程師：
-        // ==========================================================
-        console.log(`[收藏同步系統] 商品 ID: ${pid}, 目前狀態是否收藏: ${isFav}`);
-        // 範例：api.updateUserFavorite(pid, isFav);
+        const card = e.target.closest('.it-product-card');
+        if (card) {
+          const pid = card.getAttribute('data-id');
+          window.location.href = `product-detail.html?id=${pid}`;
+        }
       });
     }
   </script>
+  <script src="./nav.js"></script>
 </body>
 
 </html>
