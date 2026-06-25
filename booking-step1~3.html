@@ -4,11 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>活動預訂系統</title>
+    <title>預訂行程 - 島嶼旅跡</title>
+    <link rel="stylesheet" href="./css/nav.css">
     <link rel="stylesheet" href="./css/booking-step.css">
-
 </head>
 <body>
+    <header class="main-header">
+      <nav class="nav-container">
+        <a href="index.html" class="logo-wrapper">
+          <span class="logo-text">島嶼旅跡</span>
+        </a>
+        <ul class="nav-menu">
+          <li><a href="products.html" class="nav-link">探索體驗</a></li>
+          <li><a href="about.html" class="nav-link">關於我們</a></li>
+          <li><a href="Q&A.html" class="nav-link">常見問題</a></li>
+          <li><a href="#" class="nav-link">我的訂單</a></li>
+          <li><button class="btn-cta">登入 / 註冊</button></li>
+        </ul>
+      </nav>
+    </header>
 
     <canvas id="confetti-canvas"></canvas>
 
@@ -106,17 +120,17 @@
         <div class="card">
             <div class="section-title" style="margin-bottom: 20px;">預訂摘要</div>
             <div class="activity-img-wrapper">
-                <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=cover&w=600&q=80"
+                <img id="s1ProductImg" src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=cover&w=600&q=80"
                     alt="清水斷崖獨木舟" class="activity-img">
             </div>
-            <div style="font-size:17px; font-weight:bold; margin-bottom:18px; color:#1a2b49;">清水斷崖獨木舟探險</div>
-            <div class="detail-row"><span class="detail-label">目的地</span><span class="detail-value">花蓮</span></div>
-            <div class="detail-row"><span class="detail-label">時間長度</span><span class="detail-value">半天</span></div>
+            <div id="s1ProductTitle" style="font-size:17px; font-weight:bold; margin-bottom:18px; color:#1a2b49;">清水斷崖獨木舟探險</div>
+            <div class="detail-row"><span class="detail-label">目的地</span><span id="s1ProductRegion" class="detail-value">花蓮</span></div>
+            <div class="detail-row"><span class="detail-label">時間長度</span><span id="s1ProductDuration" class="detail-value">半天</span></div>
             <div class="detail-row"><span class="detail-label">選擇日期</span><span class="detail-value highlight"
                     id="s1Date">2026/06/25</span></div>
             <div class="detail-row"><span class="detail-label">選擇場次</span><span class="detail-value highlight"
                     id="s1Slot">下午場 14:00</span></div>
-            <div class="detail-row" style="border:none; margin-top: 8px;"><span class="detail-label">價格</span><span
+            <div class="detail-row" style="border:none; margin-top: 8px;"><span class="detail-label">價格</span><span id="s1ProductPriceText"
                     style="font-size:18px; font-weight:bold; color:#e06343;">NT$ 1,800 / 人</span></div>
         </div>
     </div>
@@ -202,17 +216,17 @@
         <div class="card">
             <div class="section-title">訂單摘要</div>
             <div class="activity-img-wrapper">
-                <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=cover&w=600&q=80"
+                <img id="s2ProductImg" src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=cover&w=600&q=80"
                     alt="清水斷崖獨木舟" class="activity-img">
             </div>
-            <div style="font-size:16px; font-weight:bold; margin-bottom:16px;">清水斷崖獨木舟探險</div>
+            <div id="s2ProductTitle" style="font-size:16px; font-weight:bold; margin-bottom:16px;">清水斷崖獨木舟探險</div>
             <div class="detail-row"><span class="detail-label">日期</span><span class="detail-value"
                     id="s2Date">2026/06/25</span></div>
             <div class="detail-row"><span class="detail-label">場次</span><span class="detail-value" id="s2Slot">下午場
                     14:00</span></div>
-            <div class="detail-row"><span class="detail-label">人數</span><span class="detail-value">1 人</span></div>
+            <div class="detail-row"><span class="detail-label">人數</span><span id="s2Qty" class="detail-value">1 人</span></div>
             <div class="detail-row" style="border:none;"><span class="detail-label"
-                    style="font-weight:bold;">總金額</span><span
+                    style="font-weight:bold;">總金額</span><span id="s2TotalAmount"
                     style="font-size:20px; font-weight:bold; color:#e06343;">NT$ 1,800</span></div>
         </div>
     </div>
@@ -232,11 +246,11 @@
         <div class="receipt-card">
             <div class="receipt-header">
                 <span style="font-weight:bold; color:#1a2b49;">訂單詳情</span>
-                <span class="chip-id">ITMQJHPSIB</span>
+                <span id="s3OrderId" class="chip-id">ITMQJHPSIB</span>
             </div>
-            <div class="detail-row"><span class="detail-label">體驗名稱</span><span class="detail-value">清水斷崖獨木舟探險</span>
+            <div class="detail-row"><span class="detail-label">體驗名稱</span><span id="s3ProductTitle" class="detail-value">清水斷崖獨木舟探險</span>
             </div>
-            <div class="detail-row"><span class="detail-label">目的地</span><span class="detail-value">花蓮</span></div>
+            <div class="detail-row"><span class="detail-label">目的地</span><span id="s3ProductRegion" class="detail-value">花蓮</span></div>
             <div class="detail-row"><span class="detail-label">體驗日期</span><span class="detail-value"
                     id="s3Date">-</span></div>
             <div class="detail-row"><span class="detail-label">場次</span><span class="detail-value" id="s3Slot">-</span>
@@ -245,20 +259,126 @@
             </div>
             <div class="detail-row" style="border:none; margin-top:8px;">
                 <span class="detail-label" style="font-weight:500;">已付總金額</span>
-                <span class="detail-value" style="font-size: 20px; color: #e06343;">NT$ 1,800</span>
+                <span id="s3TotalAmount" class="detail-value" style="font-size: 20px; color: #e06343;">NT$ 1,800</span>
             </div>
         </div>
 
         <div class="btn-group-row">
-            <button class="btn-outline-back" onclick="location.reload()">← 返回首頁</button>
-            <button class="btn-solid-orange" onclick="alert('正在載入您的電子票券...')">查看我的訂單</button>
+            <button class="btn-outline-back" onclick="window.location.href = 'index.html'">← 返回首頁</button>
+            <button class="btn-solid-orange" onclick="window.location.href = 'profile.html'">查看我的訂單</button>
         </div>
     </div>
+    <footer class="main-footer">
+        <div class="footer-body container-normal">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <h3 class="footer-logo">島嶼旅跡</h3>
+                    <p class="brand-desc">
+                        深入台灣每一條小徑，<br>
+                        遇見最在地的感動體驗。<br>
+                        我們相信，旅行不只是到達目的地，<br>
+                        而是與這片土地真實相遇。
+                    </p>
+                </div>
+
+                <div class="footer-menu">
+                    <ul class="menu-group">
+                        <li class="menu-title">探索</li>
+                        <li><a href="#" class="menu-item">所有體驗</a></li>
+                        <li><a href="#" class="menu-item">戶外冒險</a></li>
+                        <li><a href="#" class="menu-item">手作工藝</a></li>
+                        <li><a href="#" class="menu-item">美食料理</a></li>
+                        <li><a href="#" class="menu-item">文化歷史</a></li>
+                    </ul>
+                    <ul class="menu-group">
+                        <li class="menu-title">公司</li>
+                        <li><a href="#" class="menu-item">關於我們</a></li>
+                        <li><a href="#" class="menu-item">常見問題</a></li>
+                        <li><a href="#" class="menu-item">旅遊嚮導招募</a></li>
+                        <li><a href="#" class="menu-item">媒體合作</a></li>
+                    </ul>
+                    <ul class="menu-group">
+                        <li class="menu-title">支援</li>
+                        <li><a href="#" class="menu-item">退款政策</a></li>
+                        <li><a href="#" class="menu-item">隱私政策</a></li>
+                        <li><a href="#" class="menu-item">服務條款</a></li>
+                        <li><a href="#" class="menu-item">查看訂單</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="footer-divider">
+
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 島嶼旅跡 IslandTrace. All rights reserved.
+                </div>
+                <div class="slogan">
+                    用心丈量台灣每一寸土地
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script>
+        const PRODUCTS_DB = [
+            { id: 1, name: "清水斷崖獨木舟探險", region: "花蓮", duration: "半天", price: 1800, image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80" },
+            { id: 2, name: "九份老街手捏陶藝體驗", region: "新北", duration: "3小時", price: 980, image: "https://petit-tw.jp/wp-content/uploads/2019/03/DSC02161-940x627.jpg" },
+            { id: 3, name: "台中市場私廚料理課", region: "台中", duration: "4小時", price: 1500, image: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=600&q=80" },
+            { id: 4, name: "阿里山日出觀星嚮導", region: "嘉義", duration: "全天", price: 2200, image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
+            { id: 5, name: "淡水老街藍染拼布工作坊", region: "新北", duration: "3小時", price: 1200, image: "https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&w=600&q=80" },
+            { id: 6, name: "台南府城古蹟深度導覽", region: "台南", duration: "半天", price: 800, image: "https://images.unsplash.com/photo-1590001155093-a3c66ab0c3ff?auto=format&fit=crop&w=600&q=80" },
+            { id: 7, name: "宜蘭稻田生態農遊體驗", region: "宜蘭", duration: "半天", price: 1100, image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=80" },
+            { id: 8, name: "高雄旗津老漁村料理日", region: "高雄", duration: "4小時", price: 1350, image: "https://petit-tw.jp/wp-content/uploads/2019/03/DSC06114.jpg" },
+            { id: 9, name: "太魯閣峽谷健行之旅", region: "花蓮", duration: "全天", price: 2500, image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" },
+            { id: 10, name: "彰化扇形車庫鐵道文化探索", region: "彰化", duration: "2小時", price: 700, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKPHnYWa3rltHpmvwwD6yWlzAm_f54sq1BACCx6xSqNytc9_9e5qnpkCE&s=10" },
+            { id: 11, name: "墾丁珊瑚礁浮潛體驗", region: "屏東", duration: "半天", price: 1650, image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80" },
+            { id: 12, name: "台北茶道文化靜心體驗", region: "台北", duration: "2小時", price: 1200, image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80" }
+        ];
+
+        let currentProduct = PRODUCTS_DB[0];
+        let quantity = 1;
         let selectDateStr = "2026/06/25";
         let selectSlotStr = "下午場 14:00";
         let activePayment = "card";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadProductFromUrl();
+            const currentUser = localStorage.getItem("currentUser");
+            if (currentUser) {
+                const user = JSON.parse(currentUser);
+                if (document.getElementById("inputName")) document.getElementById("inputName").value = user.name || "";
+                if (document.getElementById("inputPhone")) document.getElementById("inputPhone").value = user.phone || "";
+                if (document.getElementById("inputEmail")) document.getElementById("inputEmail").value = user.email || "";
+                checkForm2();
+            }
+        });
+
+        function loadProductFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const pid = parseInt(urlParams.get("id")) || 1;
+            quantity = parseInt(urlParams.get("quantity")) || 1;
+
+            currentProduct = PRODUCTS_DB.find(p => p.id === pid) || PRODUCTS_DB[0];
+
+            // 渲染第一步動態資料
+            document.getElementById("s1ProductTitle").innerText = currentProduct.name;
+            document.getElementById("s1ProductImg").src = currentProduct.image;
+            document.getElementById("s1ProductRegion").innerText = currentProduct.region;
+            document.getElementById("s1ProductDuration").innerText = currentProduct.duration;
+            document.getElementById("s1ProductPriceText").innerText = `NT$ ${currentProduct.price.toLocaleString()} / 人`;
+
+            // 渲染第二步動態資料
+            document.getElementById("s2ProductTitle").innerText = currentProduct.name;
+            document.getElementById("s2ProductImg").src = currentProduct.image;
+            document.getElementById("s2Qty").innerText = `${quantity} 人`;
+            document.getElementById("s2TotalAmount").innerText = `NT$ ${(currentProduct.price * quantity).toLocaleString()}`;
+
+            // 渲染第三步動態資料
+            document.getElementById("s3ProductTitle").innerText = currentProduct.name;
+            document.getElementById("s3ProductRegion").innerText = currentProduct.region;
+            document.getElementById("s3TotalAmount").innerText = `NT$ ${(currentProduct.price * quantity).toLocaleString()}`;
+        }
 
         function selectDate(dateStr, element) {
             document.querySelectorAll('.calendar-day').forEach(day => {
@@ -370,6 +490,25 @@
             document.getElementById("s3Name").innerText = document.getElementById("inputName").value;
             document.getElementById("s3Email").innerText = document.getElementById("inputEmail").value;
 
+            // 產生隨機訂單 ID
+            const orderId = 'IT' + Math.random().toString(36).substr(2, 8).toUpperCase();
+            document.getElementById("s3OrderId").innerText = orderId;
+
+            // 儲存訂單到 LocalStorage
+            const newOrder = {
+                id: orderId,
+                title: currentProduct.name,
+                location: currentProduct.region,
+                date: selectDateStr,
+                timeSlot: selectSlotStr,
+                amount: currentProduct.price * quantity,
+                status: '未出發',
+                image: currentProduct.image
+            };
+            const orders = JSON.parse(localStorage.getItem('user_orders') || '[]');
+            orders.unshift(newOrder);
+            localStorage.setItem('user_orders', JSON.stringify(orders));
+
             // 觸發打勾圖示的跳出動畫 (Pop-in)
             document.getElementById("successCheckIcon").classList.add("pop-effect");
 
@@ -432,6 +571,7 @@
             runAnimation();
         }
     </script>
+    <script src="./nav.js"></script>
 </body>
 
 </html>

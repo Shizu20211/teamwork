@@ -148,19 +148,54 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     if (!validate()) return;
 
-    const mode = tabLogin.classList.contains('active') ? '登入' : '註冊';
+    const isLoginMode = tabLogin.classList.contains('active');
+    const mode = isLoginMode ? '登入' : '註冊';
     submitBtn.disabled = true;
     submitBtn.textContent = '處理中...';
 
     setTimeout(() => {
-      alert(`${mode}驗證成功！`);
-      submitBtn.disabled = false;
-      submitBtn.textContent = mode;
+      // 取得欄位值
+      const email = emailInput.value.trim();
+      const name = isLoginMode
+        ? (email.split('@')[0]) // 登入時以 email 前綴作為暫定名稱
+        : (usernameInput.value.trim());
+      const phone = isLoginMode ? '' : (phoneInput.value.trim());
+
+      // 儲存使用者資訊到 LocalStorage
+      const userData = {
+        name: name,
+        email: email,
+        phone: phone,
+        birthday: '',
+        preferences: []
+      };
+
+      // 若已有舊資料（例如已登入再次登入），合併保留 birthday / preferences
+      const existing = localStorage.getItem('currentUser');
+      if (existing) {
+        const existingData = JSON.parse(existing);
+        userData.birthday = existingData.birthday || '';
+        userData.preferences = existingData.preferences || [];
+        // 只有 email 相同才覆蓋名字，否則用新輸入的
+        if (existingData.email === email) {
+          userData.name = existingData.name || name;
+          userData.phone = existingData.phone || phone;
+        }
+      }
+
+      localStorage.setItem('currentUser', JSON.stringify(userData));
+
+      // 重置表單
       form.reset();
-      
-      // 狀態歸位
       passwordInput.type = 'password';
       togglePwdIcon.className = 'fas fa-eye';
+      submitBtn.disabled = false;
+      submitBtn.textContent = mode;
+
+      // 讀取來源頁面，決定跳轉目標
+      const params = new URLSearchParams(window.location.search);
+      const redirectTarget = params.get('redirect') || 'index.html';
+      window.location.href = redirectTarget;
     }, 800);
   });
 });

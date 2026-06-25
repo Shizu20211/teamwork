@@ -1013,7 +1013,7 @@
                   <span class="text-brand-textGray text-sm font-medium">總金額</span>
                   <span id="total-price" class="text-2xl font-extrabold text-brand-orange">NT$ ${product.price.toLocaleString()}</span>
                 </div>
-                <button class="w-full bg-orange-600 hover:bg-orange-500 text-white font-semibold text-sm px-6 py-3 rounded-full transition-all duration-300 shadow-[0_6px_18px_-4px_rgba(234,88,12,0.45)] hover:shadow-[0_10px_28px_-4px_rgba(234,88,12,0.65)] hover:-translate-y-1 active:scale-95 cursor-pointer">
+                <button onclick="goToBooking()" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-semibold text-sm px-6 py-3 rounded-full transition-all duration-300 shadow-[0_6px_18px_-4px_rgba(234,88,12,0.45)] hover:shadow-[0_10px_28px_-4px_rgba(234,88,12,0.65)] hover:-translate-y-1 active:scale-95 cursor-pointer">
                   立即預訂
                 </button>
                 <div class="flex items-center justify-center gap-1.5 text-center text-xs text-brand-textGray mt-3">
@@ -1029,9 +1029,16 @@
         currentImageIndex = 0;
       }
 
+      function goToBooking() {
+        const qty = parseInt(document.getElementById("quantity-input").value) || 1;
+        const productId = getProductId();
+        window.location.href = `booking Step1~3.html?id=${productId}&quantity=${qty}`;
+      }
+
       const productId = getProductId();
       const product = productsData.find((p) => p.id === productId);
       renderProductDetail(product);
     </script>
+    <script src="./nav.js"></script>
   </body>
 </html>

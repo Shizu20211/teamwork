@@ -4,14 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>products</title>
+    <title>探索體驗 - 島嶼旅跡</title>
+    <link rel="stylesheet" href="./css/nav.css">
     <link rel="stylesheet" href="./css/products.css">
-
 </head>
 
 <body>
-    <!-- 體驗探索主區塊容器 -->
-    <div class="it-explore-container">
+    <header class="main-header">
+        <nav class="nav-container">
+            <a href="#" class="logo-wrapper">
+                <span class="logo-text">島嶼旅跡</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="./" class="nav-link">探索體驗</a></li>
+                <li><a href="#" class="nav-link">關於我們</a></li>
+                <li><a href="#" class="nav-link">常見問題</a></li>
+                <li><a href="#" class="nav-link">我的訂單</a></li>
+                <li><button class="btn-cta">登入 / 註冊</button></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="main-content">
+        <!-- 體驗探索主區塊容器 -->
+        <div class="it-explore-container">
         <!-- 側邊/上方 篩選條件區 -->
         <aside class="it-filter-sidebar">
             <div class="it-filter-header">
@@ -92,11 +107,63 @@
             </div>
 
             <!-- 產品卡片容器 (由 JavaScript 動態渲染) -->
-            <div class="it-products-grid" id="it-products-grid">
-                <!-- 卡片結構將由 JS 自動生成插入 -->
-            </div>
+            <div class="it-products-grid" id="it-products-grid"></div>
         </main>
     </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-body container-normal">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <h3 class="footer-logo">島嶼旅跡</h3>
+                    <p class="brand-desc">
+                        深入台灣每一條小徑，<br>
+                        遇見最在地的感動體驗。<br>
+                        我們相信，旅行不只是到達目的地，<br>
+                        而是與這片土地真實相遇。
+                    </p>
+                </div>
+
+                <div class="footer-menu">
+                    <ul class="menu-group">
+                        <li class="menu-title">探索</li>
+                        <li><a href="#" class="menu-item">所有體驗</a></li>
+                        <li><a href="#" class="menu-item">戶外冒險</a></li>
+                        <li><a href="#" class="menu-item">手作工藝</a></li>
+                        <li><a href="#" class="menu-item">美食料理</a></li>
+                        <li><a href="#" class="menu-item">文化歷史</a></li>
+                    </ul>
+                    <ul class="menu-group">
+                        <li class="menu-title">公司</li>
+                        <li><a href="#" class="menu-item">關於我們</a></li>
+                        <li><a href="#" class="menu-item">常見問題</a></li>
+                        <li><a href="#" class="menu-item">旅遊嚮導招募</a></li>
+                        <li><a href="#" class="menu-item">媒體合作</a></li>
+                    </ul>
+                    <ul class="menu-group">
+                        <li class="menu-title">支援</li>
+                        <li><a href="#" class="menu-item">退款政策</a></li>
+                        <li><a href="#" class="menu-item">隱私政策</a></li>
+                        <li><a href="#" class="menu-item">服務條款</a></li>
+                        <li><a href="#" class="menu-item">查看訂單</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="footer-divider">
+
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 島嶼旅跡 IslandTrace. All rights reserved.
+                </div>
+                <div class="slogan">
+                    用心丈量台灣每一寸土地
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <script>
 
 
@@ -128,8 +195,33 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             initDOMEvents();
+            parseUrlParameters();
             renderProducts(SAMPLE_PRODUCTS);
         });
+
+        function parseUrlParameters() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const region = urlParams.get('region');
+            const category = urlParams.get('category');
+            
+            if (region) {
+                const btn = document.querySelector(`#it-filter-region [data-value="${region}"]`);
+                if (btn) {
+                    btn.classList.add('is-active');
+                    currentFilters.regions.push(region);
+                }
+            }
+            if (category) {
+                const btn = document.querySelector(`#it-filter-category [data-value="${category}"]`);
+                if (btn) {
+                    btn.classList.add('is-active');
+                    currentFilters.categories.push(category);
+                }
+            }
+            if (region || category) {
+                applyFiltersAndSort();
+            }
+        }
 
         // 綁定所有的 DOM 監聽事件
         function initDOMEvents() {
@@ -180,31 +272,35 @@
             productsGrid.addEventListener('click', (e) => {
                 // 1. 檢查點擊的目標是否為愛心按鈕，或者是其子元素
                 const heartBtn = e.target.closest('.it-heart-btn');
-                if (!heartBtn) return;
+                if (heartBtn) {
+                    // 2. 直接切換 'is-active' 類別。
+                    heartBtn.classList.toggle('is-active');
 
-                // 2. [核心變更]：直接切換 'is-active' 類別。
-                heartBtn.classList.toggle('is-active');
+                    // 個人頁面對接註解：
+                    const productCard = heartBtn.closest('.it-product-card');
+                    const productId = productCard.getAttribute('data-id');
+                    const productTitle = productCard.querySelector('.it-card-title').textContent;
 
-                // 個人頁面對接註解：
-                // 獲取商品 ID (從父層卡片中)
-                const productCard = heartBtn.closest('.it-product-card');
-                const productId = productCard.getAttribute('data-id');
-                const productTitle = productCard.querySelector('.it-card-title').textContent;
+                    // 判斷目前狀態（已收藏或已移除）
+                    const isCollected = heartBtn.classList.contains('is-active');
 
-                // 判斷目前狀態（已收藏或已移除）
-                const isCollected = heartBtn.classList.contains('is-active');
+                    let favs = JSON.parse(localStorage.getItem('user_favorites') || '[]');
+                    if (isCollected) {
+                        if (!favs.includes(productId)) favs.push(productId);
+                        console.log(`[開發端回饋] 已將商品 "${productTitle}" (ID: ${productId}) 「暫時」加入收藏清單`);
+                    } else {
+                        favs = favs.filter(id => id !== productId);
+                        console.log(`[開發端回饋] 已將商品 "${productTitle}" (ID: ${productId}) 「暫時」從收藏清單移除`);
+                    }
+                    localStorage.setItem('user_favorites', JSON.stringify(favs));
+                    return;
+                }
 
-                // 這裡是加入未來正式邏輯的地方：
-                if (isCollected) {
-                    // 這裡要呼叫後端 API，將 productId 加入此用戶的收藏名單中
-                    console.log(`[開發端回饋] 已將商品 "${productTitle}" (ID: ${productId}) 「暫時」加入收藏清單`);
-
-                    // 未來範例: api.addFavorite(userId, productId).then(() => { /* 同步成功 */ });
-                } else {
-                    // 這裡要呼叫後端 API，將 productId 從此用戶的收藏名單中移除
-                    console.log(`[開發端回饋] 已將商品 "${productTitle}" (ID: ${productId}) 「暫時」從收藏清單移除`);
-
-                    // 未來範例: api.removeFavorite(userId, productId).then(() => { /* 同步成功 */ });
+                // If not heart button, check if card was clicked
+                const productCard = e.target.closest('.it-product-card');
+                if (productCard) {
+                    const productId = productCard.getAttribute('data-id');
+                    window.location.href = `product-detail.html?id=${productId}`;
                 }
             });
         }
@@ -276,17 +372,20 @@
         // 將資料轉換為 HTML 結構並渲染至頁面
         function renderProducts(products) {
             const grid = document.getElementById('it-products-grid');
+            const favs = JSON.parse(localStorage.getItem('user_favorites') || '[]');
 
             if (products.length === 0) {
                 grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #888; padding: 40px 0;">沒有符合條件的體驗，請重新篩選</div>`;
                 return;
             }
 
-            grid.innerHTML = products.map(product => `
-    <article class="it-product-card" data-id="${product.id}">
+            grid.innerHTML = products.map(product => {
+                const isFav = favs.includes(product.id.toString());
+                return `
+    <article class="it-product-card" data-id="${product.id}" style="cursor: pointer;">
       <div class="it-card-image-wrapper">
         <img class="it-card-img" src="${product.img}" alt="${product.title}" loading="lazy">
-        <button type="button" class="it-heart-btn" aria-label="收藏">❤</button>
+        <button type="button" class="it-heart-btn ${isFav ? 'is-active' : ''}" aria-label="收藏">❤</button>
       </div>
       <div class="it-card-content">
         <span class="it-card-tag">${product.category}</span>
@@ -303,9 +402,10 @@
         </div>
       </div>
     </article>
-  `).join('');
+  `}).join('');
         }
     </script>
+    <script src="./nav.js"></script>
 </body>
 
 </html>
