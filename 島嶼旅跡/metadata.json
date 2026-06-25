@@ -1,6 +1,0 @@
-{
-  "name": "島嶼旅跡",
-  "description": "島嶼旅跡 IslandTrace - 與台灣這片土地真實相遇的旅遊體驗訂購網站",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
